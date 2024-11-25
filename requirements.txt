@@ -1,0 +1,2 @@
+# packages to install pyright
+sudo apt install nodejs npm
