@@ -53,7 +53,7 @@ SUBTITUTION
 - :<beginning line>,<ending line>s/<pattern to find>/<pattern to substitute>
 
 INDENT 
-- >> -> indent 1 time 
+<text> - >> -> indent 1 time </text>
     + <number>'>>': indent <number> line(s) 
 
 MACROS
