@@ -65,3 +65,4 @@ KEYBINDINGS USED IN THIS NEOVIM SETUP
     + Shift + n -> close the file tree
 - Ctrl + p -> file files starting from the current directory
 - Space + gf -> activate formatter of the current file
+- Tab -> replace for <CR> (carriage return or "Enter") when having autocompletions
