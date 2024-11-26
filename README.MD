@@ -36,7 +36,7 @@ KILLING
     + dG -> delete the current line to the end of the file
     + df\<character\> -> delete from the current location of the cursor to the first specified character
     + d\<number\>j -> delete the current line and the next \<number\> lines below
-    + d\<number<k -> delete the current line and the next \<number\> lines above 
+    + d\<number\>k -> delete the current line and the next \<number\> lines above 
 
 YANKING
 - yy -> copy the current line and store it in buffer ( copy the deleted line(s))
@@ -44,7 +44,7 @@ YANKING
     + yG -> copy the current line to the end of the file
     + yf\<character\> -> copy from the current location of the cursor to the first specified character
     + y\<number\>j -> copy the current line and the next \<number\> lines below
-    + y\<number<k -> copy the current line and the next \<number\> lines above 
+    + y\<number\>k -> copy the current line and the next \<number\> lines above 
 
 PASTING
 - p -> paste the last content in the buffer
