@@ -49,7 +49,7 @@ YANKING
 PASTING
 - p -> paste the last content in the buffer
 
-<h3>SUBTITUTION<h3>
+<h4>SUBTITUTION</h4>
 <text> - :<beginning line>,<ending line>s/<pattern to find>/<pattern to substitute> </text>
 
 INDENT
