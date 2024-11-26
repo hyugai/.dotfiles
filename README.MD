@@ -49,11 +49,11 @@ YANKING
 PASTING
 - p -> paste the last content in the buffer
 
-SUBTITUTION
-- :<beginning line>,<ending line>s/<pattern to find>/<pattern to substitute>
+<h3>SUBTITUTION<h3>
+<text> - :<beginning line>,<ending line>s/<pattern to find>/<pattern to substitute> </text>
 
-INDENT 
-<text> - >> -> indent 1 time </text>
+INDENT
+- '>>' -> indent 1 time
     + <number>'>>': indent <number> line(s) 
 
 MACROS
