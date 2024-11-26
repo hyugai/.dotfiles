@@ -54,7 +54,7 @@ SUBTITUTION
 
 INDENT
 - '\>>' -> indent 1 time
-    + \<number\>'>>': indent \<number\> line(s) 
+    + \<number\>'>>' -> indent \<number\> line(s) 
 
 MACROS
 - q\<name of the macro\> -> start recording, press 'q' to stop recording
@@ -63,5 +63,5 @@ MACROS
 KEYBINDINGS USED IN THIS NEOVIM SETUP
 - Ctrl + n -> open a file tree
     + Shift + n -> close the file tree
-- Ctrl + p: file files starting from the current directory
-- Space + gf: activate formatter of the current file
+- Ctrl + p -> file files starting from the current directory
+- Space + gf -> activate formatter of the current file
