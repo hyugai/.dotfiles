@@ -10,7 +10,7 @@ EDITING
 - :e path/to/file -> open and edit the new file in the buffer
 - i -> insert or edit the file at the last cursor location
 - v -> visual mode or selecting multiple lines
-    + v\<number\>'>': indent <\number\> times  
+    + v\<number\>'>' -> indent <\number\> times  
 
 MOVING AROUNT WITH THE CURSOR
 - 0 -> move to the beginning of the line
@@ -19,16 +19,16 @@ MOVING AROUNT WITH THE CURSOR
      + \<number\>G -> move the line \<number\> of the file
 - gg -> move the first line of the file
 - j -> move downward 1 time
-    + \<number\>j: move downward \<number\> times
+    + \<number\>j -> move downward \<number\> times
 - k -> move upward 1 time 
     + \<number\>k -> move upward \<number\> times 
-- w : move 1 word forward
-    + \<number\>w: move \<number\> words forward 
-- b : move 1 word backward
-    + \<number\>b: move \<number\> words backward
-- f\<character\>: move to the first found characater in the current line, using ';'-semicolon to move the next found character
-    + \<number\>f\<character\>: move to the \<number\> found character in the current line
-- /\<pattern\>: found substring that match the patter at any line in the file, using character 'n' to move to the next found pattern
+- w -> move 1 word forward
+    + \<number\>w -> move \<number\> words forward 
+- b -> move 1 word backward
+    + \<number\>b -> move \<number\> words backward
+- f\<character\> -> move to the first found characater in the current line, using ';'-semicolon to move the next found character
+    + \<number\>f\<character\> -> move to the \<number\> found character in the current line
+- /\<pattern\> -> found substring that match the patter at any line in the file, using character 'n' to move to the next found pattern
 
 KILLING
 - dd -> delete the current line and store it in buffer ( copy the deleted line(s))
