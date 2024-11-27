@@ -60,6 +60,13 @@ MACROS
 - q\<name of the macro\> -> start recording, press 'q' to stop recording
     + \<number\>@\<name of the recorded macro\> -> play back the recored macro \<number\> times
 
+VISUAL MODE
+- v -> selec multiple lines
+    + continue to press 'd' -> delete selected lines
+    + continue to press '\<number\>>' -> indent \<number\> time(s)
+- Ctrl + q -> select multiple lines but at the current cursor only 
+    + continue to press 'Shift + i': edit the first selected cursor, press 'Esc' to apply to the others
+
 KEYBINDINGS USED IN THIS NEOVIM SETUP
 - Ctrl + n -> open a file tree
     + Shift + n -> close the file tree
