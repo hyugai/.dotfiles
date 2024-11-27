@@ -66,3 +66,5 @@ KEYBINDINGS USED IN THIS NEOVIM SETUP
 - Ctrl + p -> file files starting from the current directory
 - Space + gf -> activate formatter of the current file
 - Tab -> replace for <CR> (carriage return or "Enter") when having autocompletions
+- Ctrl + \ -> open a floating terminal
+    + Ctrl + D -> close the current opened floating terminal
