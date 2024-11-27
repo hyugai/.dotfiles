@@ -3,6 +3,9 @@ return {
 	dependencies = {
 		"nvimtools/none-ls-extras.nvim",
 	},
+	keys = {
+		{ "<leader>gf", vim.lsp.buf.format, desc = "Invoke formatter" },
+	},
 	config = function()
 		local null_ls = require("null-ls")
 		null_ls.setup({
@@ -12,7 +15,5 @@ return {
 				require("none-ls.diagnostics.ruff"),
 			},
 		})
-
-		vim.keymap.set("n", "<leader>gf", vim.lsp.buf.format, {})
 	end,
 }
