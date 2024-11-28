@@ -4,7 +4,7 @@ return {
 		"nvimtools/none-ls-extras.nvim",
 	},
 	keys = {
-		{ "<leader>gf", vim.lsp.buf.format, desc = "Invoke formatter" },
+		{ "<leader>gf", vim.lsp.buf.format, { desc = "Invoke formatter" } },
 	},
 	config = function()
 		local null_ls = require("null-ls")
