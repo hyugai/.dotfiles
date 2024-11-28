@@ -70,7 +70,8 @@ VISUAL MODE
 KEYBINDINGS USED IN THIS NEOVIM SETUP
 - Ctrl + n -> open a file tree
     + Shift + n -> close the file tree
-- Ctrl + p -> file files starting from the current directory
+- Space + ff -> find files starting from the current directory
+    + Space + fg -> find files using "live grep"
 - Space + gf -> activate formatter of the current file
 - Tab -> replace for <CR> (carriage return or "Enter") when having autocompletions
 - Ctrl + \ -> open a floating terminal

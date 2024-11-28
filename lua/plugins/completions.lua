@@ -1,8 +1,13 @@
 return {
     {
         "hrsh7th/cmp-nvim-lsp",
-        opts = {},
-        config = true
+        config = function()
+            require("cmp").setup({
+                sources = {
+                    { name = "nvim_lsp" },
+                },
+            })
+        end,
     },
     {
         "L3MON4D3/LuaSnip",
@@ -10,19 +15,16 @@ return {
             "saadparwaiz1/cmp_luasnip",
             "rafamadriz/friendly-snippets",
         },
-        opts = {},
-        config = true
     },
+
     {
         "hrsh7th/nvim-cmp",
-        opts = {},
         config = function()
-            local cmp = require("cmp")
             require("luasnip.loaders.from_vscode").lazy_load()
+            local cmp = require("cmp")
 
             cmp.setup({
                 snippet = {
-                    -- REQUIRED - you must specify a snippet engine
                     expand = function(args)
                         require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
                     end,
@@ -37,7 +39,6 @@ return {
                     ["<C-Space>"] = cmp.mapping.complete(),
                     ["<C-e>"] = cmp.mapping.abort(),
 
-                    --Personal keybinding: from <CR> to <Tab> of below command
                     ["<Tab>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
                 }),
                 sources = cmp.config.sources({
@@ -48,7 +49,7 @@ return {
                 }),
                 completion = {
                     completeopt = "menu,menuone",
-                },
+                }
             })
         end,
     },
