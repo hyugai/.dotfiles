@@ -1,2 +1,4 @@
 # packages to install pyright
 sudo apt install nodejs npm
+
+# run the .sh file as sudo 
