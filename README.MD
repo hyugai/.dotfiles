@@ -76,3 +76,6 @@ KEYBINDINGS USED IN THIS NEOVIM SETUP
 - Tab -> replace for <CR> (carriage return or "Enter") when having autocompletions
 - Ctrl + \ -> open a floating terminal
     + Ctrl + D -> close the current opened floating terminal
+- Shift + k -> hover to get info
+- Space + d + t -> toggle breakpoint
+- Space + d + c -> start debugger, go to the next breakpoint, exit the ui debugger if there's no more breakpoint
