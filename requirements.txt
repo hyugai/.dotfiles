@@ -1,4 +1,4 @@
 # packages to install pyright
-sudo apt install nodejs npm
+sudo apt install nodejs npm ripgrep fdclone build-ensential
 
 # run the .sh file as sudo 
