@@ -15,6 +15,7 @@ return {
                     "ruff",
                     "pyright",
                     "rust_analyzer",
+                    "bashls",
                 },
             })
         end,
@@ -44,6 +45,9 @@ return {
             })
             lspconfig.ruff.setup({
                 capabilities = capabilities,
+            })
+            lspconfig.bashls.setup({
+                capabilities = capabilities
             })
         end,
         keys = {
