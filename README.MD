@@ -67,6 +67,9 @@ VISUAL MODE
 - Ctrl + q -> select multiple lines but at the current cursor only 
     + continue to press 'Shift + i': edit the first selected cursor, press 'Esc' to apply to the others
 
+BUFFERS
+- :b \<Tab\> -> list files in buffers
+
 KEYBINDINGS USED IN THIS NEOVIM SETUP
 - Ctrl + n -> open a file tree
     + Shift + n -> close the file tree
