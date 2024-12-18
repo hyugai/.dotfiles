@@ -29,6 +29,7 @@ MOVING AROUNT WITH THE CURSOR
 - f\<character\> -> move to the first found characater in the current line, using ';'-semicolon to move the next found character
     + \<number\>f\<character\> -> move to the \<number\> found character in the current line
 - /\<pattern\> -> found substring that match the patter at any line in the file, using character 'n' to move to the next found pattern
+- Ctrl + o -> go to the last cursor's position
 
 KILLING
 - dd -> delete the current line and store it in buffer ( copy the deleted line(s))
