@@ -9,11 +9,16 @@ return {
 
 			null_ls.setup({
 				sources = {
+                    --lua
 					null_ls.builtins.formatting.stylua,
-					null_ls.builtins.completion.spell,
 
+                    --python
 					require("none-ls.formatting.ruff"),
 					require("none-ls.diagnostics.ruff"),
+
+                    --bash
+                    null_ls.builtins.formatting.shellharden,
+                    null_ls.builtins.diagnostics.shellharden,
 				},
 			})
 		end,

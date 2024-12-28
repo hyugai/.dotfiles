@@ -9,12 +9,12 @@ vim.cmd("set shiftwidth=4")
 vim.keymap.set("t", "<C-h>", "<C-\\><C-n><C-w>l", {})
 --rustacenvim
 vim.g.rustaceanvim = {
-	default_settings = {
-		-- rust-analyzer language server configuration
-		["rust-analyzer"] = {
-			cargo = {
-				allFeatures = true,
-			},
-		},
-	},
+    default_settings = {
+        -- rust-analyzer language server configuration
+        ["rust-analyzer"] = {
+            cargo = {
+                allFeatures = true,
+            },
+        },
+    },
 }
