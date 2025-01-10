@@ -1,6 +1,6 @@
 return {
     {
-        "mfussenegger/nvim-dap",
+        [1] = "mfussenegger/nvim-dap",
         dependencies = {
             "rcarriga/nvim-dap-ui",
             "nvim-neotest/nvim-nio",

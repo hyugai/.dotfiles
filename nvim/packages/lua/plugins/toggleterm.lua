@@ -1,6 +1,6 @@
 return {
 	{
-		"akinsho/toggleterm.nvim",
+		[1] = "akinsho/toggleterm.nvim",
 		version = "*",
 		keys = {
 			{ "<C-\\>", "<cmd>:ToggleTerm<CR>", {} },

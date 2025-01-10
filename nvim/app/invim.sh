@@ -1,8 +1,5 @@
 #!/bin/bash
 
-NEOVIM_DOWNLOAD_URL="https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz"
-NEOVIM_RELEASE_PAGE="https://github.com/neovim/neovim/releases"
-
 # check python virtual env if it's eligible for running the python script
 validate_python_env () {
     if ver=$(python --version); then
@@ -35,7 +32,7 @@ check_latest_nvim() {
 }
 
 check_current_nvim () {
-    ver=$(nvim --version | grep -oE v[\.[:digit:]]+ | tr -d v)
+    ver=$(nvim --version | grep -oE 'v[\.[:digit:]]+' | tr -d v)
     if [ "$ver" ]; then
         echo "NeoVim installed! You're using the version $ver"
     else
@@ -56,9 +53,7 @@ echo -ne "Options:
 \t2) Check the current version of used NeoVim
 \t3) Download NeoVim
 "
-
-# user's input stored in REPLY
-read -p "Select -> "
+read -rp "Select -> "
 
 #
 case "$REPLY" in 

@@ -1,13 +1,13 @@
 return {
 	{
-		"williamboman/mason.nvim",
+		[1] = "williamboman/mason.nvim",
 		config = function()
 			require("mason").setup({})
 		end,
 	},
 
 	{
-		"williamboman/mason-lspconfig.nvim",
+		[1] = "williamboman/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
 				ensure_installed = {
@@ -22,14 +22,31 @@ return {
 	},
 
 	{
-		"neovim/nvim-lspconfig",
+		[1] = "neovim/nvim-lspconfig",
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 			local lspconfig = require("lspconfig")
 
 			--lua
+			local lua_lsp_settings = {
+				Lua = {
+					runtime = {
+						version = "LuaJIT",
+					},
+					diagnostics = {
+						globals = { "vim", "require" },
+					},
+					workspace = {
+						library = vim.api.nvim_get_runtime_file("", true),
+					},
+					telemetry = {
+						enable = false,
+					},
+				},
+			}
 			lspconfig.lua_ls.setup({
 				capabilities = capabilities,
+				settings = lua_lsp_settings,
 			})
 
 			--python

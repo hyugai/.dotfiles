@@ -88,4 +88,4 @@ WINDOWS
 - Ctrl + w + s -> split the windown horizontally
     + Ctrl + w + v -> split the window vertically
     + Ctrl + w + c -> close the current window
-- Ctrl + w + h/j/k/l -> move to the right/bot/top/right window
+- Ctrl + h/j/k/l -> move to the right/bot/top/right window
