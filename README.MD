@@ -83,3 +83,9 @@ KEYBINDINGS USED IN THIS NEOVIM SETUP
 - Shift + k -> hover to get info
 - Space + d + t -> toggle breakpoint
 - Space + d + c -> start debugger, go to the next breakpoint, exit the ui debugger if there's no more breakpoint
+
+WINDOWS
+- Ctrl + w + s -> split the windown horizontally
+    + Ctrl + w + v -> split the window vertically
+    + Ctrl + w + c -> close the current window
+- Ctrl + w + h/j/k/l -> move to the right/bot/top/right window
