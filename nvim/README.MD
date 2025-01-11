@@ -79,8 +79,8 @@ KEYBINDINGS USED IN THIS NEOVIM SETUP
 - Space + gf -> activate formatter of the current file
 - Tab -> replace for <CR> (carriage return or "Enter") when having autocompletions
 - Space + tt -> open a floating terminal
-    + Space + th -> hide a floating terminal
-    + Ctrl + D -> close the current opened floating terminal
+    + Ctrl + h -> hide a floating terminal
+    + Ctrl + D -> exit the current-used terminal
 - Shift + k -> hover to get info
 - Space + d + t -> toggle breakpoint
 - Space + d + c -> start debugger, go to the next breakpoint, exit the ui debugger if there's no more breakpoint
