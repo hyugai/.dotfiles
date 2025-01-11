@@ -57,6 +57,10 @@ INDENT
 - '\>>' -> indent 1 time
     + \<number\>'>>' -> indent \<number\> line(s) 
 
+CASE-CONVERSION
+- U -> upper case (remember use selection mode first)
+    + u -> lower case
+
 MACROS
 - q\<name of the macro\> -> start recording, press 'q' to stop recording
     + \<number\>@\<name of the recorded macro\> -> play back the recored macro \<number\> times
