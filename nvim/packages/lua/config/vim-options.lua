@@ -6,8 +6,7 @@ vim.cmd("set softtabstop=4")
 vim.cmd("set shiftwidth=4")
 
 --press 'a/i, A/I' after reopen the terminal to enter the "Terminal Mode"
---vim.keymap.set("t", "<C-h>", "<C-\\><C-n><C-w>l", {})
-vim.keymap.set("t", "<leader>th", "<C-\\><C-n><C-w>l", {})
+vim.keymap.set("t", "<C-h>", "<C-\\><C-n><C-w>l", {})
 
 --rustacenvim
 vim.g.rustaceanvim = {
