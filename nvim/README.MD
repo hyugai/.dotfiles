@@ -78,7 +78,8 @@ KEYBINDINGS USED IN THIS NEOVIM SETUP
     + Space + fg -> find files using "live grep"
 - Space + gf -> activate formatter of the current file
 - Tab -> replace for <CR> (carriage return or "Enter") when having autocompletions
-- Ctrl + \ -> open a floating terminal
+- Space + tt -> open a floating terminal
+    + Space + th -> hide a floating terminal
     + Ctrl + D -> close the current opened floating terminal
 - Shift + k -> hover to get info
 - Space + d + t -> toggle breakpoint

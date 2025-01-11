@@ -3,7 +3,7 @@ return {
 		[1] = "akinsho/toggleterm.nvim",
 		version = "*",
 		keys = {
-			{ "<C-\\>", "<cmd>:ToggleTerm<CR>", {} },
+			{ "<leader>tt", ":ToggleTerm<CR>", {} },
 		},
 		opts = {
 			direction = "float",

@@ -1,3 +1,4 @@
-# packages to install pyright
+# pyright <- nodejs, npm
+# telescope <- repgrep
 sudo apt update && sudo apt upgrade -y \
     && sudo apt install nodejs npm ripgrep fdclone build-essential
