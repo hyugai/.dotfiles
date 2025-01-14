@@ -1,9 +1,7 @@
 return {
 	{
 		[1] = "williamboman/mason.nvim",
-		config = function()
-			require("mason").setup({})
-		end,
+		opts = {},
 	},
 
 	{
@@ -16,6 +14,7 @@ return {
 					"pyright",
 					"rust_analyzer",
 					"bashls",
+					"clangd",
 				},
 			})
 		end,
@@ -69,8 +68,13 @@ return {
 
 			--bash
 			lspconfig.bashls.setup({
-				capabilities = capabilities,
-			})
+					capabilities = capabilities,
+				})
+
+            --c/cpp
+            lspconfig.clangd.setup({
+                capabilities = capabilities,
+            })
 		end,
 		keys = {
 			{ "K", vim.lsp.buf.hover, {} },

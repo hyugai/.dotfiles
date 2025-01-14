@@ -19,7 +19,10 @@ return {
 
                     --bash
                     null_ls.builtins.formatting.shfmt,
-                    null_ls.builtins.diagnostics.shellcheck
+                    null_ls.builtins.diagnostics.shellcheck,
+
+                    --c/cpp
+                    null_ls.builtins.formatting.clang_format
                 }
             })
         end,
