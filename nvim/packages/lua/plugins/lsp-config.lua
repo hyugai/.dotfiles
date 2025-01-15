@@ -6,18 +6,16 @@ return {
 
 	{
 		[1] = "williamboman/mason-lspconfig.nvim",
-		config = function()
-			require("mason-lspconfig").setup({
-				ensure_installed = {
-					"lua_ls",
-					"ruff",
-					"pyright",
-					"rust_analyzer",
-					"bashls",
-					"clangd",
-				},
-			})
-		end,
+		opts = {
+			ensure_installed = {
+				"lua_ls",
+				"ruff",
+				"pyright",
+				"rust_analyzer",
+				"bashls",
+				"clangd",
+			},
+		},
 	},
 
 	{
@@ -68,13 +66,17 @@ return {
 
 			--bash
 			lspconfig.bashls.setup({
-					capabilities = capabilities,
-				})
+				capabilities = capabilities,
+			})
 
-            --c/cpp
-            lspconfig.clangd.setup({
-                capabilities = capabilities,
-            })
+			--c/cpp
+			lspconfig.clangd.setup({
+				capabilities = capabilities,
+				cmd = {
+					"clangd",
+					"--fallback-style=webkit",
+				},
+			})
 		end,
 		keys = {
 			{ "K", vim.lsp.buf.hover, {} },
