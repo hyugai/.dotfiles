@@ -1,13 +1,11 @@
 return {
     {
         [1] = "hrsh7th/cmp-nvim-lsp",
-        config = function()
-            require("cmp").setup({
-                sources = {
-                    { name = "nvim_lsp" },
-                },
-            })
-        end,
+        opts = {
+            sources = {
+                { name = "nvim_lsp" }
+            }
+        },
     },
     {
         [1] = "L3MON4D3/LuaSnip",
