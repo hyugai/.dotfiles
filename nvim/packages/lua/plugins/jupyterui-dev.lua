@@ -1,5 +1,5 @@
 return {
-    dir = "~/labs/lua/jupyterui.nvim",
+    dir = "~/labs/devenv-setup/nvim/dev/jupyterui.nvim",
     name = "jupyterui",
     opts = {}
 }
