@@ -7,6 +7,7 @@ validate_python_env() {
 
 # main
 current=$(sudo dmidecode -s bios-version | sed 's/.*\.//')
+# fix here: make it runable from any given directory
 mapfile -t latest_info < <(python supporting.py)
 
 shopt -s extglob
