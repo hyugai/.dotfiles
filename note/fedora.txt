@@ -1,0 +1,11 @@
+# install nvidia graphics' driver with enabled "Secured Boot"
+1. Update -> sudo dnf update -y
+2. Disable other boot options -> Restart + Esc (to enter "Boot Menu")
+3. Determine GPU model(s) -> neowofetch 
+4. Signing the driver to be able booted with "Secured Boot" on -> sudo dnf install kmodtool akmods mokutil openssl -> sudo kmodgenca -a -> sudo mokutil --import /etc/pki/akmods/certs/public_key.der -> create simple password -> systemctl reboot -> enter Enroll MOK -> yes -> Restart/Reboot
+5. Install nvidia driver -> sudo dnf install akmod-nvidia
+6. Install cuda/nvec -> sudo dnf install xorg-x11-drv-nvidia-cuda
+
+# apps to config UI
+Tweaks
+Extensions -> "Dash to Dock"

@@ -1,0 +1,10 @@
+# formatters 
+bash -> "shfmt"
+lua -> "stylua"
+c-cpp -> "clang-format"
+python -> "ruff"
+
+# linters
+bash -> "shellcheck"
+lua -> "selene"
+python -> "ruff"
