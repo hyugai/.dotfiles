@@ -1,0 +1,6 @@
+sudo apt update && sudo apt upgrade -y
+sudo apt install ibus-unikey
+ibus-daemon -Rd (-> "man ibus-daemon" for more info)
+img-config -> change to "ibus"
+
+- Go to "Settings" -> "Region & Language": click "Manage Installed Language" ( It will automatically install new detected language) -> go to "Keyboard" -> add "Vietnamese (Unikey)"

@@ -23,6 +23,9 @@ return {
 
 					--c/cpp
 					null_ls.builtins.formatting.clang_format,
+
+                    --docker
+                    null_ls.builtins.diagnostics.hadolint,
 				},
 			})
 		end,

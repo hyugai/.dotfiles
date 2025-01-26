@@ -14,6 +14,8 @@ return {
 				"rust_analyzer",
 				"bashls",
 				"clangd",
+				"dockerls",
+				"docker_compose_language_service",
 			},
 		},
 	},
@@ -74,9 +76,17 @@ return {
 				capabilities = capabilities,
 				cmd = {
 					"clangd",
-					"--fallback-style=webkit",
+					"--fallback-style=llvm",
 				},
 			})
+
+            --docker/docker-compose
+            lspconfig.dockerls.setup({
+                capabilities = capabilities,
+            })
+            lspconfig.docker_compose_language_service.setup({
+                capabilities = capabilities,
+            })
 		end,
 		keys = {
 			{ "K", vim.lsp.buf.hover, {} },
