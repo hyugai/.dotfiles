@@ -1,21 +1,34 @@
 return {
 	{
 		[1] = "williamboman/mason.nvim",
-		opts = {},
+		opts = {
+            ensure_installed = {
+                -- linter
+                "selene", -- lua
+                "shellcheck", -- bash
+                "hadolint", -- docker
+                -- formatter
+                "clang-format", --c/cpp
+                "stylua", -- lua
+                "shfmt", -- bash
+                -- both
+                "ruff", -- python
+            }
+        },
 	},
 
 	{
 		[1] = "williamboman/mason-lspconfig.nvim",
 		opts = {
 			ensure_installed = {
-				"lua_ls",
-				"ruff",
-				"pyright",
-				"rust_analyzer",
-				"bashls",
-				"clangd",
-				"dockerls",
-				"docker_compose_language_service",
+				"lua_ls", -- lua
+				"ruff", -- python
+				"pyright", -- python
+				"rust_analyzer", -- rust
+				"bashls", -- bash
+				"clangd", -- c/cpp
+				"dockerls", -- docker
+				"docker_compose_language_service", -- docker-compose
 			},
 		},
 	},
