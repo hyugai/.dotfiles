@@ -16,5 +16,8 @@ WINDOWS NAVIGATION
 WIDOWS KILLING
 - Ctrl + b + & -> kill the current window
 
+WINDOW NAMIMG
+- Ctrl + b + , -> renaming the current window
+
 INTERACTIVE SELECTION OF SESSIONS AND WINDOWS
 - Ctrl + b + w -> open an interactive selection of sessions

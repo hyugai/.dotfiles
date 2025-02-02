@@ -1,10 +1,10 @@
 -- some options
-vim.cmd("set autoindent")
-vim.cmd("set expandtab")
-vim.cmd("set number")
-vim.cmd("set tabstop=4")
-vim.cmd("set softtabstop=4")
-vim.cmd("set shiftwidth=4")
+vim.o.autoindent = true
+vim.o.expandtab = true
+vim.o.number = true
+vim.o.tabstop = 4
+vim.o.softtabstop = 4
+vim.o.shiftwidth = 4
 
 -- press 'a/i, A/I' after reopen the terminal to enter the "Terminal Mode"
 vim.keymap.set("t", "<C-h>", "<C-\\><C-n><C-w>l", {})
@@ -22,10 +22,10 @@ vim.g.rustaceanvim = {
 }
 
 -- navigate windows
-vim.keymap.set('n', '<C-h>', ':wincmd h<CR>') -- left
-vim.keymap.set('n', '<C-j>', ':wincmd j<CR>') -- bot 
-vim.keymap.set('n', '<C-k>', ':wincmd k<CR>') -- top
-vim.keymap.set('n', '<C-l>', ':wincmd l<CR>') -- right
+vim.keymap.set('n', '<C-h>', ':wincmd h<CR>', { noremap = true }) -- left
+vim.keymap.set('n', '<C-j>', ':wincmd j<CR>', { noremap = true }) -- bot 
+vim.keymap.set('n', '<C-k>', ':wincmd k<CR>', { noremap = true }) -- top
+vim.keymap.set('n', '<C-l>', ':wincmd l<CR>', { noremap = true }) -- right
 
 -- docker-compose filetype detection
 -- TODO: add regex to recognize any file has the pattern of "docker-compose.[something].yaml"

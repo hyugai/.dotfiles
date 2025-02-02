@@ -1,0 +1,4 @@
+vim.o -> :set
+vim.keymap.set -> map 
+    + applied to normal(n), visual(v), insert(i) and command(c) mode
+    + :nmap dd O<esc>jddk: "dd" appears twice, which will make this keymap recursive -> noremap = true
