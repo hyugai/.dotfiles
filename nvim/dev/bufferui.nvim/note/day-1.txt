@@ -2,3 +2,18 @@ vim.o -> :set
 vim.keymap.set -> map 
     + applied to normal(n), visual(v), insert(i) and command(c) mode
     + :nmap dd O<esc>jddk: "dd" appears twice, which will make this keymap recursive -> noremap = true
+
+- "bufhidden" -> what happpens when a window is no longer displayed in the current window
+    + bufhidden=wipe -> clear all data when the buffer is hidden
+
+- Moving around in created windows is good, doesn't need any function to perform that task
+- Type "vim.api.buf" to reveal supported buffer's functions
+- vim.api.nvim_list_bufs -> list all bufs (equivalent to :ls!)
+    + vim.api.nvim_buf_is_loaded -> validate the buf and check if it's loaded
+- vim.api.buf_set_lines -> push lines to a buf (use end=-1 to push as much as wanted)
+- ipairs(lua) ~ enumerate(python)
+- vim.api.nvim_win_get_cursor -> get the location of the cursor in the current chosen window as (row, column)
+- vim.api.nvim_buf_create_user_command -> those commands will be effective for the selected buf
+- vim.api.nvim_buf_set_keymap -> ALWAYS use "opts = { noremap = true }", those keymaps will be effective for the selected buf
+- "table" in lua use 1-based index
+- vim.api.nvim_buf_get_lines -> use 0-based index

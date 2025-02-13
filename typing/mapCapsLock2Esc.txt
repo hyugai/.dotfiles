@@ -1,0 +1,1 @@
+- Go to "Tweaks" -> "Keyboard & mouse" -> "Additional Layout Options" -> "Caps Lock behavior" -> "Make Caps Lock as an addtional Esc"

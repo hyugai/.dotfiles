@@ -1,22 +1,24 @@
 return {
+	-- #
 	{
 		[1] = "williamboman/mason.nvim",
 		opts = {
-            ensure_installed = {
-                -- linter
-                "selene", -- lua
-                "shellcheck", -- bash
-                "hadolint", -- docker
-                -- formatter
-                "clang-format", --c/cpp
-                "stylua", -- lua
-                "shfmt", -- bash
-                -- both
-                "ruff", -- python
-            }
-        },
+			ensure_installed = {
+				-- linter
+				"selene", -- lua
+				"shellcheck", -- bash
+				"hadolint", -- docker
+				-- formatter
+				"clang-format", --c/cpp
+				"stylua", -- lua
+				"shfmt", -- bash
+				-- both
+				"ruff", -- python
+			},
+		},
 	},
 
+	-- #
 	{
 		[1] = "williamboman/mason-lspconfig.nvim",
 		opts = {
@@ -33,6 +35,7 @@ return {
 		},
 	},
 
+	-- #
 	{
 		[1] = "neovim/nvim-lspconfig",
 		config = function()
@@ -46,7 +49,7 @@ return {
 						version = "LuaJIT",
 					},
 					diagnostics = {
-						globals = { "vim", "require" },
+						globals = { "vim" },
 					},
 					workspace = {
 						library = vim.api.nvim_get_runtime_file("", true),
@@ -93,13 +96,13 @@ return {
 				},
 			})
 
-            --docker/docker-compose
-            lspconfig.dockerls.setup({
-                capabilities = capabilities,
-            })
-            lspconfig.docker_compose_language_service.setup({
-                capabilities = capabilities,
-            })
+			--docker/docker-compose
+			lspconfig.dockerls.setup({
+				capabilities = capabilities,
+			})
+			lspconfig.docker_compose_language_service.setup({
+				capabilities = capabilities,
+			})
 		end,
 		keys = {
 			{ "K", vim.lsp.buf.hover, {} },
