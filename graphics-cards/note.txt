@@ -1,0 +1,1 @@
+- After updating the system, if the "Hybrid" mode has any problem, switch to "Intergrated grahics" then switch back to the "Hybrid" mode
