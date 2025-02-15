@@ -51,7 +51,7 @@ function M.push_texts()
 end
 
 -- #
-function M.open_buf()
+function M.select_buf()
     local loc_cursor = api.nvim_win_get_cursor(win_M) -- { row, column }
     local current_line = api.nvim_buf_get_lines(buf_M, loc_cursor[1]-1, loc_cursor[1], false)[1] -- since this function will return a single-value table, so we'll get it in advance
     local buf_id = active_bufs[current_line]
@@ -64,8 +64,8 @@ function M.main()
     M.create_win_for_buf()
     M.push_texts()
 
-    api.nvim_buf_create_user_command(buf_M, "OpenBuf", M.open_buf, {})
-    api.nvim_buf_set_keymap(buf_M, "n", "<cr>", ":OpenBuf<cr>", { noremap = true})
+    api.nvim_buf_create_user_command(buf_M, "OpenBuf", M.select_buf, {})
+    api.nvim_buf_set_keymap(buf_M, "n", "<cr>", ":SelectBuf<cr>", { noremap = true})
 end
 
 -- #
