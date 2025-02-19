@@ -96,6 +96,43 @@ return {
 				},
 			})
 
+			--rust
+			lspconfig.rust_analyzer.setup({
+				capabilities = capabilities,
+				cmd = {
+					"rustup",
+					"run",
+					"stable",
+					"rust-analyzer",
+				},
+				settings = {
+					["rust-analyzer"] = {
+						checkOnSave = true,
+						check = { command = "clippy", features = "all" },
+						assist = {
+							importGranularity = "module",
+							importPrefix = "self",
+						},
+						diagnostics = {
+							enable = true,
+							enableExperimental = true,
+						},
+						cargo = {
+							loadOutDirsFromCheck = true,
+							features = "all", -- avoid error: file not included in crate hierarchy
+						},
+						procMacro = {
+							enable = true,
+						},
+						inlayHints = {
+							chainingHints = true,
+							parameterHints = true,
+							typeHints = true,
+						},
+					},
+				},
+			})
+
 			--docker/docker-compose
 			lspconfig.dockerls.setup({
 				capabilities = capabilities,
