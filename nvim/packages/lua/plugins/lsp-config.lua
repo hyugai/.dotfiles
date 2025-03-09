@@ -7,7 +7,6 @@ return {
 				-- linter
 				"selene", -- lua
 				"shellcheck", -- bash
-				"hadolint", -- docker
 				-- formatter
 				"clang-format", --c/cpp
 				"stylua", -- lua
@@ -29,8 +28,6 @@ return {
 				"rust_analyzer", -- rust
 				"bashls", -- bash
 				"clangd", -- c/cpp
-				"dockerls", -- docker
-				"docker_compose_language_service", -- docker-compose
 			},
 		},
 	},
@@ -133,13 +130,6 @@ return {
 				},
 			})
 
-			--docker/docker-compose
-			lspconfig.dockerls.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.docker_compose_language_service.setup({
-				capabilities = capabilities,
-			})
 		end,
 		keys = {
 			{ "K", vim.lsp.buf.hover, {} },

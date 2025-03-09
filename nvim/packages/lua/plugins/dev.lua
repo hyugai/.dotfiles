@@ -1,4 +1,4 @@
 return {
-	dir = "/home/xxo/labs/devenv-setup/nvim/dev/bufferui.nvim",
+	dir = "/home/lghuy/Labs/dotfiles/nvim/dev/bufferui.nvim",
 	opts = {},
 }
