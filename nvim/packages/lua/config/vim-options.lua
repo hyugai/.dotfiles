@@ -19,13 +19,3 @@ keymap.set("n", "<C-h>", ":wincmd h<CR>", { noremap = true }) -- left
 keymap.set("n", "<C-j>", ":wincmd j<CR>", { noremap = true }) -- bot
 keymap.set("n", "<C-k>", ":wincmd k<CR>", { noremap = true }) -- top
 keymap.set("n", "<C-l>", ":wincmd l<CR>", { noremap = true }) -- right
-
---# docker-compose filetype detection
-vim.filetype.add({
-    filename = {
-        ["docker-compose.yml"] = "yaml.docker-compose",
-        ["docker-compose.yaml"] = "yaml.docker-compose",
-        ["compose.yml"] = "yaml.docker-compose",
-        ["compose.yaml"] = "yaml.docker-compose",
-    },
-})
