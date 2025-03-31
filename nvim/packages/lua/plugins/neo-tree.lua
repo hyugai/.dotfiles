@@ -8,7 +8,7 @@ return {
             "MunifTanjim/nui.nvim",
         },
         keys = {
-            { "<C-n>", "<CMD>:Neotree filesystem reveal left<CR>", {} },
+            { "<C-n>", "<CMD>:Neotree filesystem reveal right<CR>", {} },
             { "N",     "<CMD>:Neotree close<CR>",                   {} },
         },
         opts = {

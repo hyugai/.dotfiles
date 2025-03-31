@@ -1,8 +1,0 @@
-sudo apt update && sudo apt upgrade -y
-sudo apt install ibus-unikey
-ibus-daemon -Rd (-> "man ibus-daemon" for more info)
-im-config -> change to "ibus"
-ibus restart -> can use to detect "Vietnamese (Unikey)"
-
-- Go to "Settings" -> "Region & Language": click "Manage Installed Language" ( It will automatically install new detected language) -> go to "Keyboard" -> add "Vietnamese (Unikey)"
-- Go to "Keyboard" -> "Typing" -> Add another shortcut "Ctrl + Z"
