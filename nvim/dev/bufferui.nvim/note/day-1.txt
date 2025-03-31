@@ -17,3 +17,6 @@ vim.keymap.set -> map
 - vim.api.nvim_buf_set_keymap -> ALWAYS use "opts = { noremap = true }", those keymaps will be effective for the selected buf
 - "table" in lua use 1-based index
 - vim.api.nvim_buf_get_lines -> use 0-based index
+
+-- #HOW TO TEST THE MODULE
+Calls out the function needed testing -> use the "source" command in neovim to run the lua file
