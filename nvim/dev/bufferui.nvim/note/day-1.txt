@@ -20,3 +20,9 @@ vim.keymap.set -> map
 
 -- #HOW TO TEST THE MODULE
 Calls out the function needed testing -> use the "source" command in neovim to run the lua file
+
+-- #NOTES
+use #table -> show length of a table
+use print(table.concat(table, "\n")) -> print out the content of a table in each different line
+do not call any function/method explicitly in any lua file to prevent them being executed by LazyVim
+can attach "autocmd" to any buffer

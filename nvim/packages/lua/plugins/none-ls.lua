@@ -27,7 +27,7 @@ return {
 			})
 		end,
 		keys = {
-			{ "<leader>gf", vim.lsp.buf.format, {} },
+			{ "<leader>gf", vim.lsp.buf.format, { noremap = true } },
 		},
 	},
 }
