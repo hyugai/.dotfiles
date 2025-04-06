@@ -1,9 +1,9 @@
 local M = {}
-local supports = require("bufferui.supports")
+local supports = require("switch_buffer.supports")
 
-function M.setup()
+function M.setup(opts)
     vim.keymap.set("n", "<leader>h", function()
-        supports.main()
+        supports.switch_buf()
     end, { noremap = true })
 end
 

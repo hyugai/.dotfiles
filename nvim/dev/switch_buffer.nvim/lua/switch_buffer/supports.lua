@@ -1,18 +1,28 @@
 local M = {}
+M.current_working_dir = vim.fn.getcwd()
+
+function M.__parse_opts(opts)
+end
 
 --# __lookup_files_paths -> check if a file path exists or not
 function M.__lookup_files_paths(bufs)
     local existing_files_paths = {}
+
     for _, buf_id in ipairs(bufs) do
         local file_path = vim.api.nvim_buf_get_name(buf_id)
         if vim.uv.fs_stat(file_path) then
-            existing_files_paths[file_path] = buf_id
+            local start_idx, _ = string.find(file_path, M.current_working_dir)
+            if start_idx then
+                local relative_file_path = string.gsub(file_path, M.current_working_dir, ".")
+                existing_files_paths[relative_file_path] = buf_id
+            end
         end
     end
 
     return existing_files_paths
 end
 
+--# __config_popup_win -> return opts for a pop-up window
 function M.__config_popup_win(width_scale, height_scale)
     local vim_height = vim.o.lines
     local vim_width = vim.o.columns
@@ -28,13 +38,20 @@ function M.__config_popup_win(width_scale, height_scale)
         height = math.floor(vim_height * height_scale),
         style = "minimal",
         border = "rounded",
+        title = "Switch Buffer",
+        title_pos = "center",
     }
 
     return sub_win_opts
 end
 
-function M.main()
-    local active_bufs = vim.api.nvim_list_bufs()
+function M.switch_buf()
+    local active_bufs = {}
+    for _, v in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.api.nvim_buf_is_valid(v) then
+            table.insert(active_bufs, v)
+        end
+    end
     local files_paths_dict = M.__lookup_files_paths(active_bufs)
     local files_paths = {}
     for key, _ in pairs(files_paths_dict) do
@@ -58,15 +75,12 @@ function M.main()
         local buf_attributed_to_path = files_paths_dict[selected_file_path]
         vim.api.nvim_win_set_buf(curr_win_id, buf_attributed_to_path)
     end, { buffer = buf_id })
+    vim.keymap.set("n", "q", ":q<CR>", { buffer = buf_id })
     vim.api.nvim_create_autocmd("VimResized", {
+        buffer = buf_id,
         callback = function()
-            local modified_opts = M.__config_popup_win(width_scale, height_scale)
-            vim.api.nvim_win_set_config(popup_win_id, {
-                row = modified_opts.row,
-                col = modified_opts.col,
-                width = modified_opts.width,
-                height = modified_opts.height,
-            })
+            local opts = M.__config_popup_win(width_scale, height_scale)
+            vim.api.nvim_win_set_config(popup_win_id, opts)
         end,
     })
 end
