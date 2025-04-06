@@ -129,7 +129,6 @@ return {
 					},
 				},
 			})
-
 		end,
 		keys = {
 			{ "K", vim.lsp.buf.hover, {} },
