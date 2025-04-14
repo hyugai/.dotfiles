@@ -6,7 +6,7 @@ return {
 			{ "<leader>tt", ":ToggleTerm<CR>", {} },
 		},
 		opts = {
-			direction = "float",
+			direction = "horizontal",
 			float_opts = {
 				border = "curved",
 			},

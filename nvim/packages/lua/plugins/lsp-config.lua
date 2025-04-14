@@ -4,14 +4,11 @@ return {
 		[1] = "williamboman/mason.nvim",
 		opts = {
 			ensure_installed = {
-				-- linter
 				"selene", -- lua
 				"shellcheck", -- bash
-				-- formatter
 				"clang-format", --c/cpp
 				"stylua", -- lua
 				"shfmt", -- bash
-				-- both
 				"ruff", -- python
 			},
 		},

@@ -26,3 +26,6 @@ use #table -> show length of a table
 use print(table.concat(table, "\n")) -> print out the content of a table in each different line
 do not call any function/method explicitly in any lua file to prevent them being executed by LazyVim
 can attach "autocmd" to any buffer
+
+namespace -> group things like highlighting, virtual text,... prevent them from being conflicted with other plugins
+use a "class" table as a default reference when object doesn't has it owns value

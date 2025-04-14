@@ -17,9 +17,10 @@ return {
                     require("none-ls.formatting.ruff"),
                     require("none-ls.diagnostics.ruff"),
 
-                    --bash
+                    --[[bash
+                    no need to call ""null_ls.builtins.diagnostics.shellcheck"
+                    --]]
                     null_ls.builtins.formatting.shfmt,
-                    null_ls.builtins.diagnostics.shellcheck,
 
                     --c/cpp
                     null_ls.builtins.formatting.clang_format,
