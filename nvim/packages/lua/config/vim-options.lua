@@ -19,3 +19,7 @@ keymap.set("n", "<C-h>", ":wincmd h<CR>", { noremap = true }) -- left
 keymap.set("n", "<C-j>", ":wincmd j<CR>", { noremap = true }) -- bot
 keymap.set("n", "<C-k>", ":wincmd k<CR>", { noremap = true }) -- top
 keymap.set("n", "<C-l>", ":wincmd l<CR>", { noremap = true }) -- right
+
+vim.diagnostic.config({
+	virtual_text = true,
+})

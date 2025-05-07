@@ -1,5 +1,5 @@
 local themes = {}
--- GitHub
+-- GitHub theme
 themes.github = {
     [1] = "projekt0n/github-nvim-theme",
     name = "github-theme",
