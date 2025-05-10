@@ -11,3 +11,6 @@ vim.o.shiftwidth = 4
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
+
+-- completion
+--vim.o.completeopt = "menu,menuone,noselect"

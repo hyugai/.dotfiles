@@ -1,4 +1,4 @@
-local tree = {
+local nvim_tree = {
 	[1] = "nvim-tree/nvim-tree.lua",
 	version = "*",
 	lazy = false,
@@ -20,7 +20,7 @@ local tree = {
 						staged = "✓",
 						unmerged = "",
 						renamed = "➜",
-						untracked = "★", -- this is often the "star" you’re seeing
+						untracked = "★",
 						deleted = "",
 						ignored = "◌",
 					},
@@ -33,6 +33,17 @@ local tree = {
 		{ "tc", ":NvimTreeClose<CR>", { noremap = true } },
 	},
 }
+
+local telescope = {
+	[1] = "nvim-telescope/telescope.nvim",
+	branch = "0.1.x",
+	dependencies = { "nvim-lua/plenary.nvim" },
+	keys = {
+		{ "<leader>ff", ":Telescope find_files<CR>", {} },
+	},
+}
+
 return {
-	tree,
+	nvim_tree,
+	telescope,
 }

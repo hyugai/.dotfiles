@@ -1,4 +1,5 @@
 return {
+
 	{
 		[1] = "hrsh7th/cmp-nvim-lsp",
 		opts = {
