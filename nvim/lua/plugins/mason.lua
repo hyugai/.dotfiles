@@ -15,6 +15,7 @@ return {
 				ensure_installed = {
 					"stylua", -- lua
 					--"selene", -- lua
+					"clang-format", -- c/cpp
 				},
 			},
 		},
@@ -22,6 +23,7 @@ return {
 	opts = {
 		ensure_installed = {
 			"lua_ls", -- lua
+			"clangd",
 		},
 	},
 }
