@@ -1,6 +1,0 @@
-# INSTALL NeoVim -> sudo snap install nvim --classic (UPDATE is automatically in background or can done via "sudo snap refresh")
-# pyright <- nodejs, npm
-# telescope <- repgrep
-# if "pyright" or "bashls" doesn't work, using those folling commands: sudo npm install -g n && sudo n stable -> node --version(should show the node's version v22.x.x)
-sudo apt update && sudo apt upgrade -y \
-    && sudo apt install nodejs npm ripgrep fdclone build-essential
