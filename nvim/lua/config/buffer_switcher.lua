@@ -11,7 +11,7 @@ local buffer = {
 	ID = nil,
 	CONTENT = {},
 	LOADED_BUFS = {},
-	get_loaded_bufs = function(self)
+	get_loaded_bufs = function(self) -- modify `LOADED_BUFS`
 		local buf_ids = vim.api.nvim_list_bufs()
 		for _, v in ipairs(buf_ids) do
 			local buf_name = vim.api.nvim_buf_get_name(v)
@@ -23,7 +23,7 @@ local buffer = {
 			end
 		end
 	end,
-	get_currently_attached_bufs = function(self)
+	get_currently_attached_bufs = function(self) -- modify `LOADED_BUFS` to indicate which buffers are being displayed
 		local win_ids = vim.api.nvim_list_wins()
 		for _, v in ipairs(win_ids) do
 			if vim.api.nvim_win_is_valid(v) then
@@ -35,7 +35,7 @@ local buffer = {
 			end
 		end
 	end,
-	label_bufs = function(self)
+	label_bufs = function(self) -- modify `LOADED_BUFS` and `CONTENT`
 		self.CONTENT = {}
 		self:get_currently_attached_bufs()
 		for k, v in pairs(self.LOADED_BUFS) do
@@ -47,8 +47,10 @@ local buffer = {
 		end
 	end,
 	new = function(self) -- this function is used once everytime evoke this plugin
+		self.LOADED_BUFS = {} -- restart the `LOADED_BUFS` to discards ones that are deleted
 		self:get_loaded_bufs()
 		self:label_bufs()
+
 		self.ID = vim.api.nvim_create_buf(false, true)
 		vim.api.nvim_buf_set_lines(self.ID, 0, -1, true, self.CONTENT)
 		vim.api.nvim_set_option_value("buftype", "nofile", { buf = self.ID })
@@ -58,6 +60,7 @@ local buffer = {
 	switch_buf = function(self, buf_to_attach, host_win) -- modify `LOADED_BUFS`
 		self.LOADED_BUFS[buf_to_attach].is_attached = true
 
+		-- !bug: this can lead to an unloaded buffer, which cause error
 		local prev_attached_buf_id = vim.api.nvim_win_get_buf(host_win) -- the window used to attach to new buf will be currently hold the altered buf, so we can retrive that buf and set its to `false` like below
 		local prev_attached_buf_name = vim.api.nvim_buf_get_name(prev_attached_buf_id)
 		self.LOADED_BUFS[prev_attached_buf_name].is_attached = false
@@ -71,7 +74,7 @@ local buffer = {
 local window = {
 	ID = nil,
 	HOST = nil,
-	record_current_win = function(self)
+	record_current_win = function(self) -- !bug: this will make the plugin fail if get the ID of the window that doesn't attach to a loaded file
 		self.HOST = vim.api.nvim_get_current_win()
 	end,
 	calculate_sizes = function()
@@ -115,6 +118,7 @@ local editor = {
 	end,
 }
 
+-- KEYMAP, USER'S COMMAND, AUTOCOMMAND
 vim.api.nvim_create_user_command("SwitchBuf", function()
 	window:open()
 end, {})
@@ -144,3 +148,5 @@ vim.api.nvim_create_autocmd("WinResized", {
 		end
 	end,
 })
+vim.keymap.set("n", "<leader>sb", ":SwitchBuf<CR>")
+vim.keymap.set("n", "q", ":q<CR>", { buffer = buffer.ID })
