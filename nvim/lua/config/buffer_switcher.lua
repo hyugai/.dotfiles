@@ -23,7 +23,7 @@ local buffer = {
 			end
 		end
 	end,
-	get_currently_attached_bufs = function(self) -- modify `LOADED_BUFS` to indicate which buffers are being displayed
+	get_currently_attached_bufs = function(self) -- modify `LOADED_BUF` to indicate which buffers are being displayed
 		local win_ids = vim.api.nvim_list_wins()
 		for _, v in ipairs(win_ids) do
 			if vim.api.nvim_win_is_valid(v) then
