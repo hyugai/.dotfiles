@@ -1,14 +1,24 @@
 general.live_config_reload = true
 
-# env
+# ENV
 [env]
     term = "xterm-256color"
 
-# window
+# WINDOW
 [window]
     opacity = 1.0
+    padding = { x = 10, y = 0 }
 
-# color
+# CURSOR
+[cursor]
+    style = { blinking = "Always" }
+    blink_timeout = 0
+
+# SELECTION
+[selection]
+    save_to_clipboard = true
+
+# COLOR
 [colors.primary]
     background = "#000000"  # Black background
     foreground = "#ffffff"  # White text
@@ -17,7 +27,7 @@ general.live_config_reload = true
     text = "#000000" # text's color when cursor being placed at it
     cursor = "#ffffff"
 
-# font
+# FONT
 [font]
     size = 12.5
 
