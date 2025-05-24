@@ -49,7 +49,7 @@ vim.lsp.config("clangd", {
 })
 
 --# enable LSPs
-vim.lsp.enable({ "lua_ls", "clangd" })
+vim.lsp.enable({ "lua_ls", "clangd", "bashls" })
 
 -- keymaps
 vim.keymap.set("n", "K", vim.lsp.buf.hover, {})

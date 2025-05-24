@@ -14,7 +14,7 @@ general.live_config_reload = true
     foreground = "#ffffff"  # White text
 
 [colors.cursor]
-    text = "#000000"
+    text = "#000000" # text's color when cursor being placed at it
     cursor = "#ffffff"
 
 # font

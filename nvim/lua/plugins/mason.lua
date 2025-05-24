@@ -15,6 +15,8 @@ return {
 				ensure_installed = {
 					"stylua", -- lua
 					"clang-format", -- c/cpp
+					"shfmt", -- bash
+					"shellcheck", --bash
 				},
 			},
 		},
@@ -22,7 +24,8 @@ return {
 	opts = {
 		ensure_installed = {
 			"lua_ls", -- lua
-			"clangd",
+			"clangd", -- c/cpp
+			"bashls", -- bash
 		},
 	},
 }
