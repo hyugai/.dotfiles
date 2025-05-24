@@ -38,3 +38,5 @@ vim.diagnostic.config({
 	signs = false,
 	update_in_insert = false,
 })
+
+--TODO: for those language that do not fall back on LSP for diagnostics, use below settings to remove all virtual things when inaugurating `INSERT` mode
