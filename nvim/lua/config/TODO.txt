@@ -1,0 +1,5 @@
+Attach a command to a file like an `execute` button
+Make a TODO plugins
+Make cursor italic when encountering italic characters
+Generalize some common functions used for buffers, windows and editors
+Truncate or make buffer_switcher's content more readable -> highlight active bufs, icons

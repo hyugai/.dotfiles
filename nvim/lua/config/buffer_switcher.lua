@@ -149,4 +149,4 @@ vim.api.nvim_create_autocmd("WinResized", {
 	end,
 })
 vim.keymap.set("n", "<leader>sb", ":SwitchBuf<CR>")
-vim.keymap.set("n", "q", ":q<CR>", { buffer = buffer.ID })
+--vim.keymap.set("n", "q", ":q<CR>", { buffer = buffer.ID })
