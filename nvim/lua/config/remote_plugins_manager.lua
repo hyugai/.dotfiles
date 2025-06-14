@@ -18,7 +18,8 @@ vim.g.mapleader = " "
 
 require("lazy").setup({
 	spec = {
-		{ import = "plugins" },
+		--{ import = "plugins" },
+		{ import = "plugins.remote" },
 	},
 	checker = {
 		enabled = true, -- check for plugin updates periodically
