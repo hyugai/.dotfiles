@@ -1,7 +1,7 @@
 local M = {}
 function M.setup(opts)
 	opts = opts or {}
-	print("Hello!")
+	--print("Hello!")
 end
 
 return M

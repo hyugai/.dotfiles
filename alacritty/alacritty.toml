@@ -29,7 +29,7 @@ general.live_config_reload = true
 
 # FONT
 [font]
-    size = 13
+    size = 12.5
 
 [font.normal]
     family = "FiraCode Nerd Font"
