@@ -1,0 +1,13 @@
+TO MAKE 4-LEVEL COLORS SUPPORTTED FOR DIAGNOSTICS, DO THE FOLLOWINGS:
+    -> ~/.bashrc
+        export TERM="xterm-256color"
+
+    -> ~/.tmux.conf
+        set -g default-terminal "tmux-256color" && set-option -ga terminal-overrides ",xterm-256color:Tc"
+
+    -> /nvim/lua/config/options.lua
+        vim.opt.termguicolors = true
+
+    -> alacritty.toml
+        [env]
+            term = "xterm-256color"

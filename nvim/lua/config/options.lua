@@ -11,4 +11,6 @@ vim.o.shiftwidth = 4
 -- nvim-tree
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+
+-- true colors supported (also 4-level colors for diagnostics)
 vim.opt.termguicolors = true

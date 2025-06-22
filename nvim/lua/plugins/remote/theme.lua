@@ -19,7 +19,7 @@ local github_nvim = {
 	config = function()
 		require("github-theme").setup({
 			options = {
-				transparent = true,
+				transparent = false,
 				styles = {
 					comments = "italic",
 					keywords = "bold",

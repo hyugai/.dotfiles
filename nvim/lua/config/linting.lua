@@ -10,6 +10,11 @@ vim.api.nvim_set_hl(0, "DiagnosticVirtualTextWarn", { fg = "#ECBE7B" })
 vim.api.nvim_set_hl(0, "DiagnosticVirtualTextInfo", { fg = "#51AFEF" })
 vim.api.nvim_set_hl(0, "DiagnosticVirtualTextHint", { fg = "#98BE65" })
 
+vim.cmd [[
+  highlight! DiagnosticVirtualTextError guifg=#FF6C6B
+]]
+
+
 vim.diagnostic.config({
 	virtual_text = {
 		prefix = function(d)
@@ -38,5 +43,3 @@ vim.diagnostic.config({
 	signs = false,
 	update_in_insert = false,
 })
-
---TODO: for those language that do not fall back on LSP for diagnostics, use below settings to remove all virtual things when inaugurating `INSERT` mode
