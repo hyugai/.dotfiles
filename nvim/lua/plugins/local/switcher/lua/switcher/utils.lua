@@ -1,94 +1,93 @@
--- use `:` for nested function used `self`
+local M = {}
 
--- ICONS
-local icons = {
-	ATTACHED = " ✓",
-	DETACHED = " ✗",
-}
-
--- BUF
-local buffer = {
-	ID = nil,
-	CONTENT = {},
-	LOADED_BUFS = {},
-	get_loaded_bufs = function(self) -- modify `LOADED_BUFS`
-		local buf_ids = vim.api.nvim_list_bufs()
-		for _, v in ipairs(buf_ids) do
-			local buf_name = vim.api.nvim_buf_get_name(v)
-			if vim.api.nvim_buf_is_loaded(v) and vim.uv.fs_stat(buf_name) then
-				self.LOADED_BUFS[buf_name] = {
-					id = v,
-					is_attached = false,
-				}
-			end
+---Get index of the first value needed to find from a list
+---@param list table<number|string>
+---@param value_to_find number|string
+---@return number|nil
+function M.find_value_from_list(list, value_to_find)
+	for index, value in ipairs(list) do
+		if value == value_to_find then
+			return index
 		end
-	end,
-	get_currently_attached_bufs = function(self) -- modify `LOADED_BUF` to indicate which buffers are being displayed
-		local win_ids = vim.api.nvim_list_wins()
-		for _, v in ipairs(win_ids) do
-			if vim.api.nvim_win_is_valid(v) then
-				local buf_id = vim.api.nvim_win_get_buf(v)
-				local buf_name = vim.api.nvim_buf_get_name(buf_id)
-				if vim.api.nvim_buf_is_loaded(buf_id) and vim.uv.fs_stat(buf_name) then
-					self.LOADED_BUFS[buf_name].is_attached = true
-				end
-			end
-		end
-	end,
-	label_bufs = function(self) -- modify `LOADED_BUFS` and `CONTENT`
-		self.CONTENT = {}
-		self:get_currently_attached_bufs()
-		for k, v in pairs(self.LOADED_BUFS) do
-			if v.is_attached then
-				table.insert(self.CONTENT, k .. icons.ATTACHED)
-			else
-				table.insert(self.CONTENT, k .. icons.DETACHED)
-			end
-		end
-	end,
-	new = function(self) -- this function is used once everytime evoke this plugin
-		self.LOADED_BUFS = {} -- restart the `LOADED_BUFS` to discards ones that are deleted
-		self:get_loaded_bufs()
-		self:label_bufs()
+	end
+end
 
-		self.ID = vim.api.nvim_create_buf(false, true)
-		vim.api.nvim_buf_set_lines(self.ID, 0, -1, true, self.CONTENT)
-		vim.api.nvim_set_option_value("buftype", "nofile", { buf = self.ID })
-		vim.api.nvim_set_option_value("bufhidden", "wipe", { buf = self.ID })
-		vim.api.nvim_set_option_value("swapfile", false, { buf = self.ID })
-	end,
-	switch_buf = function(self, buf_to_attach, host_win) -- modify `LOADED_BUFS`
-		self.LOADED_BUFS[buf_to_attach].is_attached = true
+--[[
+--General methods for each buffer's instance: those methods should require independent parameters
+    => new: initialize new empty buffer(instance)
+    => 
+]]
+---@class Buffer
+local Buffer = {}
 
-		-- !bug: this can lead to an unloaded buffer, which cause error
-		local prev_attached_buf_id = vim.api.nvim_win_get_buf(host_win) -- the window used to attach to new buf will be currently hold the altered buf, so we can retrive that buf and set its to `false` like below
-		local prev_attached_buf_name = vim.api.nvim_buf_get_name(prev_attached_buf_id)
-		self.LOADED_BUFS[prev_attached_buf_name].is_attached = false
-		vim.api.nvim_win_set_buf(host_win, self.LOADED_BUFS[buf_to_attach].id) -- this mustbe placed before `buffer:label_bufs` (the below line)
+---@return Buffer
+function Buffer:new()
+	local obj = {
+		ID = nil,
+	}
+	setmetatable(obj, self) -- when indexing nil keys or nil values, fall back on `buffer`
+	self.__index = self -- use `Buffer` itself as metatable for its instances
 
-		self:label_bufs()
-	end,
-}
+	return obj
+end
 
--- WIN
-local window = {
-	ID = nil,
-	HOST = nil,
-	record_current_win = function(self) -- !bug: this will make the plugin fail if get the ID of the window that doesn't attach to a loaded file
-		self.HOST = vim.api.nvim_get_current_win()
-	end,
-	calculate_sizes = function()
-		local width = { start = ((1 - 0.5) / 2) * vim.o.columns, magnitude = math.ceil(vim.o.columns * 0.5) }
-		local height = { start = ((1 - 0.5) / 2) * vim.o.lines, magnitude = math.ceil(vim.o.lines * 0.5) }
+--[[
+--General method for each window's instance
+    => new
+    =>
+]]
+---@class PopupWindow
+local PopupWindow = {}
 
-		return width, height
-	end,
-	open = function(self)
-		buffer:new()
+---@return PopupWindow
+function PopupWindow:new()
+	local obj = {
+		POPUP = nil,
+		HOST = nil,
+	}
+	setmetatable(obj, self)
+	self.__index = self
 
-		self:record_current_win()
-		local width, height = self.calculate_sizes()
-		self.ID = vim.api.nvim_open_win(buffer.ID, true, {
+	return obj
+end
+
+---@return boolean
+function PopupWindow:setHost()
+	local winnr = vim.api.nvim_get_current_win()
+	if vim.api.nvim_win_is_valid(winnr) then
+		self.HOST = winnr
+
+		return true
+	else
+		print("Window host is not valid!")
+
+		return false
+	end
+end
+
+---@param width_ratio number
+---@param height_ratio number
+---@return table<string, number>
+---@return table<string, number>
+function PopupWindow.calculateSizes(width_ratio, height_ratio)
+	local width = {
+		start = ((1 - width_ratio) / 2) * vim.o.columns,
+		magnitude = math.ceil(vim.o.columns * width_ratio),
+	}
+	local height = {
+		start = ((1 - height_ratio) / 2) * vim.o.lines,
+		magnitude = math.ceil(vim.o.lines * height_ratio),
+	}
+
+	return width, height
+end
+
+---@param bufnr number
+---@param popup_ratio table<string, number>
+function PopupWindow:open(bufnr, popup_ratio)
+	if self:setHost() then
+		local width, height = self.calculateSizes(popup_ratio.width, popup_ratio.height)
+		self.POPUP = vim.api.nvim_open_win(bufnr, true, {
 			relative = "editor",
 			width = width.magnitude,
 			height = height.magnitude,
@@ -97,55 +96,30 @@ local window = {
 			style = "minimal",
 			border = "rounded",
 		})
-	end,
-}
+	end
+end
 
 -- EDITOR
-local editor = {
+local Editor = {
 	WIDTH = nil,
 	HEIGHT = nil,
-	record_current_sizes = function(self)
-		self.WIDTH = vim.o.columns
-		self.HEIGHT = vim.o.lines
-	end,
-	is_resized = function(self)
-		if self.WIDTH ~= vim.o.columns or self.HEIGHT ~= vim.o.lines then
-			self:record_current_sizes()
-			return true
-		else
-			return false
-		end
-	end,
 }
 
--- KEYMAP, USER'S COMMAND, AUTOCOMMAND
-vim.api.nvim_create_user_command("SwitchBuf", function()
-	window:open()
-end, {})
-vim.keymap.set("n", "<CR>", function()
-	local selected_line = vim.api.nvim_get_current_line()
+function Editor:recordCurrentSizes()
+	self.WIDTH = vim.o.columns
+	self.HEIGHT = vim.o.lines
+end
 
-	for _, v in pairs(icons) do
-		selected_line = string.gsub(selected_line, v, "")
+---@return boolean
+function Editor:checkSizes() -- use this function along with autocmd triggered by event of "WinResized"
+	if (self.WIDTH ~= vim.o.columns) or (self.HEIGHT ~= vim.o.lines) then
+		self:recordCurrentSizes()
+
+		return true
+	else
+		return false
 	end
-	buffer:switch_buf(selected_line, window.HOST)
+end
 
-	vim.api.nvim_buf_set_lines(buffer.ID, 0, -1, true, buffer.CONTENT)
-end)
-vim.api.nvim_create_autocmd("WinResized", {
-	callback = function()
-		if editor:is_resized() then
-			local width, height = window.calculate_sizes()
-			if window.ID and vim.api.nvim_win_is_valid(window.ID) then -- double check if this window for this plugin existed
-				vim.api.nvim_win_set_config(window.ID, {
-					relative = "editor",
-					width = width.magnitude,
-					height = height.magnitude,
-					col = width.start,
-					row = height.start,
-				})
-			end
-		end
-	end,
-})
-vim.keymap.set("n", "<leader>sb", ":SwitchBuf<CR>")
+--#
+return M

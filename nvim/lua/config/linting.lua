@@ -10,11 +10,6 @@ vim.api.nvim_set_hl(0, "DiagnosticVirtualTextWarn", { fg = "#ECBE7B" })
 vim.api.nvim_set_hl(0, "DiagnosticVirtualTextInfo", { fg = "#51AFEF" })
 vim.api.nvim_set_hl(0, "DiagnosticVirtualTextHint", { fg = "#98BE65" })
 
-vim.cmd [[
-  highlight! DiagnosticVirtualTextError guifg=#FF6C6B
-]]
-
-
 vim.diagnostic.config({
 	virtual_text = {
 		prefix = function(d)

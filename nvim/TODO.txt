@@ -1,8 +1,10 @@
-why lua's dir loaded not switcher's
-Create a local plugins' manager
-re-structure the NeoVim's plugins
+Re-structure the NeoVim's plugins
 Attach a command to a file like an `execute` button
 Make a TODO plugins
-Make cursor italic when encountering italic characters
 Generalize some common functions used for buffers, windows and editors
 Truncate or make buffer_switcher's content more readable -> highlight active bufs, icons
+
+Rules for naming convention:
+    camelCase: function
+    PascalCase: class
+    snake_case: variable, parameter

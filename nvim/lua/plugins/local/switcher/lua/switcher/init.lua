@@ -1,7 +1,7 @@
-local M = {}
-function M.setup(opts)
+local function setup(opts)
 	opts = opts or {}
-	--print("Hello!")
 end
 
-return M
+return {
+	setup = setup,
+}
