@@ -11,3 +11,12 @@ function Class:new()
 end
 
 local obj = Class:new()
+
+local M = {
+    a = 5
+}
+M.foo = function(self)
+    print(self.a)
+end
+
+M:foo()
