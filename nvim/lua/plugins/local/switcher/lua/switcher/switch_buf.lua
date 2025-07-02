@@ -1,18 +1,17 @@
-local M = {}
+---@class M
+local M = {
+	---@type string
+	HOSTING_INDICATOR = "*",
 
----@type string
-M.HOSTING_INDICATOR = "*"
-
----@type table<number, number|boolean>
-M.HOSTED_BUFS_DICT = {}
-
+	---@type table<number, number|boolean>
+	HOSTED_BUFS_DICT = {},
+}
 local utils = require("switcher.utils")
---#
 
 ---3-level verification includes checking if a buf is VALID and LOADED and checking if it a FILE or not from its absolute path
 ---@param bufnr number
 ---@return number|nil
-M.verifyBuf = function(bufnr)
+function M.verifyBuf(bufnr)
 	if vim.api.nvim_buf_is_loaded(bufnr) then -- loaded
 		local bufInfo = vim.uv.fs_stat(vim.api.nvim_buf_get_name(bufnr))
 		if bufInfo and bufInfo.type == "file" then -- existing
@@ -23,8 +22,8 @@ M.verifyBuf = function(bufnr)
 	end
 end
 
----Return all bufs passing the 3-level verification
-M.getVerifiedBufs = function(self)
+---Get all bufs passing the 3-level verification
+function M:getVerifiedBufs()
 	for _, value in ipairs(vim.api.nvim_list_bufs()) do
 		local bufnr = self.verifyBuf(value)
 		if bufnr then
@@ -34,9 +33,8 @@ M.getVerifiedBufs = function(self)
 	end
 end
 
----Get bufs' ID being hosted by windows
-M.findHostedBufs = function(self)
-	self:getVerifiedBufs()
+---Find bufs' ID being hosted by windows
+function M:findHostedBufs()
 	for _, value in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
 		if vim.api.nvim_win_is_valid(value) then
 			local bufnr = self.verifyBuf(vim.api.nvim_win_get_buf(value))
@@ -48,9 +46,9 @@ M.findHostedBufs = function(self)
 	end
 end
 
----Get formated output for readable purpose: HOSTING_INDICATOR - BUF'S ID - BUF'S NAME
+---Format output for readable purpose: HOSTING_INDICATOR - BUF'S ID - BUF'S NAME
 ---@return table<string>
-M.formatOutput = function(self)
+function M:formatOutput()
 	local res_list = {}
 	for key, value in pairs(self.HOSTED_BUFS_DICT) do
 		local path = string.gsub(vim.api.nvim_buf_get_name(key), vim.fn.getcwd(), ".")
@@ -63,10 +61,10 @@ end
 
 ---Triggered when hit `Enter` while in the popup window
 ---@param host_winnr number
-M.switchBuf = function(self, host_winnr)
-	local selected_line = vim.api.nvim_get_current_line()
-	if selected_line:sub(1, 1) ~= self.HOSTING_INDICATOR then
-		local buf_to_attach = tonumber(selected_line:sub(2, 2))
+function M:switchBuf(host_winnr)
+	local tokens = utils.splitString(vim.api.nvim_get_current_line(), " ") --Buffer's ID may be more than one digit, therefore using this function can be use to ensure that we won't get the truncated one
+	if tokens[1]:sub(1, 1) ~= self.HOSTING_INDICATOR then
+		local buf_to_attach = tonumber(tokens[1]:sub(2, -1))
 		local buf_to_detach = vim.api.nvim_win_get_buf(host_winnr)
 
 		if type(buf_to_attach) == "number" then
@@ -76,18 +74,19 @@ M.switchBuf = function(self, host_winnr)
 			self.HOSTED_BUFS_DICT[buf_to_attach] = host_winnr
 			self.HOSTED_BUFS_DICT[buf_to_detach] = false
 
-			vim.api.nvim_win_set_buf(host_winnr, buf_to_attach)
+			vim.api.nvim_win_set_buf(host_winnr, buf_to_attach) --need OUTSIDE data
 		end
 	end
 end
 
-M.init = function(self)
+function M:init()
+	self:getVerifiedBufs()
 	self:findHostedBufs()
 	local formatted_output = self:formatOutput()
 
-    for _, value in ipairs(formatted_output) do
-        print(value)
-    end
+	for _, value in ipairs(formatted_output) do
+		print(value)
+	end
 end
 M:init()
 
