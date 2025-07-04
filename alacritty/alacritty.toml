@@ -11,7 +11,7 @@ general.live_config_reload = true
 
 # CURSOR
 [cursor]
-    style = { blinking = "Always" }
+    #style = { blinking = "Always" }
     blink_timeout = 0
 
 # SELECTION

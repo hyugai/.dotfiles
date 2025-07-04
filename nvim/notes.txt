@@ -1,0 +1,2 @@
+g++ to get LSP's support for C++
+gcc to get LSP's support for C
