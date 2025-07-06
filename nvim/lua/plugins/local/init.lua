@@ -39,7 +39,7 @@ local local_plugins = {}
 for _, plugin_path in ipairs(src.FOUND_DIRS) do
 	table.insert(local_plugins, {
 		dir = plugin_path,
-		lazy = true,
+		--lazy = true,
 	})
 end
 

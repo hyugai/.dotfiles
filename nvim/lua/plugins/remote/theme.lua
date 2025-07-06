@@ -18,15 +18,15 @@ local github_nvim = {
 	priority = 1000, -- make sure to load this before all the other start plugins
 	config = function()
 		require("github-theme").setup({
-			options = {
-				transparent = false,
-				styles = {
-					comments = "italic",
-					keywords = "bold",
-					functions = "bold,italic",
-					constants = "underline",
-				},
-			},
+			--options = {
+			--	transparent = false,
+			--	styles = {
+			--		comments = "italic",
+			--		keywords = "bold",
+			--		functions = "bold,italic",
+			--		constants = "underline",
+			--	},
+			--},
 		})
 		vim.cmd("colorscheme github_dark_default")
 	end,

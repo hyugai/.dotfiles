@@ -42,6 +42,8 @@ function M.highlightActiveInstance(active_ins, inactive_ins, list)
 	end
 end
 
+---@return table<string, integer>
+---@return table<string, integer>
 function M.calculateFloatingWindowSizes()
 	local width = {
 		start = ((1 - 0.5) / 2) * vim.o.columns,
@@ -57,15 +59,26 @@ end
 
 ---@param bufnr number
 function M.openFloatingWindow(bufnr)
+	local width, height = M.calculateFloatingWindowSizes()
 	vim.api.nvim_open_win(bufnr, true, {
 		relative = "editor",
-		width = nil,
-		height = nil,
-		col = nil,
-		row = nil,
+		width = width.magnitude,
+		height = height.magnitude,
+		col = width.start,
+		row = height.start,
 		style = "minimal",
 		border = "rounded",
 	})
+end
+
+---@return integer
+function M.createScratchBuf()
+	local bufnr = vim.api.nvim_create_buf(false, true)
+	vim.api.nvim_set_option_value("buftype", "nofile", { buf = bufnr })
+	vim.api.nvim_set_option_value("bufhidden", "wipe", { buf = bufnr })
+	vim.api.nvim_set_option_value("swapfile", false, { buf = bufnr })
+
+	return bufnr
 end
 
 return M

@@ -1,3 +1,5 @@
+local utils = require("switcher.utils")
+
 ---@class M
 local M = {
 	---@type string
@@ -59,6 +61,7 @@ function M:formatOutput()
 	return res_list
 end
 
+--TODO: debug this function
 ---Triggered when hit `Enter` while in the popup window
 ---@param host_winnr number
 function M:switchBuf(host_winnr)
@@ -80,14 +83,19 @@ function M:switchBuf(host_winnr)
 end
 
 function M:init()
+	local host_winnr = vim.api.nvim_get_current_win()
+	local scratch_bufnr = utils.createScratchBuf()
+
 	self:getVerifiedBufs()
 	self:findHostedBufs()
-	local formatted_output = self:formatOutput()
 
-	for _, value in ipairs(formatted_output) do
-		print(value)
-	end
+	vim.api.nvim_buf_set_lines(scratch_bufnr, 0, -1, true, self:formatOutput())
+    utils.openFloatingWindow(scratch_bufnr)
+
+	--for _, value in ipairs(formatted_output) do
+	--	print(value)
+	--end
 end
-M:init()
+--M:init()
 
 return M
