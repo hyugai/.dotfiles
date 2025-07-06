@@ -1,0 +1,1 @@
+go to /etc, and add name of Linux distro to the file named `hostname` with `sudo vi /etc/hostname`
