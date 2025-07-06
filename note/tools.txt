@@ -1,5 +1,4 @@
 `nvidia drivers` -> set up offloading mode (openSUSE)
-alacritty -> add to .bashrc: alias alacritty='prime-run alacritty'
 `prompt string` -> customize PS1 variable in .bashrc
 git
 lazygit
