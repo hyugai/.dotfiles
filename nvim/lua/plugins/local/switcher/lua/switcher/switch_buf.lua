@@ -8,7 +8,6 @@ local M = {
 	---@type table<number, number|boolean>
 	HOSTED_BUFS_DICT = {},
 }
-local utils = require("switcher.utils")
 
 ---3-level verification includes checking if a buf is VALID and LOADED and checking if it a FILE or not from its absolute path
 ---@param bufnr number
@@ -67,18 +66,20 @@ end
 function M:switchBuf(host_winnr)
 	local tokens = utils.splitString(vim.api.nvim_get_current_line(), " ") --Buffer's ID may be more than one digit, therefore using this function can be use to ensure that we won't get the truncated one
 	if tokens[1]:sub(1, 1) ~= self.HOSTING_INDICATOR then
-		local buf_to_attach = tonumber(tokens[1]:sub(2, -1))
+		local buf_to_attach = tonumber(tokens[1]:sub(1, -1))
 		local buf_to_detach = vim.api.nvim_win_get_buf(host_winnr)
 
+		--TODO: debug `utils.highlightActiveInstance` function
 		if type(buf_to_attach) == "number" then
 			utils.highlightActiveInstance(buf_to_attach, buf_to_detach, vim.api.nvim_buf_get_lines(0, 0, -1, true))
-
 			--return
 			self.HOSTED_BUFS_DICT[buf_to_attach] = host_winnr
 			self.HOSTED_BUFS_DICT[buf_to_detach] = false
 
 			vim.api.nvim_win_set_buf(host_winnr, buf_to_attach) --need OUTSIDE data
 		end
+	else
+		print("This buffer's already hosted by a window!")
 	end
 end
 
@@ -90,12 +91,11 @@ function M:init()
 	self:findHostedBufs()
 
 	vim.api.nvim_buf_set_lines(scratch_bufnr, 0, -1, true, self:formatOutput())
-    utils.openFloatingWindow(scratch_bufnr)
+	utils.openFloatingWindow(scratch_bufnr)
 
-	--for _, value in ipairs(formatted_output) do
-	--	print(value)
-	--end
+	vim.keymap.set("n", "<CR>", function()
+		self:switchBuf(host_winnr)
+	end, { buffer = scratch_bufnr })
 end
---M:init()
 
 return M

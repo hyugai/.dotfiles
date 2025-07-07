@@ -7,7 +7,7 @@ local M = {}
 function M.splitString(s, pattern)
 	local res = {}
 	for match in string.gmatch(s:sub(-1, -1) == pattern and s or s .. pattern, "(.-)" .. pattern) do --`-` is non-greedy search, which stop after first found specified character
-		if match ~= nil or match ~= "" then
+		if (match ~= nil) and (match ~= "") and (match ~= " ") then
 			table.insert(res, match)
 		end
 	end
@@ -28,16 +28,18 @@ function M.asDict(list, default_value)
 	return res
 end
 
+--TODO: debug this function
 ---Highlight instances that changed status between active and inactive
 ---@param active_ins string|number
 ---@param inactive_ins string|number
 ---@param list table<string>
 function M.highlightActiveInstance(active_ins, inactive_ins, list)
 	for row, value in ipairs(list) do
-		if value:sub(1, 1) == active_ins then
-			vim.api.nvim_buf_set_text(0, row - 1, 0, row - 1, 0, { "*" }) -- the HOSTING_INDICATOR column is 0-beginning of the line-as default
-		elseif value:sub(1, 1) == inactive_ins then
-			vim.api.nvim_buf_set_text(0, row - 1, 0, row - 1, 0, { " " })
+		local tokens = M.splitString(value, " ")
+		if tonumber(tokens[1]) == active_ins then
+			vim.api.nvim_buf_set_text(0, row - 1, 0, row - 1, 1, { "*" }) -- the HOSTING_INDICATOR column is 0-beginning of the line-as default, change from colum 0 to 1 to replace, otherwise, it'll insert if specifying column 0 to 0
+		elseif tonumber(tokens[1]:sub(2, -1)) == inactive_ins then
+			vim.api.nvim_buf_set_text(0, row - 1, 0, row - 1, 1, { " " })
 		end
 	end
 end
