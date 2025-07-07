@@ -15,21 +15,7 @@ function M.splitString(s, pattern)
 	return res
 end
 
----Make list as dict with each value equivalent to a key whose value is one that is specified
----@param list table
----@param default_value any
----@return table
-function M.asDict(list, default_value)
-	local res = {}
-	for _, value in ipairs(list) do
-		res[value] = default_value
-	end
-
-	return res
-end
-
---TODO: debug this function
----Highlight instances that changed status between active and inactive
+---Highlight instances that change status between active and inactive
 ---@param active_ins string|number
 ---@param inactive_ins string|number
 ---@param list table<string>
@@ -48,19 +34,20 @@ end
 ---@return table<string, integer>
 function M.calculateFloatingWindowSizes()
 	local width = {
-		start = ((1 - 0.5) / 2) * vim.o.columns,
-		magnitude = math.ceil(vim.o.columns * 0.5),
+		start = ((1 - 0.4) / 2) * vim.o.columns,
+		magnitude = math.ceil(vim.o.columns * 0.4),
 	}
 	local height = {
-		start = ((1 - 0.5) / 2) * vim.o.lines,
-		magnitude = math.ceil(vim.o.lines * 0.5),
+		start = ((1 - 0.4) / 2) * vim.o.lines,
+		magnitude = math.ceil(vim.o.lines * 0.4),
 	}
 
 	return width, height
 end
 
 ---@param bufnr number
-function M.openFloatingWindow(bufnr)
+---@param title string
+function M.openFloatingWindow(bufnr, title)
 	local width, height = M.calculateFloatingWindowSizes()
 	vim.api.nvim_open_win(bufnr, true, {
 		relative = "editor",
@@ -70,6 +57,8 @@ function M.openFloatingWindow(bufnr)
 		row = height.start,
 		style = "minimal",
 		border = "rounded",
+		title = title,
+		title_pos = "center",
 	})
 end
 

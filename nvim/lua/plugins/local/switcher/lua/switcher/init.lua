@@ -1,10 +1,12 @@
 local switch_buf = require("switcher.switch_buf")
-local function setup(_)
+local M = {}
+
+function M.setup(_)
+	--SwitchBuf
 	vim.api.nvim_create_user_command("SwitchBuf", function()
 		switch_buf:init()
-	end, {})
+	end, { nargs = 0 })
+	vim.keymap.set("n", "<leader>sb", "<CMD>SwitchBuf<CR>", { noremap = true })
 end
 
-return {
-	setup = setup,
-}
+return M
