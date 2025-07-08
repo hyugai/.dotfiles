@@ -15,9 +15,9 @@ function M.splitString(s, pattern)
 	return res
 end
 
----Highlight instances that change status between active and inactive
----@param active_ins string|number
----@param inactive_ins string|number
+---Highlight active instances
+---@param active_ins string|integer
+---@param inactive_ins string|integer
 ---@param list table<string>
 function M.highlightActiveInstance(active_ins, inactive_ins, list)
 	for row, value in ipairs(list) do
@@ -45,7 +45,7 @@ function M.calculateFloatingWindowSizes()
 	return width, height
 end
 
----@param bufnr number
+---@param bufnr integer
 ---@param title string
 function M.openFloatingWindow(bufnr, title)
 	local width, height = M.calculateFloatingWindowSizes()
