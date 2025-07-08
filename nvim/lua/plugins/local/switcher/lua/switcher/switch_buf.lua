@@ -5,7 +5,7 @@ local M = {
 	HOSTING_INDICATOR = "*",
 
 	---buf'ID(key): host window'ID or false as default(value)
-	---@type table<number, integer|boolean>
+	---@type table<integer, integer|boolean>
 	HOSTED_BUFS_DICT = {},
 }
 
@@ -87,8 +87,10 @@ function M:unloadBuf()
 		local buf_to_unload = tonumber(tokens[1])
 		if type(buf_to_unload) == "number" then
 			vim.api.nvim_buf_delete(buf_to_unload, { unload = true })
-			self.HOSTED_BUFS_DICT[buf_to_unload] = nil --remove unloaed buffer from the dict-like table
+			self.HOSTED_BUFS_DICT[buf_to_unload] = nil --remove unloaed buffer(key) from the dict-like table
 		end
+	else
+		print("This buffer is being hosted by an active window!")
 	end
 	vim.api.nvim_del_current_line()
 end
@@ -111,7 +113,9 @@ function M:init()
 	vim.keymap.set("n", "<CR>", function()
 		self:switchBuf(host_winnr)
 	end, { buffer = scratch_bufnr, noremap = true })
+
 	vim.keymap.set("n", "q", "<CMD>q<CR>", { buffer = scratch_bufnr, noremap = true })
+
 	vim.keymap.set("n", "dd", function()
 		self:unloadBuf()
 	end, { buffer = scratch_bufnr, noremap = true })

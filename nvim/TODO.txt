@@ -1,4 +1,3 @@
-Re-structure the NeoVim's plugins
 Attach a command to a file like an `execute` button
 Make a TODO plugins
 Generalize some common functions used for buffers, windows and editors
