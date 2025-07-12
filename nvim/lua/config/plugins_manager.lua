@@ -22,7 +22,7 @@ require("lazy").setup({
 		{ import = "plugins.local" },
 	},
 	checker = {
-		enabled = true, -- check for plugin updates periodically
-		notify = false, -- notify on update
+		enabled = true, --check for plugin updates periodically
+		notify = false, --notify on update
 	},
 })

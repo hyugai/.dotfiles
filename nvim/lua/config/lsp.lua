@@ -1,6 +1,6 @@
 --# config LSPs
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
--- lua
+--lua
 vim.lsp.config("lua_ls", {
 	capabilities = capabilities,
 	on_init = function(client)
@@ -43,13 +43,45 @@ vim.lsp.config("lua_ls", {
 		Lua = {},
 	},
 })
--- c/cpp
+--c/cpp
 vim.lsp.config("clangd", {
 	capabilities = capabilities,
 })
 
+--python: fix those 2 below LSP: `ruff` and `pyright`
+vim.lsp.config("ruff", {
+	capabilities = capabilities,
+	init_options = {
+		settings = {
+			lint = {
+				--ignore = { "E4", "E7" },
+			},
+		},
+	},
+})
+vim.lsp.config("pyright", {
+	capabilities = capabilities,
+	on_attach = function(client, bufnr) --change value(function object) of the key `textDocument/publishDiagnostics`
+		if client.name == "pyright" then
+			client.handlers["textDocument/publishDiagnostics"] = function() end
+		end
+	end,
+	--settings = {
+	--	pyright = {
+	--		-- Using Ruff's import organizer
+	--		disableOrganizeImports = true,
+	--	},
+	--	python = {
+	--		analysis = {
+	--			-- Ignore all files for analysis to exclusively use Ruff for linting
+	--			ignore = { "*" },
+	--		},
+	--	},
+	--},
+})
+
 --# enable LSPs
-vim.lsp.enable({ "lua_ls", "clangd", "bashls" })
+vim.lsp.enable({ "lua_ls", "clangd", "bashls", "ruff", "pyright" })
 
 -- keymaps
 vim.keymap.set("n", "K", vim.lsp.buf.hover, {})

@@ -1,9 +1,9 @@
 return {
-	[1] = "mason-org/mason-lspconfig.nvim", -- LSPs
+	[1] = "mason-org/mason-lspconfig.nvim", --LSPs
 	dependencies = {
 		"neovim/nvim-lspconfig",
 		{
-			[1] = "mason-org/mason.nvim", -- Linters and Formatters
+			[1] = "mason-org/mason.nvim", --Linters and Formatters
 			opts = {
 				ui = {
 					icons = {
@@ -13,9 +13,9 @@ return {
 					},
 				},
 				ensure_installed = {
-					"stylua", -- lua
-					"clang-format", -- c/cpp
-					"shfmt", -- bash
+					"stylua", --lua
+					"clang-format", --c/cpp
+					"shfmt", --bash
 					"shellcheck", --bash
 				},
 			},
@@ -23,9 +23,10 @@ return {
 	},
 	opts = {
 		ensure_installed = {
-			"lua_ls", -- lua
-			"clangd", -- c/cpp
-			"bashls", -- bash
+			"lua_ls", --lua
+			"clangd", --c/cpp
+			"bashls", --bash
+			"ruff", --python
 		},
 	},
 }
