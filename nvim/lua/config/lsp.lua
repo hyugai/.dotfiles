@@ -53,9 +53,7 @@ vim.lsp.config("ruff", {
 	capabilities = capabilities,
 	init_options = {
 		settings = {
-			lint = {
-				--ignore = { "E4", "E7" },
-			},
+			unsafe_fixes = true,
 		},
 	},
 })
@@ -66,18 +64,18 @@ vim.lsp.config("pyright", {
 			client.handlers["textDocument/publishDiagnostics"] = function() end
 		end
 	end,
-	--settings = {
-	--	pyright = {
-	--		-- Using Ruff's import organizer
-	--		disableOrganizeImports = true,
-	--	},
-	--	python = {
-	--		analysis = {
-	--			-- Ignore all files for analysis to exclusively use Ruff for linting
-	--			ignore = { "*" },
-	--		},
-	--	},
-	--},
+	settings = {
+		pyright = {
+			-- Using Ruff's import organizer
+			disableOrganizeImports = true,
+		},
+		python = {
+			analysis = {
+				-- Ignore all files for analysis to exclusively use Ruff for linting
+				ignore = { "*" },
+			},
+		},
+	},
 })
 
 --# enable LSPs
