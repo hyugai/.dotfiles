@@ -53,7 +53,7 @@ function M:formatOutput()
 	local res_list = {}
 	for key, value in pairs(self.HOSTED_BUFS_DICT) do
 		local path = string.gsub(vim.api.nvim_buf_get_name(key), vim.fn.getcwd(), ".")
-		local hosting_indicator = value and "*" or " " -- single line if-else
+		local hosting_indicator = value and "*" or " " --single line if-else
 		table.insert(res_list, hosting_indicator .. tostring(key) .. " " .. path)
 	end
 
@@ -103,7 +103,8 @@ function M:init()
 	self:findHostedBufs()
 
 	vim.api.nvim_buf_set_lines(scratch_bufnr, 0, -1, true, self:formatOutput())
-	utils.openFloatingWindow(scratch_bufnr, vim.fn.getcwd())
+	utils:align2Words(scratch_bufnr, " ")
+	utils.openFloatingWindow(scratch_bufnr, utils.abbreviateHomeDir(vim.fn.getcwd()))
 
 	--[[remap: 
     --  <CR> to evoke the `switchBuf` function

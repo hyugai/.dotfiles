@@ -3,7 +3,7 @@ local M = {}
 ---Split string by pattern
 ---@param s string
 ---@param pattern string
----@return table<string>
+---@return table<number, string>
 function M.splitString(s, pattern)
 	local res = {}
 	for match in string.gmatch(s:sub(-1, -1) == pattern and s or s .. pattern, "(.-)" .. pattern) do --`-` is non-greedy search, which stop after first found specified character
@@ -15,10 +15,77 @@ function M.splitString(s, pattern)
 	return res
 end
 
+---Abbreviate home directory as `~`
+---@param absoulute_path string
+---@return string
+function M.abbreviateHomeDir(absoulute_path)
+	local home_dir = vim.uv.os_homedir()
+
+	--return
+	return home_dir and string.gsub(absoulute_path, home_dir, "~", 1) or absoulute_path
+end
+
+---@param path string
+---@return table<number, string>
+---@return table<number, string>
+function M.scanDir(path)
+	local dirs_names, files_names = {}, {}
+	local dir_contents = vim.uv.fs_scandir(path)
+	if dir_contents then
+		while true do
+			local name, type, _ = vim.uv.fs_scandir_next(dir_contents)
+			if name then
+				if type == "directory" then
+					table.insert(dirs_names, name)
+				elseif type == "file" then
+					table.insert(files_names, name)
+				end
+			else
+				break --stop the loop if no more file is found
+			end
+		end
+	end
+
+	return dirs_names, files_names
+end
+
+--TODO: complete this function
+--using string:len() method to find length
+--using string:rep() method to duplicate string itself
+
+---@param bufnr number
+---@param delimiter string
+function M:align2Words(bufnr, delimiter)
+	--find the maximum length of first word of given list
+	local first_word_of_lines = {}
+	local max_length = 0
+	for _, line in ipairs(vim.api.nvim_buf_get_lines(bufnr, 0, -1, true)) do
+		local tokens = self.splitString(line, delimiter)
+		local actual_first_word_length = tokens[1]:sub(1, 1) == "*" and tokens[1]:len() or tokens[1]:len() + 1 --Due to omitted space char while splitting string so we neet to add 1 to words that don't start with "*"
+		max_length = max_length >= actual_first_word_length and max_length or actual_first_word_length
+
+		table.insert(first_word_of_lines, tokens[1])
+	end
+
+	--
+	for row, word in ipairs(first_word_of_lines) do
+		local actual_word_length = word:sub(1, 1) == "*" and word:len() or word:len() + 1
+		local length_diff = max_length - actual_word_length
+		vim.api.nvim_buf_set_text(
+			bufnr,
+			row - 1,
+			word:len() + 1,
+			row - 1,
+			word:len() + 1,
+			{ (" "):rep((length_diff > 0) and length_diff or 0) }
+		)
+	end
+end
+
 ---Highlight active instances
----@param active_ins string|integer
----@param inactive_ins string|integer
----@param list table<string>
+---@param active_ins integer
+---@param inactive_ins integer
+---@param list table<number, string>
 function M.highlightActiveInstance(active_ins, inactive_ins, list)
 	for row, value in ipairs(list) do
 		local tokens = M.splitString(value, " ")
