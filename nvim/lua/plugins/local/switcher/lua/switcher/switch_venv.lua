@@ -10,6 +10,8 @@ local M = {
 	---Support `Anaconda` or `Miniconda`
 	---@type string
 	DEFAULT_CONDA_PATH = vim.uv.os_homedir() .. "/miniconda3",
+	---@type string
+	WHICH_PYTHON = nil,
 	---@type table<string, boolean>
 	IS_VENV_ACTIVATED_DICT = {
 		[vim.uv.os_homedir() .. "/miniconda3/bin"] = false,
@@ -49,6 +51,7 @@ function M:findHostedCondaVirtualEnvs()
 	local bin_dir_of_activated_venv =
 		string.sub(vim.fn.exepath("python"), 1, vim.fn.exepath("python"):len() - ("/python"):len())
 	self.IS_VENV_ACTIVATED_DICT[bin_dir_of_activated_venv] = true
+	self.WHICH_PYTHON = bin_dir_of_activated_venv
 end
 
 --HOSTING_INDICATOR - ABBREVIATED_NAME - */bin PATH
@@ -66,6 +69,8 @@ end
 function M:switchVirtualEnv()
 	local tokens = utils.splitString(vim.api.nvim_get_current_line(), " ")
 	if tokens[1]:sub(1, 1) ~= self.HOSTING_INDICATOR then
+		--vim.env.PATH = os.getenv("PATH"):gsub(self.WHICH_PYTHON, tokens[2], 1)
+		--vim.api.nvim_cmd({ cmd = "LspRestart" }, {})
 	else
 		print("This virtual environment has been activated!")
 	end
@@ -90,7 +95,7 @@ function M:init()
 		self:switchVirtualEnv()
 	end, { buffer = scratch_bufnr })
 end
-M:init()
+--M:init()
 
 --print(os.getenv("PATH"))
 --print(vim.env.PATH)

@@ -68,7 +68,7 @@ function M:align2Words(bufnr, delimiter)
 	end
 
 	--
-	for row, word in ipairs(first_word_of_lines) do
+	for row, word in pairs(first_word_of_lines) do
 		local actual_word_length = word:sub(1, 1) == "*" and word:len() or word:len() + 1
 		local length_diff = max_length - actual_word_length
 		vim.api.nvim_buf_set_text(
