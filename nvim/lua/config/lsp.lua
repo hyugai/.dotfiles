@@ -48,7 +48,7 @@ vim.lsp.config("clangd", {
 	capabilities = capabilities,
 })
 
---python: fix those 2 below LSP: `ruff` and `pyright`
+--python
 vim.lsp.config("ruff", {
 	capabilities = capabilities,
 	init_options = {
@@ -81,6 +81,6 @@ vim.lsp.config("pyright", {
 --# enable LSPs
 vim.lsp.enable({ "lua_ls", "clangd", "bashls", "ruff", "pyright" })
 
--- keymaps
+--# keymaps
 vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
