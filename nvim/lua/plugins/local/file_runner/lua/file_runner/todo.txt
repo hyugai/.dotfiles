@@ -1,0 +1,1 @@
+Press `Ctrl+r` to run determine the current active file type and find a compatible command to use -> create a pop-up terminal
