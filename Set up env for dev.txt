@@ -1,0 +1,40 @@
+## WSL with linux kernel v6.6.x
+USE "config-wsl" at /arch/x86/configs/config-wsl" TO BUILD KERNEL V6.6
+sudo apt update && sudo apt upgrade && sudo apt install bc dwarves pahole build-essential flex bison libssl-dev libelf-dev cpio unzip
+git clone https://github.com/microsoft/WSL2-Linux-Kernel.git --depth=1 -b linux-msft-wsl-6.6.y
+cd WSL2-Linux-Kernel
+sudo make -j$(nproc) KCONFIG_CONFIG=Microsoft/config-wsl --> keep "Enter"
+sudo make modules_install headers_install
+==> copy and paste to C:\\ (or use PowerShell as admin)
+==> edit .wslconfig: kernel=C:\\bzImage
+
+## docker & docker-compose
+sudo apt install docker.io ==> check: sudo docker run hello-world
+sudo groupadd docker --> sudo usermod -aG docker $USER 
+mkdir soft && cd soft --> wget [link/to/docker-compose] -O docker-compose && chmod +x docker-compose 
+	--> nano .bashrc: export PATH="${HOME}/soft:${PATH}"
+
+## miniconda
+wget [link/to/miniconda/bash]
+bash [miniconda/bash]
+
+conda create -n [env name] python=[version] ==> conda activate [env name], conda deactivate 
+conda remove -n [env name] --all
+conda list
+conda clean --all(-a), conda clean --help
+conda rename -n [old name] [new name]
+conda env export > env.yml 
+conda env list
+
+## connect to GitHub repo
+git config --global user.name [name] && git config --global user.email [email]
+ssh-keygen -t ed25519 -C [your email]
+cat .ssh/id_ed25519.pub: go to GitHub settings --> SSH and GPG keys --> new SSH key --> paste the key
+
+git clone
+git add . && git commit -m [message] && git push
+git branch ==> git branch -m [old name] [new name]
+git checkout -b [new branch name] ==> add new branch
+
+## Linux cmd
+options modify behaviors of the cmd (how cmd operate over the input), whereas arguments modify the output of the cmd. Arguments specify the target for the cmd (what cmd operate over), they can also be refered as elements (data) in an array; the cmd will take the data input and operate over them.
