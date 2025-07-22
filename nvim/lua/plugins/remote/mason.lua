@@ -27,6 +27,7 @@ return {
 			"clangd", --c/cpp
 			"bashls", --bash
 			"ruff", --python
+			"pyright", --python
 		},
 	},
 }
