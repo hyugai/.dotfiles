@@ -80,6 +80,8 @@ function M:switchVirtualEnv()
 	end
 end
 
+--BUG: After activating one virtual environment, the `(base)` still show the `*`(`HOSTING_INDICATOR`)
+--Clue: The error may come from the method `utils:highlightActivatedVirtualEnvironment`
 function M:init()
 	self:findCondaVirtualEnvs()
 	self:findHostedCondaVirtualEnvs()
