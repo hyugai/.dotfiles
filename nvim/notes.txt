@@ -1,2 +1,3 @@
 g++ to get LSP's support for C++
 gcc to get LSP's support for C
+use symbolic link to share files among different levels of directories

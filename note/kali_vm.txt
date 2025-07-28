@@ -1,0 +1,3 @@
+KVM/QEMU: choose `Importing exsting disk image`, default credentials (user's name: `kali`, password: `kali`)
+    => use `sudo virsh net-autostart default` && `sudo virsh net-start default`: activate default network named `default`
+        => OR use 'sudo virsh net-start default' whenever want to use a virtual machine

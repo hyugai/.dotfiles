@@ -7,15 +7,21 @@ local utils = require("switcher.utils")
 local M = {
 	---@type string
 	HOSTING_INDICATOR = "*",
+
 	---Support `Anaconda` or `Miniconda`
 	---@type string
-	DEFAULT_CONDA_PATH = vim.uv.os_homedir() .. "/miniconda3",
+	CONDA_HOME_PATH = vim.uv.os_homedir() .. "/miniconda3",
+
 	---@type string
-	WHICH_PYTHON = nil, --
+	WHICH_PYTHON = nil,
+
+	---key: value = bin's path: true|false
 	---@type table<string, boolean>
 	IS_VENV_ACTIVATED_DICT = {
 		[vim.uv.os_homedir() .. "/miniconda3/bin"] = false,
 	},
+
+	---key: value = abbreviated name: bin's path
 	---@type table<string,string>
 	ABBREVIATED_VENV_NAME_DICT = {
 		["(base)"] = vim.uv.os_homedir() .. "/miniconda3/bin",
@@ -36,22 +42,24 @@ end
 
 ---@param path string|nil
 function M:findCondaVirtualEnvs(path)
-	local venvs_dir_path = self.verifyDirectory(path or self.DEFAULT_CONDA_PATH) --verify directory path
-	if venvs_dir_path then
-		local dirs_names, _ = utils.scanDir(venvs_dir_path .. "/envs")
+	local venvs_home_path = self.verifyDirectory(path or self.CONDA_HOME_PATH) --verify directory path
+	if venvs_home_path then
+		local dirs_names, _ = utils.scanDir(venvs_home_path .. "/envs")
 		for _, dir_name in ipairs(dirs_names) do
-			local bin_dir = venvs_dir_path .. "/envs/" .. dir_name .. "/bin"
-			self.ABBREVIATED_VENV_NAME_DICT["(" .. dir_name .. ")"] = bin_dir
-			self.IS_VENV_ACTIVATED_DICT[bin_dir] = false
+			local bin_path = venvs_home_path .. "/envs/" .. dir_name .. "/bin"
+
+			self.ABBREVIATED_VENV_NAME_DICT["(" .. dir_name .. ")"] = bin_path
+			self.IS_VENV_ACTIVATED_DICT[bin_path] = false
 		end
 	end
 end
 
 function M:findHostedCondaVirtualEnvs()
-	local bin_dir_of_activated_venv =
-		string.sub(vim.fn.exepath("python"), 1, vim.fn.exepath("python"):len() - ("/python"):len())
-	self.IS_VENV_ACTIVATED_DICT[bin_dir_of_activated_venv] = true
-	self.WHICH_PYTHON = bin_dir_of_activated_venv
+	local current_python_exe_path = vim.fn.exepath("python")
+	local python_bin_path = string.sub(current_python_exe_path, 1, current_python_exe_path:len() - ("/python"):len())
+
+	self.IS_VENV_ACTIVATED_DICT[python_bin_path] = true
+	self.WHICH_PYTHON = python_bin_path
 end
 
 --HOSTING_INDICATOR - ABBREVIATED_NAME - */bin PATH
@@ -67,21 +75,20 @@ function M:formatOutput()
 end
 
 function M:switchVirtualEnv()
-	local tokens = utils.splitString(vim.api.nvim_get_current_line(), " ")
+	local tokens = utils.splitString(vim.api.nvim_get_current_line(), " ") --tokens[1] -> `ABBREVIATED_NAME` of bin's path, tokens[2] -> bin path
 	if tokens[1]:sub(1, 1) ~= self.HOSTING_INDICATOR then
 		utils:highlightActivatedVirtualEnvironment(tokens[1])
 
 		vim.env.PATH = os.getenv("PATH"):gsub(self.WHICH_PYTHON, tokens[2], 1)
 		vim.api.nvim_cmd({ cmd = "LspRestart" }, {})
 
+		self.IS_VENV_ACTIVATED_DICT[self.WHICH_PYTHON] = false --change last activated virtual environment status to `false` (INACTIVE)
 		self.WHICH_PYTHON = tokens[2]
 	else
 		print("This virtual environment has been activated!")
 	end
 end
 
---BUG: After activating one virtual environment, the `(base)` still show the `*`(`HOSTING_INDICATOR`)
---Clue: The error may come from the method `utils:highlightActivatedVirtualEnvironment`
 function M:init()
 	self:findCondaVirtualEnvs()
 	self:findHostedCondaVirtualEnvs()
