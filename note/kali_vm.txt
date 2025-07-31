@@ -1,3 +1,5 @@
 KVM/QEMU: choose `Importing exsting disk image`, default credentials (user's name: `kali`, password: `kali`)
     => use `sudo virsh net-autostart default` && `sudo virsh net-start default`: activate default network named `default`
         => OR use 'sudo virsh net-start default' whenever want to use a virtual machine
+
+`redirection` vs `pipe`: the first one is used to take content of a regular file (not standard files likes `stderr`, `stdin`, `stdout`) as input for a command, the latter is used to transfer `stdout` to `stdin`
