@@ -54,12 +54,11 @@ end
 function M:formatOutput()
 	local res_list = {}
 	for key, value in pairs(self.HOSTED_BUFS_DICT) do
-        --#BUG: when deleting a file using NeoTree, the list of files names won't be auto-updated, which causes error
-        --add another verification step
-        --#BUG
-		local path = string.gsub(vim.api.nvim_buf_get_name(key), vim.fn.getcwd(), ".")
-		local hosting_indicator = value and "*" or " " --single line if-else
-		table.insert(res_list, hosting_indicator .. tostring(key) .. " " .. path)
+		if self.verifyBuf(key) then --when deleting a file using NeoTree, the list of files names won't be auto-updated, which causes error => re-verify the key, which is `buffnr` again
+			local path = string.gsub(vim.api.nvim_buf_get_name(key), vim.fn.getcwd(), ".")
+			local hosting_indicator = value and "*" or " " --single line if-else
+			table.insert(res_list, hosting_indicator .. tostring(key) .. " " .. path)
+		end
 	end
 
 	return res_list
@@ -101,9 +100,8 @@ function M:unloadBuf()
 end
 
 function M:init()
-	local host_winnr = vim.api.nvim_get_current_win()
-	--local scratch_bufnr = utils.createScratchBuf()
-    local scratch_bufnr = scratch_buffer.createMutableScratchBuf()
+	local host_winnr = vim.api.nvim_get_current_win() --log previous cursor-stayed window before opening a floating window
+	local scratch_bufnr = scratch_buffer.createMutableScratchBuf()
 
 	self:getVerifiedBufs()
 	self:findHostedBufs()
@@ -111,13 +109,13 @@ function M:init()
 	vim.api.nvim_buf_set_lines(scratch_bufnr, 0, -1, true, self:formatOutput())
 	utils:align2Words(scratch_bufnr, " ")
 	--utils.openFloatingWindow(scratch_bufnr, utils.abbreviateHomeDir(vim.fn.getcwd()))
-    minimal_floating_window.openFloatingWindow(scratch_bufnr, utils.abbreviateHomeDir(vim.fn.getcwd()))
+	minimal_floating_window.openFloatingWindow(scratch_bufnr, utils.abbreviateHomeDir(vim.fn.getcwd()))
 
-	--#remap: 
-    --  <CR> to evoke the `switchBuf` function
-    --  <CMD>q<CR> to `q` to shorten exit command
-    --  dd to evoke `removeBuf` function
-    --#remap
+	--#remap:
+	--  <CR> to evoke the `switchBuf` function
+	--  <CMD>q<CR> to `q` to shorten exit command
+	--  dd to evoke `removeBuf` function
+	--#remap
 	vim.keymap.set("n", "<CR>", function()
 		self:switchBuf(host_winnr)
 	end, { buffer = scratch_bufnr, noremap = true })

@@ -6,9 +6,9 @@ local init_file = {
 }
 init_file:get_full_path()
 
---[[
+--#
 -- `src:get_dirs_inside`: each found dir is equivalent to each local plugin
---]]
+--#
 
 local src = {
 	FULL_PATH = nil,
