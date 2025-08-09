@@ -1,8 +1,0 @@
-`prompt string` -> customize PS1 variable in .bashrc
-git
-lazygit
-`miniconda`
-`rust`
-neovim -> external packages: npm is used for bashls , nodejs, ripgrep(automatically installed in openSUSE)
-tmux
-docker

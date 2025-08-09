@@ -7,3 +7,4 @@
 # install gcc-c++ -> need this package for C++
 # make hard link for `.clang-format` file
 # make symbolic link for ~/.tmux.conf
+# customize `PS1` string

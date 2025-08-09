@@ -1,0 +1,4 @@
+Rules for naming convention:
+    camelCase: function
+    PascalCase: class
+    snake_case: variable, parameter
