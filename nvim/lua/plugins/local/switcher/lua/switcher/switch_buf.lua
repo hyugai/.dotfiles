@@ -11,7 +11,7 @@ local M = {
 	HOSTED_BUFS_DICT = {},
 }
 
---3-level verification: check if a buffer is VALID && LOADED && an EXISTING FILE
+--#3-level verification: check if a buffer is VALID && LOADED && an EXISTING FILE
 ---@param bufnr integer
 ---@return integer|nil
 function M.verifyBuf(bufnr)
@@ -25,7 +25,7 @@ function M.verifyBuf(bufnr)
 	end
 end
 
----Get all buffers passing the 3-level verification
+--#Get all buffers passing the 3-level verification
 function M:getVerifiedBufs()
 	for _, value in ipairs(vim.api.nvim_list_bufs()) do
 		local bufnr = self.verifyBuf(value)
@@ -36,7 +36,7 @@ function M:getVerifiedBufs()
 	end
 end
 
----Paired buf's ID to a window's ID, whose has beening hosting that buffer
+--#Paired buf's ID to a window's ID, whose has beening hosting that buffer
 function M:findHostedBufs()
 	for _, value in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
 		if vim.api.nvim_win_is_valid(value) then
@@ -49,7 +49,7 @@ function M:findHostedBufs()
 	end
 end
 
----Use this readable format: HOSTING_INDICATOR - BUF'S ID - BUF'S NAME
+--#Use this readable format: HOSTING_INDICATOR - BUF'S ID - BUF'S NAME
 ---@return table<string>
 function M:formatOutput()
 	local res_list = {}
@@ -64,7 +64,31 @@ function M:formatOutput()
 	return res_list
 end
 
----Triggered when hit `Enter` while being in the floating window
+--#UPDATE AND HIGHLIGHT attached buffers
+function M:highlightAttachedBufs(buf_to_attach, buf_to_detach)
+	local current_lines = vim.api.nvim_buf_get_lines(0, 0, -1, true)
+	for row, line in ipairs(current_lines) do
+		local words = utils.splitString(line, " ")
+		if tonumber(words[1]) == buf_to_attach then
+			for col, char in ipairs(utils.iterString(line)) do
+				if type(tonumber(char)) == "number" then
+					vim.api.nvim_buf_set_text(0, row - 1, col - 2, row - 1, col - 1, { self.HOSTING_INDICATOR }) --`col` is counted backward 2 times, one for 0-based index used in this function, another for position to insert '*' which is not the char `number` itself
+					break
+				end
+			end
+		elseif tonumber(words[1]:sub(2, -1)) == buf_to_detach then
+			for col, char in ipairs(utils.iterString(line)) do
+				if char == "*" then
+					vim.api.nvim_buf_set_text(0, row - 1, col - 1, row - 1, col, { " " })
+					break
+				end
+			end
+		end
+	end
+end
+--#
+
+--#Triggered when hit `Enter` while being in the floating window
 ---@param host_winnr integer
 function M:switchBuf(host_winnr)
 	local tokens = utils.splitString(vim.api.nvim_get_current_line(), " ") --Buffer's ID may be more than one digit, therefore using this function can be use to ensure that we won't get the truncated one
@@ -73,7 +97,8 @@ function M:switchBuf(host_winnr)
 		local buf_to_detach = vim.api.nvim_win_get_buf(host_winnr)
 
 		if type(buf_to_attach) == "number" then
-			utils.highlightActiveInstance(buf_to_attach, buf_to_detach, vim.api.nvim_buf_get_lines(0, 0, -1, true))
+			self:highlightAttachedBufs(buf_to_attach, buf_to_detach)
+
 			--return
 			self.HOSTED_BUFS_DICT[buf_to_attach] = host_winnr
 			self.HOSTED_BUFS_DICT[buf_to_detach] = false
@@ -115,7 +140,7 @@ function M:init()
 	--  <CR> to evoke the `switchBuf` function
 	--  <CMD>q<CR> to `q` to shorten exit command
 	--  dd to evoke `removeBuf` function
-	--#remap
+	--#
 	vim.keymap.set("n", "<CR>", function()
 		self:switchBuf(host_winnr)
 	end, { buffer = scratch_bufnr, noremap = true })

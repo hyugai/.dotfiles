@@ -1,6 +1,19 @@
 local M = {}
 
----Split string by pattern
+--#
+---@param str string
+---@return table<integer, string>
+function M.iterString(str)
+	local res = {}
+	for i = 1, #str, 1 do
+		table.insert(res, str:sub(i, i))
+	end
+
+	return res
+end
+--#
+
+--#Split string by pattern
 ---@param s string
 ---@param pattern string
 ---@return table<integer, string>
@@ -14,8 +27,9 @@ function M.splitString(s, pattern)
 
 	return res
 end
+--#
 
----Abbreviate home directory as `~`
+--#Abbreviate home directory as `~`
 ---@param absoulute_path string
 ---@return string
 function M.abbreviateHomeDir(absoulute_path)
@@ -24,7 +38,9 @@ function M.abbreviateHomeDir(absoulute_path)
 	--return
 	return home_dir and string.gsub(absoulute_path, home_dir, "~", 1) or absoulute_path
 end
+--#
 
+--#
 ---@param path string
 ---@return table<integer, string>
 ---@return table<integer, string>
@@ -48,7 +64,9 @@ function M.scanDir(path)
 
 	return dirs_names, files_names
 end
+--#
 
+--#
 ---@param bufnr integer
 ---@param delimiter string
 function M:align2Words(bufnr, delimiter)
@@ -67,14 +85,6 @@ function M:align2Words(bufnr, delimiter)
 	for row, word in pairs(first_word_of_lines) do
 		local actual_word_length = word:sub(1, 1) == "*" and word:len() or word:len() + 1
 		local length_diff = max_length - actual_word_length
-		--vim.api.nvim_buf_set_text(
-		--	bufnr,
-		--	row - 1,
-		--	word:len() + 1,
-		--	row - 1,
-		--	word:len() + 1,
-		--	{ (" "):rep((length_diff > 0) and length_diff or 0) }
-		--)
 		vim.api.nvim_buf_set_text(
 			bufnr,
 			row - 1,
@@ -85,22 +95,9 @@ function M:align2Words(bufnr, delimiter)
 		)
 	end
 end
+--#
 
----Highlight active instances(buffers)
----@param active_ins integer
----@param inactive_ins integer
----@param list table<integer, string>
-function M.highlightActiveInstance(active_ins, inactive_ins, list)
-	for row, value in ipairs(list) do
-		local tokens = M.splitString(value, " ")
-		if tonumber(tokens[1]) == active_ins then
-			vim.api.nvim_buf_set_text(0, row - 1, 0, row - 1, 1, { "*" }) -- the HOSTING_INDICATOR column is 0-beginning of the line-as default, change from colum 0 to 1 to replace, otherwise, it'll insert if specifying column 0 to 0
-		elseif tonumber(tokens[1]:sub(2, -1)) == inactive_ins then
-			vim.api.nvim_buf_set_text(0, row - 1, 0, row - 1, 1, { " " })
-		end
-	end
-end
-
+--#highlight python activated virtual environment
 ---@param activated_abbreviated_venv_name string
 function M:highlightActivatedVirtualEnvironment(activated_abbreviated_venv_name)
 	local lines = vim.api.nvim_buf_get_lines(0, 0, -1, true)
@@ -113,5 +110,6 @@ function M:highlightActivatedVirtualEnvironment(activated_abbreviated_venv_name)
 		end
 	end
 end
+--#
 
 return M

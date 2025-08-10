@@ -1,1 +1,2 @@
+bug: if file type is 'link' (symlink)
 hightlight the file name only
