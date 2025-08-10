@@ -112,4 +112,5 @@ function M:highlightActivatedVirtualEnvironment(activated_abbreviated_venv_name)
 end
 --#
 
+
 return M

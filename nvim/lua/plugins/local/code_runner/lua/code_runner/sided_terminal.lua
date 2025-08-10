@@ -77,6 +77,17 @@ function M:lift(length) end
 --#
 
 --#
+function M:autoResize()
+	self.WINDOW.opts["row"] = math.ceil(vim.o.lines / 2)
+	self.WINDOW.opts["width"] = vim.o.columns
+	self.WINDOW.opts["height"] = math.ceil(vim.o.lines / 2)
+	if vim.api.nvim_win_is_valid(self.WINDOW.id) then
+		vim.api.nvim_win_set_config(self.WINDOW.id, self.WINDOW.opts)
+	end
+end
+--#
+
+--#
 function M:init(initial_cmd)
 	if not self.PID then --?:create if not available
 		self:open(initial_cmd)
