@@ -133,7 +133,6 @@ function M:init()
 
 	vim.api.nvim_buf_set_lines(scratch_bufnr, 0, -1, true, self:formatOutput())
 	utils:align2Words(scratch_bufnr, " ")
-	--utils.openFloatingWindow(scratch_bufnr, utils.abbreviateHomeDir(vim.fn.getcwd()))
 	minimal_floating_window.openFloatingWindow(scratch_bufnr, utils.abbreviateHomeDir(vim.fn.getcwd()))
 
 	--#remap:

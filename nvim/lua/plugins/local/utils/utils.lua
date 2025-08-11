@@ -14,13 +14,27 @@ end
 --#
 
 --#Split string by pattern
+-----@param s string
+-----@param pattern string
+-----@return table<integer, string>
+--function M.splitString(s, pattern)
+--	local res = {}
+--	for match in string.gmatch(s:sub(-1, -1) == pattern and s or s .. pattern, "(.-)" .. pattern) do --`-` is non-greedy search, which stop after first found specified character
+--		if (match ~= nil) and (match ~= "") and (match ~= " ") then
+--			table.insert(res, match)
+--		end
+--	end
+--
+--	return res
+--end
+
 ---@param s string
 ---@param pattern string
 ---@return table<integer, string>
 function M.splitString(s, pattern)
 	local res = {}
-	for match in string.gmatch(s:sub(-1, -1) == pattern and s or s .. pattern, "(.-)" .. pattern) do --`-` is non-greedy search, which stop after first found specified character
-		if (match ~= nil) and (match ~= "") and (match ~= " ") then
+	for match in string.gmatch(s, "([^" .. pattern .. "]+)") do
+		if match ~= nil and match ~= "" and match ~= " " then
 			table.insert(res, match)
 		end
 	end
@@ -28,6 +42,8 @@ function M.splitString(s, pattern)
 	return res
 end
 --#
+
+function M.joinStringsByPattern(s, pattern) end
 
 --#Abbreviate home directory as `~`
 ---@param absoulute_path string
@@ -88,7 +104,7 @@ function M:align2Words(bufnr, delimiter)
 		vim.api.nvim_buf_set_text(
 			bufnr,
 			row - 1,
-			0, --ADDITIONAL PLACES WILL BE ADDED ON THE LEFT if the number in decimal base exceed its limit, which is 9
+			0, --?:ADDITIONAL PLACES WILL BE ADDED ON THE LEFT if the number in decimal base exceed its limit, which is 9
 			row - 1,
 			0,
 			{ (" "):rep((length_diff > 0) and length_diff or 0) }
@@ -97,20 +113,29 @@ function M:align2Words(bufnr, delimiter)
 end
 --#
 
---#highlight python activated virtual environment
----@param activated_abbreviated_venv_name string
-function M:highlightActivatedVirtualEnvironment(activated_abbreviated_venv_name)
-	local lines = vim.api.nvim_buf_get_lines(0, 0, -1, true)
-	for row, line in ipairs(lines) do
-		local tokens = self.splitString(line, " ")
-		if tokens[1] == activated_abbreviated_venv_name then
-			vim.api.nvim_buf_set_text(0, row - 1, 0, row - 1, 1, { "*" })
-		elseif tokens[1]:sub(1, 1) == "*" then
-			vim.api.nvim_buf_set_text(0, row - 1, 0, row - 1, 1, { " " })
-		end
+---@param absoulute_path string
+---@return boolean
+function M.verifyFile(absoulute_path)
+	local file_info = vim.uv.fs_stat(absoulute_path)
+	if file_info and file_info.type == "file" then
+		return true
+	else
+		return false
 	end
 end
---#
 
+---@param absoulute_path string
+---@return string|nil
+function M:extractFileFormat(absoulute_path)
+	if self.verifyFile(absoulute_path) then
+		local first_splits = self.splitString(absoulute_path, "/")
+		local second_splits = self.splitString(first_splits[#first_splits], "%.")
+
+		return second_splits[#second_splits]
+	else
+		print("Invalid file path!")
+		return nil
+	end
+end
 
 return M
