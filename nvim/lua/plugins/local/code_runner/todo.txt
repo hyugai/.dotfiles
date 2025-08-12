@@ -1,0 +1,1 @@
+add function `lift` to push terminal upward or backward a specified height

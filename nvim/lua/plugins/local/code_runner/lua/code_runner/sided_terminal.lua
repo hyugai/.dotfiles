@@ -19,7 +19,6 @@ local M = {
 			border = "rounded",
 			title = "NeoVim Integrated Terminal",
 			title_pos = "right",
-			--noautocmd = true,
 		},
 	},
 	BUFFER = {
@@ -72,7 +71,7 @@ end
 function M:reOpen(cmds)
 	self.WINDOW.id = vim.api.nvim_open_win(self.BUFFER.id, true, self.WINDOW.opts) --?:reassign new window's ID
 	vim.api.nvim_cmd({ cmd = "startinsert" }, { output = false }) --?:get into `Terminal` mode at inititation
-	vim.api.nvim_win_set_hl_ns(self.WINDOW.id, vim.api.nvim_create_namespace("CodeRunner"))
+	vim.api.nvim_win_set_hl_ns(self.WINDOW.id, vim.api.nvim_create_namespace("CodeRunner")) --?: apply plugin's namespace to tailored looking
 	if cmds then
 		vim.defer_fn(function()
 			vim.api.nvim_chan_send(self.PID, cmds .. "\n") --?:use `\n` in place of `Enter`
@@ -107,7 +106,21 @@ end
 --#
 
 --#
-function M:init(initial_cmds)
+function M:toggleTerminal()
+	if not self.PID then
+		self:open()
+	else
+		if not self.WINDOW.id then
+			self:reOpen()
+		else
+			self:hide()
+		end
+	end
+end
+--#
+
+--#
+function M:runCode(initial_cmds)
 	if not self.PID then --?:create if not available
 		self:open(initial_cmds)
 	else

@@ -9,18 +9,16 @@ function M.setup()
 	vim.api.nvim_set_hl(ns_id, "FloatBorder", { fg = "#ff8800" })
 
 	--user's command
-	vim.api.nvim_create_user_command("OpenSidedTerminal", function(opts)
-		sided_terminal:init()
-	end, { desc = "Open a below sided terminal without initial command(s)", nargs = 0 })
-
 	vim.api.nvim_create_user_command("RunCode", function(opts)
 		shell_cmds.run(opts.args)
-	end, { desc = "Execute command(s) on the current buffer in a floating terminal", nargs = "*" })
+	end, { desc = "perform simple execution command(s) over current buffer inside floating terminal", nargs = "*" })
 
 	--keymap
-	vim.keymap.set("t", "<C-h>", function()
-		sided_terminal:hide()
-	end, { buffer = sided_terminal.BUFFER.id })
+	vim.keymap.set({ "n", "t" }, "<leader>tt", function()
+		sided_terminal:toggleTerminal()
+	end, {
+		desc = "`tt` stands for `Toggle Term`, open new instance of terminal if not available, if available, REOPEN if window was closed, HIDE if available and opened",
+	})
 
 	--autocmd
 	vim.api.nvim_create_autocmd("WinResized", {
