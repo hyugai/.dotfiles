@@ -1,6 +1,7 @@
+--find `--!` to go into tasks needed completing
 local utils = require("switcher.utils")
-local scratch_buffer = require("switcher.scratch_buffer")
-local minimal_floating_window = require("switcher.minimal_floating_window")
+local sb = require("switcher.sb")
+local fw = require("switcher.fw")
 
 local M = {
 	---buf'ID(key): host window'ID or false as default(value)
@@ -18,6 +19,18 @@ local M = {
 
 		---@type integer
 		id_host = nil,
+
+		opts = {
+			relative = "editor",
+			width = 0,
+			height = 0,
+			col = 0,
+			row = 0,
+			style = "minimal",
+			border = "rounded",
+			title = "foo",
+			title_pos = "center",
+		},
 	},
 }
 
@@ -65,17 +78,37 @@ function M:open()
 
 	--#
 	self.WINDOW.id_host = vim.api.nvim_get_current_win()
-	self.BUFFER.id_scratch = scratch_buffer.createMutableScratchBuf()
+	self.BUFFER.id_scratch = sb.create()
 	vim.api.nvim_buf_set_lines(self.BUFFER.id_scratch, 0, -1, true, aligned_lines)
-	minimal_floating_window.openFloatingWindow(self.BUFFER.id_scratch, "foo")
+
+	--!: complete this part
+	fw.setOpts({}, {}, self.WINDOW.opts)
+	self.WINDOW.id_floating = vim.api.nvim_open_win(self.BUFFER.id_scratch, true, self.WINDOW.opts)
 	--#
 end
 
+--hide floating window only, keep scratch buffer
 function M:hide()
-	--hide/close floating window only, keep scratch buffer
+	vim.api.nvim_win_hide(self.WINDOW.id_floating)
+	self.WINDOW.id_floating = false
 end
+
 function M:reOpen()
 	--remove lines containing deleted files' buffers
+	local bufnrs_update = vim.api.nvim_list_bufs()
+	local bufnrs_previous_call = vim.tbl_keys(self.BUFFER.ids_hosted)
+	for row, bufnr in ipairs(bufnrs_previous_call) do
+		if vim.tbl_contains(bufnrs_update, bufnr) then
+			self.BUFFER.ids_hosted[bufnr] = nil --remove key from table
+			--vim.api.nvim_buf_set_lines(self.BUFFER.id_scratch, row - 1, row, true, {})
+		end
+	end
+
+	--re-annotate hosted buffers
+
+	--!: complete this part
+	--re-open floating window
+	self.WINDOW.id_floating = vim.api.nvim_open_win(self.BUFFER.id_scratch, true, self.WINDOW.opts)
 end
 function M:switchBuf()
 	--attach selected buffer to previous window
@@ -90,6 +123,6 @@ function M:toggle()
 		self:hide()
 	end
 end
-M:toggle()
+--M:toggle()
 
 return M
