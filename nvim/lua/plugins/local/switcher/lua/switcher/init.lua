@@ -6,10 +6,13 @@ local M = {}
 
 function M.setup(_)
 	--namespace
+	local ns_id = vim.api.nvim_create_namespace("Switcher")
+	vim.api.nvim_set_hl(ns_id, "FloatBorder", { fg = "#ff8800" })
+
 	--user's command
 	vim.api.nvim_create_user_command("Foo", function(opts)
 		foo:toggle()
-	end, {desc = "Test"})
+	end, { desc = "Test" })
 	--keymap
 	--SwitchBuf
 	vim.api.nvim_create_user_command("SwitchBuf", function()

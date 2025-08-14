@@ -6,8 +6,8 @@ local fw = require("switcher.fw")
 local M = {
 	---buf'ID(key): host window'ID or false as default(value)
 	BUFFER = {
-		---@type table<integer, integer|boolean>
-		ids_hosted = {},
+		---@type table<integer, integer>
+		ids_hosted = nil,
 
 		---@type integer
 		id_scratch = nil,
@@ -34,22 +34,13 @@ local M = {
 	},
 }
 
+--!: when hide the window, we actually close it since there is no way to reopen it, but we still keep the buffer => how to still keep the buffer when we temporarily close the window
 --!: solve the process of this plugin
 --!: break down the `foo` function
 --BUFFER.scratch: not avail => create one, avail => if FLOATING_WINDOW.id not avail, create one and update BUFFER.scratch
 --update `BUFFER.scratch`: remove buffers of newly deleted files
 function M:open()
-	--
-	--list buffers and find hosted ones
-	for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
-		if vim.api.nvim_buf_is_loaded(bufnr) and utils.verifyFile(vim.api.nvim_buf_get_name(bufnr)) then --!: find ways to exclude NvimTree_ buffer
-			self.BUFFER.ids_hosted[bufnr] = false
-		end
-	end
-
-	for _, winnr in ipairs(vim.api.nvim_list_wins()) do
-		self.BUFFER.ids_hosted[vim.api.nvim_win_get_buf(winnr)] = winnr
-	end
+	self.BUFFER.ids_hosted = sb.listVerifiedBufIds()
 
 	--annotate hosted buffers
 	---@type table<integer, table<integer, string>>
@@ -82,38 +73,82 @@ function M:open()
 	vim.api.nvim_buf_set_lines(self.BUFFER.id_scratch, 0, -1, true, aligned_lines)
 
 	--!: complete this part
-	fw.setOpts({}, {}, self.WINDOW.opts)
+	fw.setOpts({
+		height = 0.4,
+		width = 0.45,
+	}, {
+		height = vim.o.lines,
+		width = vim.o.columns,
+	}, self.WINDOW.opts)
 	self.WINDOW.id_floating = vim.api.nvim_open_win(self.BUFFER.id_scratch, true, self.WINDOW.opts)
+	vim.api.nvim_win_set_hl_ns(self.WINDOW.id_floating, vim.api.nvim_create_namespace("Switcher"))
+	--#
+
+	--!: complete this part
+	--when quitting the window, deleted IDs still remain, below codes are the fixes
+	--used for this plugin's buffer only
+	vim.api.nvim_create_autocmd("WinClosed", {
+		buffer = self.BUFFER.id_scratch,
+		callback = function(opts)
+			self.WINDOW.id_floating = nil
+		end,
+	})
 	--#
 end
 
---hide floating window only, keep scratch buffer
 function M:hide()
-	vim.api.nvim_win_hide(self.WINDOW.id_floating)
-	self.WINDOW.id_floating = false
+	vim.api.nvim_win_hide(self.WINDOW.id_floating) --?: close the window, MAKE BUFFER HIDDEN
+	--vim.api.nvim_win_close(self.WINDOW.id_floating, false)
+	self.WINDOW.id_floating = nil
 end
 
 function M:reOpen()
-	--remove lines containing deleted files' buffers
-	local bufnrs_update = vim.api.nvim_list_bufs()
-	local bufnrs_previous_call = vim.tbl_keys(self.BUFFER.ids_hosted)
-	for row, bufnr in ipairs(bufnrs_previous_call) do
-		if vim.tbl_contains(bufnrs_update, bufnr) then
-			self.BUFFER.ids_hosted[bufnr] = nil --remove key from table
-			--vim.api.nvim_buf_set_lines(self.BUFFER.id_scratch, row - 1, row, true, {})
+	local deleted_lines_count = 0
+	local is_this_line_deleted = false
+	local updated_active_bufnrs = sb.listVerifiedBufIds()
+
+	--!: discover new bufs
+	--iter each line, determine if line should be deleted or not
+	for row, line in ipairs(vim.api.nvim_buf_get_lines(self.BUFFER.id_scratch, 0, -1, true)) do
+		local tokens = utils.splitString(line, " ")
+		local bufnr = utils.splitString(tokens[1], "%*")[1]
+		local hosting_indicator = utils.splitString(tokens[1], "%d")[1]
+
+		if vim.tbl_contains(updated_active_bufnrs, bufnr) then
+			vim.api.nvim_buf_set_lines(
+				self.BUFFER.id_scratch,
+				row - 1 - deleted_lines_count,
+				row - deleted_lines_count,
+				true,
+				{}
+			)
+			deleted_lines_count = deleted_lines_count + 1
+			is_this_line_deleted = true
+		elseif is_this_line_deleted then
+			is_this_line_deleted = false
+
+			--!: if this buffer is still being hosted, do nothing
+			if updated_active_bufnrs[bufnr] then
+				if not hosting_indicator then --highlight if newly hosted but there's no indicator
+				end
+			else
+				if hosting_indicator then --remove indicator if it used to have one (used to be hosted)
+				end
+			end
 		end
 	end
 
-	--re-annotate hosted buffers
-
-	--!: complete this part
+	--?: do NOT touch this part
 	--re-open floating window
 	self.WINDOW.id_floating = vim.api.nvim_open_win(self.BUFFER.id_scratch, true, self.WINDOW.opts)
+	vim.api.nvim_win_set_hl_ns(self.WINDOW.id_floating, vim.api.nvim_create_namespace("Switcher"))
 end
 function M:switchBuf()
 	--attach selected buffer to previous window
 	--re-annotate hosted buffers
 end
+
+--!: how to distinguish between close window with removing its buffer and hide window (close temporarily) without removing its
 function M:toggle()
 	if not self.BUFFER.id_scratch then
 		self:open()
