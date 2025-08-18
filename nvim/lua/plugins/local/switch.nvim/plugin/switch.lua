@@ -1,2 +1,2 @@
 --this file is automatically sourced when NeoVim initializes
-require("switcher").setup()
+require("switch").setup()
