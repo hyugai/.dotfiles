@@ -1,5 +1,5 @@
 local M = {}
-local float_toggle = require("switch.float_toggle")
+local toggle_float = require("switch.toggle_float")
 local buffer = require("switch.buffer")
 
 function M.setup(_)
@@ -17,11 +17,11 @@ function M.setup(_)
 	--#keymap
 	vim.keymap.set("n", "<leader>sb", "<CMD>SwitchBuf<CR>")
 	vim.keymap.set("n", "q", function()
-		float_toggle:terminate()
-	end, { buffer = float_toggle.BUFFER.id_scratch })
+		toggle_float:terminate()
+	end, { buffer = toggle_float.BUFFER.id_scratch })
 	vim.keymap.set("n", "<CR>", function()
 		buffer:switch()
-	end, { buffer = float_toggle.BUFFER.id_scratch })
+	end, { buffer = toggle_float.BUFFER.id_scratch })
 	--#end_keymap
 end
 
