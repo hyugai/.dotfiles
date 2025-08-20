@@ -1,27 +1,36 @@
-local M = {
-	BUFFER = {
-		---@type integer
-		id_scratch = nil,
-	},
-	WINDOW = {
-		---@type integer
-		id_float = nil,
+local M = {}
 
-		---@type table<string, integer|string|boolean>
-		opts = {
-			relative = "editor",
-			width = 0,
-			height = 0,
-			col = 0,
-			row = 0,
-			style = "minimal",
-			border = "rounded",
+function M:new()
+	local obj = {
+		BUFFER = {
+			---@type integer
+			id_scratch = nil,
 		},
-	},
-}
+		WINDOW = {
+			---@type integer
+			id_float = nil,
+
+			---@type table<string, integer|string|boolean>
+			opts = {
+				relative = "editor",
+				width = 0,
+				height = 0,
+				col = 0,
+				row = 0,
+				style = "minimal",
+				border = "rounded",
+			},
+		},
+	}
+
+	setmetatable(obj, self)
+	self.__index = self
+
+	return obj
+end
 
 ---@return integer
-function M:createBuf()
+function M:_createScratchBuf()
 	local bufnr = vim.api.nvim_create_buf(false, true)
 
 	vim.api.nvim_set_option_value("bufhidden", "hide", { buf = bufnr })
@@ -35,10 +44,6 @@ end
 ---@param editor table<string, integer>
 ---@param opts table<string, integer|string|boolean>
 function M:open(scale, editor, opts, lines)
-	--print("open")
-	--#
-	--#end
-
 	--#config_opts
 	for key, value in pairs(opts) do
 		self.WINDOW.opts[key] = value
@@ -51,7 +56,7 @@ function M:open(scale, editor, opts, lines)
 	--#end_config_opts
 
 	--#
-	self.BUFFER.id_scratch = self:createBuf()
+	self.BUFFER.id_scratch = self:_createScratchBuf()
 	vim.api.nvim_buf_set_lines(self.BUFFER.id_scratch, 0, -1, true, lines)
 
 	self.WINDOW.id_float = vim.api.nvim_open_win(self.BUFFER.id_scratch, true, self.WINDOW.opts)

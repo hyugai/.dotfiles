@@ -1,24 +1,17 @@
-local toggle_float = require("switch.toggle_float")
 local utils = require("switch.utils")
-local M = {
-	BUFFER = {
-		---@type table<integer, integer|boolean>
-		id_to_host_map = {},
+local M = {}
 
-		---@type integer
-		id_max_length = 0,
-	},
-	WINDOW = {
-		---@type integer
-		id_host = nil,
-	},
-}
+M.float = require("switch.toggle_float"):new()
+M.float.BUFFER.bufnr_to_winnr_map = {}
+M.float.BUFFER.id_max_length = 0
+
+M.float.WINDOW.id_host = nil
 
 ---@param total_lines integer
 ---@param n integer
-function M._addLeftPadding(total_lines, n)
+function M:_addLeftPadding(total_lines, n)
 	for row_idx = 0, total_lines - 1, 1 do
-		vim.api.nvim_buf_set_text(toggle_float.BUFFER.id_scratch, row_idx, 0, row_idx, 0, { (" "):rep(n) })
+		vim.api.nvim_buf_set_text(self.float.BUFFER.id_scratch, row_idx, 0, row_idx, 0, { (" "):rep(n) })
 	end
 end
 
@@ -27,24 +20,24 @@ end
 ---@return string
 function M:_formatLine(bufnr, bufnr_max_length)
 	local length_diff = bufnr_max_length and bufnr_max_length - tostring(bufnr):len()
-		or self.BUFFER.id_max_length - tostring(bufnr):len()
+		or self.float.BUFFER.id_max_length - tostring(bufnr):len()
 
 	return (" "):rep(length_diff + 1)
 		.. tostring(bufnr)
-		.. (self.BUFFER.id_to_host_map[bufnr] and "*" or " ")
+		.. (self.float.BUFFER.id_to_host_map[bufnr] and "*" or " ")
 		.. (" "):rep(2)
 		.. utils.abbreviateHomeDir(vim.api.nvim_buf_get_name(bufnr):gsub(vim.fn.getcwd(), "."))
 end
 
 ---@param row_idx integer --?:0-based index
 ---@param flag string
-function M:_updateHostFlag(row_idx, flag) --?: "*" means being hosted by a window, while " " is on other hand
+function M:_changeFlag(row_idx, flag) --?: "*" means being hosted by a window, while " " is on other hand
 	vim.api.nvim_buf_set_text(
-		toggle_float.BUFFER.id_scratch,
+		self.float.BUFFER.id_scratch,
 		row_idx,
-		self.BUFFER.id_max_length + 1,
+		self.float.BUFFER.id_max_length + 1,
 		row_idx,
-		self.BUFFER.id_max_length + 2,
+		self.float.BUFFER.id_max_length + 2,
 		{ flag }
 	)
 end
@@ -80,11 +73,11 @@ end
 
 ---@return table<integer, string>
 function M:start()
-	self.WINDOW.id_host = vim.api.nvim_get_current_win()
-	self.BUFFER.id_to_host_map, self.BUFFER.id_max_length = self:mapBufferToWindow()
+	self.float.WINDOW.id_host = vim.api.nvim_get_current_win()
+	self.float.BUFFER.id_to_host_map, self.float.BUFFER.id_max_length = self:mapBufferToWindow()
 
 	local res = {}
-	for bufnr, _ in pairs(self.BUFFER.id_to_host_map) do
+	for bufnr, _ in pairs(self.float.BUFFER.id_to_host_map) do
 		table.insert(res, self:_formatLine(bufnr))
 	end
 
@@ -98,21 +91,21 @@ function M:update()
 	local bufnr_to_winnr_map, bufnr_max_length = self:mapBufferToWindow()
 
 	--#delete old buffers && update highlights
-	self.BUFFER.id_to_host_map = bufnr_to_winnr_map
-	for idx, line in ipairs(vim.api.nvim_buf_get_lines(toggle_float.BUFFER.id_scratch, 0, -1, true)) do
+	self.float.BUFFER.id_to_host_map = bufnr_to_winnr_map
+	for idx, line in ipairs(vim.api.nvim_buf_get_lines(self.float.BUFFER.id_scratch, 0, -1, true)) do
 		local row_idx = idx - deleted_lines - 1 --?: 0-based idx
 		local bufnr = tonumber(line:match("(%d+)"))
 		local host_flag = line:match("%*")
 
-		if self.BUFFER.id_to_host_map[bufnr] == nil then
-			vim.api.nvim_buf_set_lines(toggle_float.BUFFER.id_scratch, row_idx, row_idx + 1, true, {})
+		if self.float.BUFFER.id_to_host_map[bufnr] == nil then
+			vim.api.nvim_buf_set_lines(self.float.BUFFER.id_scratch, row_idx, row_idx + 1, true, {})
 
 			deleted_lines = deleted_lines + 1
 		else
-			if self.BUFFER.id_to_host_map[bufnr] and not host_flag then --?:add "*"
-				self:_updateHostFlag(row_idx, "*")
-			elseif not self.BUFFER.id_to_host_map[bufnr] and host_flag then --?:remove "*"
-				self:_updateHostFlag(row_idx, " ")
+			if self.float.BUFFER.id_to_host_map[bufnr] and not host_flag then --?:add "*"
+				self:_changeFlag(row_idx, "*")
+			elseif not self.float.BUFFER.id_to_host_map[bufnr] and host_flag then --?:remove "*"
+				self:_changeFlag(row_idx, " ")
 			end
 
 			table.insert(remained_bufnrs, bufnr)
@@ -122,17 +115,17 @@ function M:update()
 	--#endregion
 
 	--#add additional left paddings if one of the new buffers' legths exceeds previous one
-	local extra_padding = bufnr_max_length - self.BUFFER.id_max_length
+	local extra_padding = bufnr_max_length - self.float.BUFFER.id_max_length
 	if extra_padding > 0 then
-		self._addLeftPadding(remained_lines, extra_padding)
+		self:_addLeftPadding(remained_lines, extra_padding)
 	end
 	--#endregion
 
 	--#insert new buffers
-	self.BUFFER.id_max_length = bufnr_max_length
+	self.float.BUFFER.id_max_length = bufnr_max_length
 	for bufnr, _ in pairs(bufnr_to_winnr_map) do
 		if not vim.tbl_contains(remained_bufnrs, bufnr) then
-			vim.api.nvim_buf_set_lines(toggle_float.BUFFER.id_scratch, -1, -1, true, {
+			vim.api.nvim_buf_set_lines(self.float.BUFFER.id_scratch, -1, -1, true, {
 				self:_formatLine(bufnr, bufnr_max_length),
 			})
 		end
@@ -141,43 +134,44 @@ function M:update()
 end
 
 function M:switch()
-	local lines = vim.api.nvim_buf_get_lines(toggle_float.BUFFER.id_scratch, 0, -1, true)
+	--#test
+	local lines = vim.api.nvim_buf_get_lines(self.float.BUFFER.id_scratch, 0, -1, true)
 
-	local bufnr_to_detach = vim.api.nvim_win_get_buf(self.WINDOW.id_host)
+	local bufnr_to_detach = vim.api.nvim_win_get_buf(self.float.WINDOW.id_host)
 	for index, line in ipairs(lines) do
 		local row_idx = index - 1
 		local bufnr = tonumber(line:match("(%d+)"))
 		if bufnr == bufnr_to_detach and bufnr then
-			self:_updateHostFlag(row_idx, " ")
+			self:_changeFlag(row_idx, " ")
 			break
 		end
 	end
 
-	local current_row_pos = vim.api.nvim_win_get_cursor(toggle_float.WINDOW.id_float)[1] --?:0-based index
+	local current_row_pos = vim.api.nvim_win_get_cursor(self.float.WINDOW.id_float)[1] --?:0-based index
 	local bufnr_to_attach = tonumber(lines[current_row_pos]:match("(%d+)"))
 	if bufnr_to_attach then
-		self:_updateHostFlag(current_row_pos - 1, "*")
-		self.BUFFER.id_to_host_map[bufnr_to_attach] = self.WINDOW.id_host
-		vim.api.nvim_win_set_buf(self.WINDOW.id_host, bufnr_to_attach)
+		self:_changeFlag(current_row_pos - 1, "*")
+		self.float.BUFFER.id_to_host_map[bufnr_to_attach] = self.float.WINDOW.id_host
+		vim.api.nvim_win_set_buf(self.float.WINDOW.id_host, bufnr_to_attach)
 	end
 end
 
 function M:toggle()
-	if not toggle_float.BUFFER.id_scratch then
+	if not self.float.BUFFER.id_scratch then
 		local lines = self:start()
-		toggle_float:open(
+		self.float:open(
 			{ height = 0.4, width = 0.45 },
 			{ height = vim.o.lines, width = vim.o.columns },
-			{ title = "Buffer Switcher", title_pos = "center" },
+			{ title = "Buffer Switch", title_pos = "center" },
 			lines
 		)
-		vim.api.nvim_win_set_hl_ns(toggle_float.WINDOW.id_float, vim.api.nvim_create_namespace("switch.nvim"))
-	elseif not toggle_float.WINDOW.id_float or not vim.api.nvim_win_is_valid(toggle_float.WINDOW.id_float) then --?:`BUFFER.id_scratch` avail, WINDOW.id_floating not avail or not valid
-		toggle_float:reOpen(function()
+		vim.api.nvim_win_set_hl_ns(self.float.WINDOW.id_float, vim.api.nvim_create_namespace("switch.nvim"))
+	elseif not self.float.WINDOW.id_float or not vim.api.nvim_win_is_valid(self.float.WINDOW.id_float) then --?:`BUFFER.id_scratch` avail, WINDOW.id_floating not avail or not valid
+		self.float:reOpen(function()
 			self:update()
 		end)
 	else
-		toggle_float:hide() --?:both `BUFFER.id_scratch` and `WINDOW.id_floating` are avail
+		self.float:hide() --?:both `BUFFER.id_scratch` and `WINDOW.id_floating` are avail
 	end
 end
 
