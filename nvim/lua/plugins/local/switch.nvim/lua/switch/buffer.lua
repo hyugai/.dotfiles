@@ -134,7 +134,6 @@ function M:update()
 end
 
 function M:switch()
-	--#test
 	local lines = vim.api.nvim_buf_get_lines(self.float.BUFFER.id_scratch, 0, -1, true)
 
 	local bufnr_to_detach = vim.api.nvim_win_get_buf(self.float.WINDOW.id_host)

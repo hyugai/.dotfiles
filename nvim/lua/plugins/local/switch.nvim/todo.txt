@@ -1,3 +1,3 @@
-make source code more readable
-make floating window nicer
+loaded synchronously first => store as current content in a table to prevent mis-leading information
+figure out why using toggled term doesn't activate desired virtual environment
 hightlight the file name only

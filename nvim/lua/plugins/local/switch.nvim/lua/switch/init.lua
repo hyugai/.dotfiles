@@ -1,8 +1,6 @@
-local M = {}
---!: apply OOP to `toggle_float`
-local toggle_float = require("switch.toggle_float")
 local buffer = require("switch.buffer")
 local pyenv = require("switch.pyenv")
+local M = {}
 
 function M.setup(_)
 	local ns_id = vim.api.nvim_create_namespace("switch.nvim")

@@ -1,60 +1,98 @@
 local utils = require("switch.utils")
 local M = {
-	FLAGGED_NAME = {
+	ENV = {
 		---@type integer
-		max_length = nil,
+		name_max_length = 0,
 		---@type table<string, string>
-		name_to_path_map = nil,
+		name_to_path_map = {},
+		---@type string
+		name_activated_env = nil,
 	},
 }
 M.float = require("switch.toggle_float"):new()
 
----@param flagged_name string
----@param flagged_name_max_length integer?
-function M:_formatLine(flagged_name, flagged_name_max_length)
-	local length_diff = flagged_name_max_length and flagged_name_max_length - flagged_name:len()
-		or self.FLAGGED_NAME.max_length - flagged_name:len()
-
-	return (" "):rep(length_diff + 1)
-		.. flagged_name
-		.. (" "):rep(2)
-		.. self.FLAGGED_NAME.name_to_path_map[flagged_name]
+function M:_changeFlag(row_idx, flag)
+	vim.api.nvim_buf_set_text(
+		self.float.BUFFER.id_scratch,
+		row_idx,
+		self.ENV.name_max_length + 1,
+		row_idx,
+		self.ENV.name_max_length + 2,
+		{ flag }
+	)
 end
 
----@return table<string, string>
----@return integer
-function M.mapNameToPath()
-	local res = {}
-	local flagged_name_max_length = 0
-	vim.system({ "conda", "env", "list" }, { text = true }, function(out)
-		if out.code == 0 then
-			local lines = utils.splitString(out.stdout, "\n")
-			for i = 3, #lines, 1 do
-				local tokens = utils.splitString(lines[i], " ")
-				local flagged_name = tokens[1] .. (vim.tbl_contains(tokens, "*") and "*" or " ")
-				flagged_name_max_length = flagged_name_max_length >= flagged_name:len() and flagged_name_max_length
-					or flagged_name:len()
+---@param name string
+---@param name_max_length integer?
+---@return string
+function M:_formatLine(name, name_max_length)
+	local length_diff = name_max_length and name_max_length - name:len() or self.ENV.name_max_length - name:len()
 
-				res[flagged_name] = tokens[#tokens]
+	return (" "):rep(length_diff + 1)
+		.. name
+		.. (self.ENV.name_activated_env == name and "*" or " ")
+		.. (" "):rep(2)
+		.. self.ENV.name_to_path_map[name]
+end
+
+function M:mapNameToPath()
+	local obj = vim.system({ "conda", "env", "list" }, { text = true }):wait() --?: waiting for the shell command to be completed
+	if obj.code == 0 then
+		local lines = utils.splitString(obj.stdout, "\n")
+		for i = 3, #lines, 1 do
+			local tokens = utils.splitString(lines[i], " ")
+			local env_name = tokens[1]:match("%w+")
+			local is_flaged = vim.tbl_contains(tokens, "*")
+
+			if is_flaged then
+				self.ENV.name_activated_env = env_name
 			end
+			self.ENV.name_to_path_map[env_name] = tokens[#tokens]
+			self.ENV.name_max_length = self.ENV.name_max_length >= env_name:len() and self.ENV.name_max_length
+				or env_name:len()
 		end
-	end)
-
-	return res, flagged_name_max_length
+	end
 end
 
 function M:start()
-	self.FLAGGED_NAME.name_to_path_map, self.FLAGGED_NAME.max_length = self.mapNameToPath()
+	self:mapNameToPath()
+	--print(self.ENV.name_activated_env)
 
 	local res = {}
-	for flagged_name, _ in pairs(self.FLAGGED_NAME.name_to_path_map) do
-		table.insert(res, self:_formatLine(flagged_name))
+	for name, _ in pairs(self.ENV.name_to_path_map) do
+		table.insert(res, self:_formatLine(name))
 	end
 
 	return res
 end
 
-function M:switch() end
+function M:switch()
+	local lines = vim.api.nvim_buf_get_lines(self.float.BUFFER.id_scratch, 0, -1, true)
+
+	local cursor_row_pos = vim.api.nvim_win_get_cursor(self.float.WINDOW.id_float)[1]
+	if lines[cursor_row_pos]:match("%*") ~= "*" then
+		local env_to_activate = lines[cursor_row_pos]:match("%w+")
+		local current_python_bin_path, _ = vim.fn.exepath("python"):gsub("/python", "")
+		vim.env.PATH = os.getenv("PATH")
+			:gsub(current_python_bin_path, self.ENV.name_to_path_map[env_to_activate] .. "/bin")
+
+		for index, line in ipairs(lines) do
+			local row_idx = index - 1
+			if line:match("*") == "*" then
+				self:_changeFlag(row_idx, " ")
+				break
+			end
+		end
+
+		self.ENV.name_activated_env = env_to_activate
+		self:_changeFlag(cursor_row_pos - 1, "*")
+		vim.api.nvim_cmd({ cmd = "LspRestart" }, { output = true })
+	else
+		print("This environment's activated already!")
+	end
+end
+
+--print(os.getenv("PATH"))
 function M:toggle()
 	if not self.float.BUFFER.id_scratch then
 		local lines = self:start()
@@ -64,13 +102,13 @@ function M:toggle()
 			{ title = "PyEnv Switch", title_pos = "center" },
 			lines
 		)
-		--	vim.api.nvim_win_set_hl_ns(toggle_float.WINDOW.id_float, vim.api.nvim_create_namespace("switch.nvim"))
-		--elseif not toggle_float.WINDOW.id_float or not vim.api.nvim_win_is_valid(toggle_float.WINDOW.id_float) then --?:`BUFFER.id_scratch` avail, WINDOW.id_floating not avail or not valid
-		--	toggle_float:reOpen(function()
-		--		self:update()
-		--	end)
-		--else
-		--	toggle_float:hide() --?:both `BUFFER.id_scratch` and `WINDOW.id_floating` are avail
+		vim.api.nvim_win_set_hl_ns(self.float.WINDOW.id_float, vim.api.nvim_create_namespace("switch.nvim"))
+	elseif not self.float.WINDOW.id_float or not vim.api.nvim_win_is_valid(self.float.WINDOW.id_float) then --?:`BUFFER.id_scratch` avail, WINDOW.id_floating not avail or not valid
+		self.float:reOpen(function()
+			--self:update()
+		end)
+	else
+		self.float:hide() --?:both `BUFFER.id_scratch` and `WINDOW.id_floating` are avail
 	end
 end
 
