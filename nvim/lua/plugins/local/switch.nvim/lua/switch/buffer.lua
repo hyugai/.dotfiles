@@ -161,7 +161,7 @@ function M:toggle()
 		self.float:open(
 			{ height = 0.4, width = 0.45 },
 			{ height = vim.o.lines, width = vim.o.columns },
-			{ title = "Buffer Switch", title_pos = "center" },
+			{ title = "Buffer Switch", title_pos = "right" },
 			lines
 		)
 		vim.api.nvim_win_set_hl_ns(self.float.WINDOW.id_float, vim.api.nvim_create_namespace("switch.nvim"))
@@ -173,5 +173,7 @@ function M:toggle()
 		self.float:hide() --?:both `BUFFER.id_scratch` and `WINDOW.id_floating` are avail
 	end
 end
+
+function M:switchToNextBuf() end
 
 return M

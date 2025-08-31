@@ -1,23 +1,36 @@
-NOTEs
-- A session is a collection of multiple windows
+NOTE
+    A session is a collection of multiple windows
+    prefix = Ctrl-B
+    -: abstract separator for below keymaps
+        use `-` for its literal meaning when documenting
 
 TMUX'S COMMAND MODE
-- Ctrl + b + : -> open tmux's command mode
-    -> new-window (or "neww") -> create a new window in the current session
-        + kill-window
-    -> new-session (or "new") -> create a new session
-        + kill-session
+<prefix>-:
+    open tmux's command mode
+        -> `new-window` (or `neww`) = create a new window in the current session
+            + kill-window
+        -> new-session (or "new") = create a new session
+            + kill-session
 
 WINDOWS NAVIGATION
-- Ctrl + b + n -> move to next window
-    + Ctrl + b + p -> move the previous-used window
-    + Ctrl + b + [number as index of windows] -> move to a window with its respective index
+<prefix>-N 
+    move to next window
+<prefix>-P 
+    move the previously used window
+<prefix>-<window's index> 
+    move to a window with its respective index
 
 WIDOWS KILLING
-- Ctrl + b + & -> kill the current window
+<prefix>-&
+    kill the current window
 
 WINDOW NAMIMG
-- Ctrl + b + , -> renaming the current window
+<prefix>-,
+    renaming the current window
 
 INTERACTIVE SELECTION OF SESSIONS AND WINDOWS
-- Ctrl + b + w -> open an interactive selection of sessions
+<prefix>-w
+    open an interactive selection of sessions
+
+OPEN HYPERLINK
+Shift-Click

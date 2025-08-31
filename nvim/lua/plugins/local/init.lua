@@ -1,46 +1,27 @@
-local init_file = {
-	FULL_PATH = nil,
-	get_full_path = function(self)
-		self.FULL_PATH = debug.getinfo(1, "S").source:sub(2)
-	end,
+local M = {
+	PATH = {
+		---@type string
+		src = debug.getinfo(1, "S").source:sub(2):gsub("init.lua", ""),
+
+		---@type table<integer, table<string, string>>
+		local_plugins = {},
+	},
 }
-init_file:get_full_path()
 
---#
---`src:get_dirs_inside`: each found dir is equivalent to each local plugin
---#
-
-local src = {
-	FULL_PATH = nil,
-	FOUND_DIRS = {},
-	get_full_path = function(self)
-		self.FULL_PATH = string.gsub(init_file.FULL_PATH, "init.lua", "")
-	end,
-	get_dirs_inside = function(self)
-		local request_obj = vim.uv.fs_scandir(self.FULL_PATH)
-		if request_obj then
-			while true do
-				local name, type = vim.uv.fs_scandir_next(request_obj)
-				if not name then
-					break
-				else
-					if type == "directory" then
-						table.insert(self.FOUND_DIRS, self.FULL_PATH .. name)
-					end
-				end
+function M:scanPlugins()
+	local excluded_dirs = { "utils" }
+	local dir, _, _ = vim.uv.fs_scandir(self.PATH.src)
+	while true and dir do
+		local name, type, _ = vim.uv.fs_scandir_next(dir)
+		if name then
+			if type == "directory" and not vim.tbl_contains(excluded_dirs, name) then
+				table.insert(self.PATH.local_plugins, { dir = self.PATH.src .. name })
 			end
+		else
+			break
 		end
-	end,
-}
-src:get_full_path()
-src:get_dirs_inside()
-
-local local_plugins = {}
-for _, plugin_path in ipairs(src.FOUND_DIRS) do
-	table.insert(local_plugins, {
-		dir = plugin_path,
-		--lazy = true,
-	})
+	end
 end
+M:scanPlugins()
 
-return local_plugins
+return M.PATH.local_plugins

@@ -29,6 +29,7 @@ function M.setup(_)
 	end, {})
 	vim.keymap.set("n", "<leader>sb", "<CMD>SwitchBuf<CR>")
 
+	pyenv:init_async()
 	vim.api.nvim_create_user_command("SwitchPyEnv", function(_)
 		pyenv:toggle()
 		vim.api.nvim_exec_autocmds("User", {
