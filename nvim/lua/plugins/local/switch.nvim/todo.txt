@@ -1,4 +1,4 @@
+how to unload multiple buffers
 python3 is default python in OpenSuse
 loaded synchronously first => store as current content in a table to prevent mis-leading information
-figure out why using toggled term doesn't activate desired virtual environment
-hightlight the file name only
+figure out why using toggled term doesn't activate desired virtual environment => due to lines added by Miniconda during installation

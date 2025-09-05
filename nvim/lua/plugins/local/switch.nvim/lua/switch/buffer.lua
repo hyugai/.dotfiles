@@ -1,5 +1,12 @@
 local utils = require("switch.utils")
-local M = {}
+local M = {
+	BUFFER = {
+		ids_to_unload = {},
+	},
+}
+
+--#SUPPORTING methods: _addLeftPadding, _formatLine, _changeFlag,
+--#MAIN methods: toggle (mapBufferToWindow, start, update), unloadBuf
 
 M.float = require("switch.toggle_float"):new()
 M.float.BUFFER.bufnr_to_winnr_map = {}
@@ -112,14 +119,12 @@ function M:update()
 			remained_lines = remained_lines + 1
 		end
 	end
-	--#endregion
 
 	--#add additional left paddings if one of the new buffers' legths exceeds previous one
 	local extra_padding = bufnr_max_length - self.float.BUFFER.id_max_length
 	if extra_padding > 0 then
 		self:_addLeftPadding(remained_lines, extra_padding)
 	end
-	--#endregion
 
 	--#insert new buffers
 	self.float.BUFFER.id_max_length = bufnr_max_length
@@ -130,7 +135,6 @@ function M:update()
 			})
 		end
 	end
-	--#
 end
 
 function M:switch()
@@ -146,7 +150,7 @@ function M:switch()
 		end
 	end
 
-	local current_row_pos = vim.api.nvim_win_get_cursor(self.float.WINDOW.id_float)[1] --?:0-based index
+	local current_row_pos = vim.api.nvim_win_get_cursor(self.float.WINDOW.id_float)[1] --?:1-based index
 	local bufnr_to_attach = tonumber(lines[current_row_pos]:match("(%d+)"))
 	if bufnr_to_attach then
 		self:_changeFlag(current_row_pos - 1, "*")
@@ -155,6 +159,28 @@ function M:switch()
 	end
 end
 
+---@param lines table<integer, string>
+---@param start_idx integer
+---@param end_idx integer
+function M:_foo(lines, start_idx, end_idx)
+	--?: use `vim.schedule`
+end
+function M:unloadBuf() --?:This method requires buffer's ID only
+	local current_lines = vim.api.nvim_buf_get_lines(self.float.BUFFER.id_scratch, 0, -1, true) --?:recorded lines before deletion, then use `last_old`, `last_new` to detect deleted lines
+	vim.api.nvim_buf_attach(self.float.BUFFER.id_scratch, true, {
+		on_lines = function(_, _, _, first, last_old, last_new, _, _, _)
+			local start_idx = first + 1 --?: `first` is 0-based index
+			if last_old > last_new then
+				--!: BUG => this will always use the `current_lines` of this firt initialized plugin.
+				--?: INFO: the `first`, `last_old`, `last_new` are all updated
+				--?: SOLUTION: update the `current_lines`, set1 - set2 = set3, if set3 is not empty, update one of 2
+				print(start_idx, current_lines[1], #current_lines .. "\n")
+			end
+		end,
+	})
+end
+
+--!: bug => every time the unloadBuf is triggered after repeatedly `reOpen` method is used, it created repeatedly scheduled jobs, which cause errors
 function M:toggle()
 	if not self.float.BUFFER.id_scratch then
 		local lines = self:start()
@@ -164,6 +190,7 @@ function M:toggle()
 			{ title = "Buffer Switch", title_pos = "right" },
 			lines
 		)
+		self:unloadBuf()
 		vim.api.nvim_win_set_hl_ns(self.float.WINDOW.id_float, vim.api.nvim_create_namespace("switch.nvim"))
 	elseif not self.float.WINDOW.id_float or not vim.api.nvim_win_is_valid(self.float.WINDOW.id_float) then --?:`BUFFER.id_scratch` avail, WINDOW.id_floating not avail or not valid
 		self.float:reOpen(function()
@@ -173,7 +200,5 @@ function M:toggle()
 		self.float:hide() --?:both `BUFFER.id_scratch` and `WINDOW.id_floating` are avail
 	end
 end
-
-function M:switchToNextBuf() end
 
 return M

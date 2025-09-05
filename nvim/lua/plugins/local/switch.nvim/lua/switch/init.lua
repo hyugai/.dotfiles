@@ -28,8 +28,13 @@ function M.setup(_)
 		})
 	end, {})
 	vim.keymap.set("n", "<leader>sb", "<CMD>SwitchBuf<CR>")
+	--vim.api.nvim_create_user_command("TrackLines", function(_)
+	--	buffer:unloadBuf()
+	--end, {})
 
+	--#test
 	pyenv:init_async()
+	--#endtest
 	vim.api.nvim_create_user_command("SwitchPyEnv", function(_)
 		pyenv:toggle()
 		vim.api.nvim_exec_autocmds("User", {

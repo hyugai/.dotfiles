@@ -1,3 +1,4 @@
+--!: add autoResize method for this floating
 local float_window = {
 	opts = {
 		relative = "editor",
@@ -6,7 +7,7 @@ local float_window = {
 		col = 0,
 		row = 0,
 		style = "minimal",
-		border = "rounded",
+		border = "single",
 	},
 }
 function float_window:setOpts(scale, editor, opts)
@@ -46,7 +47,11 @@ local nvim_tree = {
 			enable = true,
 			ignore = false,
 		},
+		update_focused_file = {
+			enable = true,
+		},
 		renderer = {
+			highlight_opened_files = "name",
 			icons = {
 				glyphs = {
 					folder = {
@@ -67,8 +72,9 @@ local nvim_tree = {
 		},
 	},
 	keys = {
-		{ "to", ":NvimTreeOpen<CR>", { noremap = true } },
-		{ "tc", ":NvimTreeClose<CR>", { noremap = true } },
+		{ "to", "<CMD>NvimTreeOpen<CR>", { noremap = true } },
+		{ "tc", "<CMD>NvimTreeClose<CR>", { noremap = true } },
+		{ "<C-n>", "<CMD>NvimTreeToggle<CR>", { noremap = true } },
 	},
 }
 
@@ -77,7 +83,7 @@ local telescope = {
 	branch = "0.1.x",
 	dependencies = { "nvim-lua/plenary.nvim" },
 	keys = {
-		{ "<leader>ff", ":Telescope find_files<CR>", {} },
+		{ "<leader>ff", "<CMD>Telescope find_files<CR>", {} },
 	},
 }
 

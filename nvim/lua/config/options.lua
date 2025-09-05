@@ -13,5 +13,11 @@ vim.o.mouse = ""
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+vim.api.nvim_set_hl(0, "NvimTreeNormalFloatBorder", { fg = "#ADD8E6" })
+vim.api.nvim_set_hl(0, "NvimTreeFolderName", { fg = "#FFE599", bold = true })
+vim.api.nvim_set_hl(0, "NvimTreeOpenedFolderName", { fg = "#FFE599", bold = true })
+vim.api.nvim_set_hl(0, "NvimTreeFolderIcon", { fg = "#FBC02D" })
+vim.api.nvim_set_hl(0, "NvimTreeOpenedFile", { fg = "#61AFEF", bold = true })
+
 --true colors supported (also 4-level colors for diagnostics)
 vim.opt.termguicolors = true
