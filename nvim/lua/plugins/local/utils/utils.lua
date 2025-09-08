@@ -124,4 +124,33 @@ function M:extractFileFormat(absoulute_path)
 	end
 end
 
+--#set_symmetric_difference
+M.Set = {}
+
+function M.Set.__sub(s1, s2)
+	local res = {}
+	for key, _ in pairs(s1) do
+		if not s2[key] then
+			table.insert(res, key)
+			--res[key] = true
+		end
+	end
+
+	return res
+end
+
+function M.Set:new(list)
+	local obj = {}
+	if #list > 0 then
+		for _, value in ipairs(list) do
+			obj[value] = true
+		end
+	end
+
+	setmetatable(obj, self)
+
+	return obj
+end
+
+--#endset_symmetric_difference
 return M

@@ -1,7 +1,7 @@
 local utils = require("switch.utils")
 local M = {
 	BUFFER = {
-		ids_to_unload = {},
+		current_lines = nil,
 	},
 }
 
@@ -135,6 +135,9 @@ function M:update()
 			})
 		end
 	end
+
+	--# record newly updated existing lines for the method `unload` to compare with the `remained_lines` set
+	self.BUFFER.current_lines = utils.Set:new(vim.api.nvim_buf_get_lines(self.float.BUFFER.id_scratch, 0, -1, true))
 end
 
 function M:switch()
@@ -159,22 +162,39 @@ function M:switch()
 	end
 end
 
----@param lines table<integer, string>
----@param start_idx integer
----@param end_idx integer
-function M:_foo(lines, start_idx, end_idx)
-	--?: use `vim.schedule`
-end
+--!: BUG => while the buffer switch float is being opened, if deletion is performed multiple times, the M.BUFFER.current_lines won't be updated automatically
 function M:unloadBuf() --?:This method requires buffer's ID only
-	local current_lines = vim.api.nvim_buf_get_lines(self.float.BUFFER.id_scratch, 0, -1, true) --?:recorded lines before deletion, then use `last_old`, `last_new` to detect deleted lines
 	vim.api.nvim_buf_attach(self.float.BUFFER.id_scratch, true, {
-		on_lines = function(_, _, _, first, last_old, last_new, _, _, _)
-			local start_idx = first + 1 --?: `first` is 0-based index
+		on_lines = function(_, _, _, _, last_old, last_new, _, _, _)
 			if last_old > last_new then
-				--!: BUG => this will always use the `current_lines` of this firt initialized plugin.
-				--?: INFO: the `first`, `last_old`, `last_new` are all updated
-				--?: SOLUTION: update the `current_lines`, set1 - set2 = set3, if set3 is not empty, update one of 2
-				print(start_idx, current_lines[1], #current_lines .. "\n")
+				local remained_lines =
+					utils.Set:new(vim.api.nvim_buf_get_lines(self.float.BUFFER.id_scratch, 0, -1, false)) --?: remained lines after deletion
+				local deleted_lines = self.BUFFER.current_lines - remained_lines
+
+				if #deleted_lines > 0 then
+					for _, line in ipairs(deleted_lines) do
+						local bufnr_to_unload = tonumber(line:match("%d+"))
+						if bufnr_to_unload and vim.api.nvim_buf_is_loaded(bufnr_to_unload) then
+							vim.schedule(function()
+								vim.api.nvim_buf_delete(bufnr_to_unload, { force = true })
+							end)
+						end
+					end
+					self.BUFFER.current_lines = utils.Set:new(vim.tbl_keys(remained_lines)) --?: update
+				end
+			elseif last_new > last_old then
+				local remained_lines =
+					utils.Set:new(vim.api.nvim_buf_get_lines(self.float.BUFFER.id_scratch, 0, -1, true))
+				local restored_lines = remained_lines - self.BUFFER.current_lines
+
+				if #restored_lines > 0 then
+					for idx, line in ipairs(vim.tbl_keys(remained_lines)) do --?: use idx to change buffer's ID
+						--check if relative path could be used
+						if vim.tbl_contains(restored_lines, line) then
+							local relative_path = line:match() --?: start with the dot, keep matching till the end of string
+						end
+					end
+				end
 			end
 		end,
 	})
@@ -190,7 +210,10 @@ function M:toggle()
 			{ title = "Buffer Switch", title_pos = "right" },
 			lines
 		)
+
+		self.BUFFER.current_lines = utils.Set:new(vim.api.nvim_buf_get_lines(self.float.BUFFER.id_scratch, 0, -1, true)) --?: record existing lines
 		self:unloadBuf()
+
 		vim.api.nvim_win_set_hl_ns(self.float.WINDOW.id_float, vim.api.nvim_create_namespace("switch.nvim"))
 	elseif not self.float.WINDOW.id_float or not vim.api.nvim_win_is_valid(self.float.WINDOW.id_float) then --?:`BUFFER.id_scratch` avail, WINDOW.id_floating not avail or not valid
 		self.float:reOpen(function()

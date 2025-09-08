@@ -1,8 +1,8 @@
 --# config LSPs
---local capabilities = require("cmp_nvim_lsp").default_capabilities()
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
 --lua
 vim.lsp.config("lua_ls", {
-	--capabilities = capabilities,
+	capabilities = capabilities,
 	on_init = function(client)
 		if client.workspace_folders then
 			local path = client.workspace_folders[1].name
@@ -45,12 +45,12 @@ vim.lsp.config("lua_ls", {
 })
 --c/cpp
 vim.lsp.config("clangd", {
-	--capabilities = capabilities,
+	capabilities = capabilities,
 })
 
 --python
 vim.lsp.config("ruff", {
-	--capabilities = capabilities,
+	capabilities = capabilities,
 	init_options = {
 		settings = {
 			unsafe_fixes = true,
@@ -58,7 +58,7 @@ vim.lsp.config("ruff", {
 	},
 })
 vim.lsp.config("pyright", {
-	--capabilities = capabilities,
+	capabilities = capabilities,
 	on_attach = function(client, bufnr) --change value(function object) of the key `textDocument/publishDiagnostics`
 		if client.name == "pyright" then
 			client.handlers["textDocument/publishDiagnostics"] = function() end
