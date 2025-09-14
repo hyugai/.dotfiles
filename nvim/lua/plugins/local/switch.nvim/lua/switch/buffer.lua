@@ -191,7 +191,7 @@ function M:unloadBuf() --?:This method requires buffer's ID only
 					for idx, line in ipairs(vim.tbl_keys(remained_lines)) do --?: use idx to change buffer's ID
 						--check if relative path could be used
 						if vim.tbl_contains(restored_lines, line) then
-							local relative_path = line:match() --?: start with the dot, keep matching till the end of string
+							--local relative_path = line:match() --?: start with the dot, keep matching till the end of string
 						end
 					end
 				end

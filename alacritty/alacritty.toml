@@ -7,6 +7,7 @@ general.live_config_reload = true
 # WINDOW
 [window]
     opacity = 0.85
+    #opacity = 1.0
     padding = { x = 10 }
 
 # CURSOR
