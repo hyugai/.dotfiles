@@ -6,7 +6,7 @@ local github_nvim = {
 	config = function()
 		require("github-theme").setup({
 			options = {
-				transparent = true,
+				transparent = false,
 			},
 		})
 		vim.cmd("colorscheme github_dark_default")

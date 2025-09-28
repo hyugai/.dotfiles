@@ -33,16 +33,16 @@ function M.setup(_)
 	--end, {})
 
 	--#test
-	pyenv:init_async()
+	--pyenv:init_async()
 	--#endtest
-	vim.api.nvim_create_user_command("SwitchPyEnv", function(_)
-		pyenv:toggle()
-		vim.api.nvim_exec_autocmds("User", {
-			pattern = "switch.nvim",
-			data = "pyenv",
-		})
-	end, {})
-	vim.keymap.set("n", "<leader>sp", "<CMD>SwitchPyEnv<CR>")
+	--vim.api.nvim_create_user_command("SwitchPyEnv", function(_)
+	--	pyenv:toggle()
+	--	vim.api.nvim_exec_autocmds("User", {
+	--		pattern = "switch.nvim",
+	--		data = "pyenv",
+	--	})
+	--end, {})
+	--vim.keymap.set("n", "<leader>sp", "<CMD>SwitchPyEnv<CR>")
 end
 
 return M

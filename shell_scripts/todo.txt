@@ -1,0 +1,1 @@
+debug the `set_battery_status` function

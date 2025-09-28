@@ -5,7 +5,7 @@ NOTE
         use `-` for its literal meaning when documenting
 
 TMUX'S COMMAND MODE
-<prefix>-:
+<prefix>-
     open tmux's command mode
         -> `new-window` (or `neww`) = create a new window in the current session
             + kill-window

@@ -1,1 +1,3 @@
+reduce the glitch when typing spaces
+add method `autoResize`
 add function `lift` to push terminal upward or backward a specified height
