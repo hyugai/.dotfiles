@@ -1,7 +1,0 @@
-basic: add, delete
-    advanced: 
-        highlight completed tasks
-        info (deadline, notes) about tasks (use virtual lines)
-        sort dates to be completed
-        progress bar
-    asynchronous: save changes to a JSON file

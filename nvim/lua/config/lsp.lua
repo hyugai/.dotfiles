@@ -78,8 +78,13 @@ vim.lsp.config("pyright", {
 	},
 })
 
+--latex
+vim.lsp.config("texlab", {
+	capabilities = capabilities,
+})
+
 --# enable LSPs
-vim.lsp.enable({ "lua_ls", "clangd", "bashls", "ruff", "pyright" })
+vim.lsp.enable({ "lua_ls", "clangd", "bashls", "ruff", "pyright", "texlab" })
 
 --# keymaps
 vim.keymap.set("n", "K", vim.lsp.buf.hover, {})

@@ -1,0 +1,9 @@
+docker docker-compose docker-compose-switch
+docker run -it <image's name> bash # enter running container
+docker exec -it <container's name> bash # enter running container
+    or docker attach <container's alias/ID>
+
+# inside kali container
+apt -y install kali-linux-headless
+
+# how to set up a shared directory

@@ -16,7 +16,7 @@ main() {
         local avg_capacity
         avg_capacity=$(find -L /sys/class/power_supply/BAT1 -maxdepth 1 -type f -name capacity -exec cat '{}' \;)
 
-        echo "#[bold,fg=#5fd7ff] ${avg_capacity}%" # blue
+        echo "#[bold,fg=#5fd7ff] : ${avg_capacity}%" # blue
         ;;
     Discharging)
         local avg_capacity
