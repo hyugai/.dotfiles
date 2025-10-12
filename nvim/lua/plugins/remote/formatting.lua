@@ -16,7 +16,7 @@ return {
 				-- To organize the imports.
 				"ruff_organize_imports",
 			},
-			tex = { "tex-fmt" }, -- "latexindent"
+			tex = { "tex-fmt" }, -- 2nd option: "latexindent"
 		},
 	},
 	keys = {

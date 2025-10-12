@@ -17,6 +17,7 @@ return {
 					"clang-format", --c/cpp
 					"shfmt", --bash
 					"shellcheck", --bash
+                    "tex-fmt",
 				},
 			},
 		},
@@ -28,6 +29,7 @@ return {
 			"bashls", --bash
 			"ruff", --python
 			"pyright", --python
+            "texlab",
 		},
 	},
 }
