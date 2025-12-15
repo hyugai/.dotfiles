@@ -6,7 +6,7 @@ local signs = {
 }
 
 vim.api.nvim_set_hl(0, "DiagnosticVirtualTextError", { fg = "#FF6C6B" })
-vim.api.nvim_set_hl(0, "DiagnosticVirtualTextWarn", { fg = "#ECBE7B" })
+vim.api.nvim_set_hl(0, "DiagnosticVirtualTextWarn", { fg = "#ECBE7B" }) --#ECBE7B, #FFFF00
 vim.api.nvim_set_hl(0, "DiagnosticVirtualTextInfo", { fg = "#51AFEF" })
 vim.api.nvim_set_hl(0, "DiagnosticVirtualTextHint", { fg = "#98BE65" })
 
