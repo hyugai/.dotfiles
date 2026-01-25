@@ -1,0 +1,9 @@
+font:
+	mv *.ttf or <string>.zip files to '/.local/share/fonts'
+	unzip <string>.zip
+	fc-cache -fv
+	fc-list | grep <string>
+
+config files:
+    ln -s ~/.dotfiles/terminal/alacritty.toml ~/.config/alacritty.toml
+    ln -s ~/.dotfiles/terminal/.bashrc ~/.config/.bashrc
