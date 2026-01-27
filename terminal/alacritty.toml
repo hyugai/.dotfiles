@@ -8,7 +8,6 @@
 	save_to_clipboard = true
 [font]
 	size = 13
-
     # CaskaydiaMono Nerd Font
     # JetBrainsMonoNL Nerd Font
     # the postfix "Propo" allow icons to take much space as needed f32
@@ -23,6 +22,10 @@
 	background = "#000000"  #black
 
 	foreground = "#ffffff"  #white
+#[colors.normal]
+#green = "#00ff00"
+#[colors.bright]
+#green = "#00ff00"
 [cursor]
 	style = { shape = "Block", blinking = "Always" }
 

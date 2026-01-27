@@ -1,8 +1,8 @@
 #prompt string
-COLOR_END='\e[0m'
-BOLD_GREEN="\e[1;032m"
+GREEN="\e[32m\033[1m" # bold green
 YELLOW="\e[093m"
-PS1="${BOLD_GREEN}\u@\h${COLOR_END}: ${YELLOW}\w${COLOR_END}\n$ "
+RESET="\e[0m"
+PS1="${GREEN}\u@\h${RESET}: ${YELLOW}\w${RESET}\n$ "
 
 # enable "True Color"
 export TERM="xterm-256color"
