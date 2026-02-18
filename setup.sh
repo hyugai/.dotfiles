@@ -9,3 +9,7 @@ ln -s ~/.dotfiles/terminal/.tmux.conf ~/.tmux.conf
 ln -s ~/.dotfiles/editor/nvim ~/.config/nvim
 ln -s ~/.dotfiles/editor/.clang-format ~/.clang-format
 ln -s ~/.dotfiles/editor/clangd ~/.config/clangd
+
+# git config --global user.email <email> && git config --global user.name <name>
+# ssh-keygen -t ed25519 -C <email>
+# cat .ssh/id_ed25519.pub && xsel -ib
