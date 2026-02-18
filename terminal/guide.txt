@@ -7,3 +7,4 @@ font:
 config files:
     ln -s ~/.dotfiles/terminal/alacritty.toml ~/.config/alacritty.toml
     ln -s ~/.dotfiles/terminal/.bashrc ~/.config/.bashrc
+	ln ~/.dotfiles/terminal/.tmux.conf ~/.tmux.conf

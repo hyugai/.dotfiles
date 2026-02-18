@@ -1,7 +1,7 @@
 [general]
 	live_config_reload = true
 [window]
-	opacity = 0.85
+	opacity = 1.0
 
 	startup_mode = "Maximized"
 [selection]
@@ -15,9 +15,9 @@
 
 	bold = { family = "JetBrainsMonoNL Nerd Font Propo", style = "Bold" }
 
-	italic = { family = "CaskaydiaMono Nerd Font Propo", style = "Italic" }
+	italic = { family = "JetBrainsMonoNL Nerd Font Propo", style = "Italic" }
 
-	bold_italic = { family = "CaskaydiaMono Nerd Font Propo", style = "Bold Italic" }
+	bold_italic = { family = "JetBrainsMonoNL Nerd Font Propo", style = "Bold Italic" }
 [colors.primary]
 	background = "#000000"  #black
 
