@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# if `npm` is not available, install it
-read -rp "Enter package manager's name: "
-"$REPLY" install npm
+# gcc-c++ for LSP support in NeoVim
+# npm to install `pyright` in NeoVim
+zypper in gcc-c++ npm
 
-# chmod +x battery-threshold.service -> ensure other users can execute this file
+# symlink for systemd service -> limit battery charging
 ln -s ~/.dotfiles/battery-threshold.service /etc/systemd/system/battery-threshold.service
