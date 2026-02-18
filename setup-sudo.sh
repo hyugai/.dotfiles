@@ -2,7 +2,8 @@
 
 # gcc-c++ for LSP support in NeoVim
 # npm to install `pyright` in NeoVim
-zypper in gcc-c++ npm
+# fcitx5-unikey for Vietnamese typing
+zypper in gcc-c++ npm fcitx5-unikey
 
 # symlink for systemd service -> limit battery charging
 ln -s ~/.dotfiles/battery-threshold.service /etc/systemd/system/battery-threshold.service
