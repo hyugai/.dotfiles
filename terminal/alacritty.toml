@@ -1,5 +1,6 @@
-[general]
-	live_config_reload = true
+#[general] -> changed to root level of TOML file(do not need header [key])
+live_config_reload = true
+
 [window]
 	opacity = 1.0
 
@@ -22,10 +23,6 @@
 	background = "#000000"  #black
 
 	foreground = "#ffffff"  #white
-#[colors.normal]
-#green = "#00ff00"
-#[colors.bright]
-#green = "#00ff00"
 [cursor]
 	style = { shape = "Block", blinking = "Always" }
 
