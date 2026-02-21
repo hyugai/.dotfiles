@@ -19,10 +19,6 @@ live_config_reload = true
 	italic = { family = "JetBrainsMonoNL Nerd Font Propo", style = "Italic" }
 
 	bold_italic = { family = "JetBrainsMonoNL Nerd Font Propo", style = "Bold Italic" }
-#[colors.primary]
-#	background = "#000000"  #black
-#
-#	foreground = "#ffffff"  #white
 [cursor]
 	style = { shape = "Block", blinking = "Always" }
 
