@@ -7,8 +7,8 @@ local function setWinOpts()
 		row = 0, --cordinate: Y
 		style = "minimal",
 		border = "single",
-		title = "Files Tree",
-		title_pos = "right",
+		--title = "Files Tree",
+		--title_pos = "right",
 	}
 end
 local nvim_tree = {
@@ -18,6 +18,7 @@ local nvim_tree = {
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	opts = {
 		view = {
+			signcolumn = "no",
 			number = false,
 			relativenumber = false,
 			float = {
