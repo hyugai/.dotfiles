@@ -1,0 +1,3 @@
+--basic functions of finder:
+--listing
+--open/delete/find/rename file/dir

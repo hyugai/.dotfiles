@@ -5,10 +5,10 @@ local hint = vim.diagnostic.severity.HINT
 local info = vim.diagnostic.severity.INFO
 
 local colors = {}
-colors[error] = "#fb4934" -- "#f85149"
-colors[warn] = "#fabd2f" --"#d29922"
-colors[hint] = "#5a5f66"
-colors[info] = "#076678"
+colors[error] = "#fb4934" --github
+colors[warn] = "#fabd2f" --github
+colors[hint] = "#6e7781" --github
+colors[info] = "#0969da" --github
 colors.mossy_green = "#8fa15e" --gruvbox
 colors.dark_grey = "#1d2021" --gruvbox
 colors.black = "#000000"
@@ -23,10 +23,16 @@ signs[info] = "»"
 vim.api.nvim_set_hl(0, "MyTabLine", { fg = colors.mossy_green, bg = colors.dark_grey, italic = true })
 vim.api.nvim_set_hl(0, "MyTabLineSel", { fg = colors.black, bg = colors.mossy_green, bold = true })
 vim.api.nvim_set_hl(0, "MyTabLineSep", { fg = colors.white, bg = colors.dark_grey, bold = true })
-vim.api.nvim_set_hl(0, "MyTabLineError", { fg = colors[error], bg = colors.mossy_green })
-vim.api.nvim_set_hl(0, "MyTabLineWarn", { fg = colors[warn], bg = colors.mossy_green })
-vim.api.nvim_set_hl(0, "MyTabLineHint", { fg = colors[hint], bg = colors.mossy_green })
-vim.api.nvim_set_hl(0, "MyTabLineInfo", { fg = colors[info], bg = colors.mossy_green })
+vim.api.nvim_set_hl(0, "MyTabLineError", { fg = colors[error], bg = colors.mossy_green, bold = true })
+vim.api.nvim_set_hl(0, "MyTabLineWarn", { fg = colors[warn], bg = colors.mossy_green, bold = true })
+vim.api.nvim_set_hl(0, "MyTabLineHint", { fg = colors[hint], bg = colors.mossy_green, bold = true })
+vim.api.nvim_set_hl(0, "MyTabLineInfo", { fg = colors[info], bg = colors.mossy_green, bold = true })
+
+vim.api.nvim_create_autocmd({ "InsertLeave", "DiagnosticChanged" }, {
+	callback = function(_)
+		vim.cmd("redrawtabline")
+	end,
+})
 
 local TabLine = {}
 function TabLine.init()
@@ -41,7 +47,13 @@ function TabLine.init()
 		s[#s + 1] = is_active
 
 		--name / open
-		local buf_name = vim.fn.fnamemodify(buf.name, ":t")
+		local buf_name = ""
+		if buf.name ~= "" then
+			local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+			local buf_dir = vim.fn.fnamemodify(buf.name, ":h:t")
+			buf_name = cwd == buf_dir and vim.fn.fnamemodify(buf.name, ":t")
+				or vim.fn.pathshorten(vim.fn.fnamemodify(buf.name, ":~"))
+		end
 		local click_to_open = "%"
 			.. buf.bufnr
 			.. "@v:lua.myTabLineClickToOpen@"
@@ -94,7 +106,6 @@ function TabLine.clickToOpen(id, _, button, _)
 end
 function TabLine.clickToClose(id, _, button, _)
 	if button == "l" then
-		--print(vim.api.nvim_get_option_value("modified", { buf = id }))
 		if vim.api.nvim_get_option_value("modified", { buf = id }) then
 			vim.notify("[WARN]: Unsaved changes!!!\n\n", vim.log.levels.WARN)
 		else
@@ -111,12 +122,6 @@ function TabLine.getDiagnosticStats(buf)
 
 	return res
 end
-
-vim.api.nvim_create_autocmd({ "InsertLeave", "DiagnosticChanged" }, {
-	callback = function(_)
-		vim.cmd("redrawtabline")
-	end,
-})
 
 _G.myTabLine = TabLine.init
 _G.myTabLineClickToOpen = TabLine.clickToOpen
