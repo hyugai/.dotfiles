@@ -1,3 +1,0 @@
-BUG: 
-    line 158 at `./lua/switch/buffer.lua`: Only trigged when 2 lines are deleted, greater than 2 lines, nothing happen => the message overwritten by echo cmd of NeoVim, add escaped sequence `\n`
-  

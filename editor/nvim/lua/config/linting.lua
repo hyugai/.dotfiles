@@ -7,10 +7,10 @@ local signs = {
 }
 --hex-code colors used for 'virtual_lines'
 local colors = {
-	Error = "#f85149",
-	Warn = "#d29922",
-	Hint = "#3fb950",
-	Info = "#58a6ff",
+	Error = "#fb4934", --"#f85149",
+	Warn = "#fabd2f", --"#d29922",
+	Hint = "#5a5f66", --"#3fb950",
+	Info = "#076678", --"#58a6ff",
 }
 
 --update 'virtual_text' colors

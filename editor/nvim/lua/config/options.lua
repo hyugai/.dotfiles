@@ -6,7 +6,7 @@ vim.o.expandtab = true
 vim.o.tabstop = 4
 vim.o.softtabstop = 4
 vim.o.shiftwidth = 4
-vim.o.mouse = ""
+vim.o.mouse = "nr" --see :help 'mouse'
 
 --`relativenumber`
 vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#ff9e64", bold = true }) --#ff9e64: yellow & orange
@@ -23,3 +23,6 @@ vim.api.nvim_set_hl(0, "NvimTreeOpenedFile", { fg = "#61AFEF", bold = true })
 
 --enable 'True Color' support
 vim.opt.termguicolors = true
+
+--status line
+vim.o.laststatus = 0 --see :help 'laststatus'
