@@ -1,0 +1,6 @@
+[editor]
+let NeoVim be simple as a text editor
+the real power is laid in Bash (commands)
+
+[programming]
+think in recursion instead of loops
