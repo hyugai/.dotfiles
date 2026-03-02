@@ -4,10 +4,10 @@ return {
 	lazy = false,
 	build = ":TSUpdate",
 	opts = {
-		--highlight = {
-		--	enable = true,
-		--	disable = { "latex" },
-		--},
+		highlight = {
+			enable = true,
+			disable = { "latex", "tex" },
+		},
 		--indent = {
 		--	enable = true,
 		--},

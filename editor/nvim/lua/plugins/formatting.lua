@@ -9,11 +9,11 @@ return {
 			cpp = { "clang_format" },
 			sh = { "shfmt" },
 			python = {
-				"ruff_fix", --fix auto-fixable lint errors.
-				"ruff_format", --run the Ruff formatter.
-				"ruff_organize_imports", --organize the imports.
+				"ruff_fix",
+				"ruff_format",
+				"ruff_organize_imports",
 			},
-			tex = { "tex-fmt" }, --others: 'latexindent'
+			tex = { "latexindent" }, --`texlab` supports and already installed along with TeX distribution
 		},
 
 		format_on_save = {
