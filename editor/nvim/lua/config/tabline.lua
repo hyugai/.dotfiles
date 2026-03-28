@@ -51,8 +51,10 @@ function TabLine.init()
 		if buf.name ~= "" then
 			local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
 			local buf_dir = vim.fn.fnamemodify(buf.name, ":h:t")
+			--buf_name = cwd == buf_dir and vim.fn.fnamemodify(buf.name, ":t")
+			--	or vim.fn.pathshorten(vim.fn.fnamemodify(buf.name, ":~"))
 			buf_name = cwd == buf_dir and vim.fn.fnamemodify(buf.name, ":t")
-				or vim.fn.pathshorten(vim.fn.fnamemodify(buf.name, ":~"))
+				or vim.fn.pathshorten(vim.fn.fnamemodify(buf.name, ":."))
 		end
 		local click_to_open = "%"
 			.. buf.bufnr

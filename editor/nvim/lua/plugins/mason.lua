@@ -13,23 +13,22 @@ return {
 					},
 				},
 				ensure_installed = {
-					"stylua", --lua formatter
-					"clang-format", --c/cpp formatter
-					"shfmt", --bash formatter
-					"shellcheck", --bash linter
-					"tex-fmt", --latex formatter
+					"stylua",
+					"clang-format",
+					"shfmt",
+					"shellcheck",
 				},
 			},
 		},
 	},
 	opts = {
 		ensure_installed = {
-			"lua_ls", --lua
-			"clangd", --c/cpp
-			"bashls", --bash
-			"ruff", --python
-			"pyright", --python
-			"texlab", --latex
+			"lua_ls",
+			"clangd",
+			"bashls",
+			"ruff",
+			"pyright",
+			"texlab",
 		},
 	},
 }

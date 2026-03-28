@@ -11,6 +11,8 @@ vim.o.mouse = "n" --see :help 'mouse'
 vim.o.termguicolors = true --see :help 'termguicolors'
 vim.o.laststatus = 0 --see :help 'laststatus'
 
+--vimtex
+
 --relative line's number
 vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#ff9e64", bold = true }) --#ff9e64: yellow & orange
 
@@ -32,4 +34,17 @@ vim.opt.wildignore:append({
 	"*.so",
 	"*.a",
 	"*/build/*",
+	--latex
+	"*.aux",
+	"*.log",
+	"*.out",
+	"*.toc",
+	"*.fdb_latexmk",
+	"*.fls",
+	"*.synctex.gz",
+	"*.pdf",
+	"*.blg",
+	"*.bbl",
+	"*.nav",
+	"*.snm",
 })

@@ -13,7 +13,7 @@ return {
 				"ruff_format",
 				"ruff_organize_imports",
 			},
-			tex = { "latexindent" }, --`texlab` supports and already installed along with TeX distribution
+			--tex = { "tex-fmt" }, --`texlab` supports and already installed along with TeX distribution
 		},
 
 		format_on_save = {
