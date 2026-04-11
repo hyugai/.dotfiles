@@ -1,4 +1,4 @@
---general
+-- ===== General options =====
 vim.o.autoindent = true
 vim.o.number = true
 vim.o.relativenumber = true
@@ -13,23 +13,34 @@ vim.o.laststatus = 0 --see :help 'laststatus'
 
 --relative line's number
 vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#ff9e64", bold = true })
-vim.opt.wildignore:append({
+
+-- ===== File search =====
+vim.opt.path = {
+	".", -- current dir
+	"**", -- recursive
+}
+vim.opt.wildignore = {
 	-- git
 	"*/.git/*",
+
+	-- node / frontend
+	"*/node_modules/*",
+
 	-- python
 	"*/__pycache__/*",
 	"*.pyc",
 	"*/venv/*",
 	"*/.venv/*",
+
+	-- build
 	"*/build/*",
 	"*/dist/*",
-	-- c/c++
 	"*.o",
 	"*.obj",
 	"*.so",
 	"*.a",
-	"*/build/*",
-	--latex
+
+	-- latex
 	"*.aux",
 	"*.log",
 	"*.out",
@@ -37,9 +48,12 @@ vim.opt.wildignore:append({
 	"*.fdb_latexmk",
 	"*.fls",
 	"*.synctex.gz",
-	"*.pdf",
-	"*.blg",
 	"*.bbl",
-	"*.nav",
-	"*.snm",
-})
+	"*.blg",
+
+	-- binary / heavy
+	"*.pdf",
+	"*.jpg",
+	"*.png",
+	"*.zip",
+}
