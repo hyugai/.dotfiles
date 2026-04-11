@@ -11,13 +11,8 @@ vim.o.mouse = "n" --see :help 'mouse'
 vim.o.termguicolors = true --see :help 'termguicolors'
 vim.o.laststatus = 0 --see :help 'laststatus'
 
---vimtex
-
 --relative line's number
-vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#ff9e64", bold = true }) --#ff9e64: yellow & orange
-
---finder: `*`: 1 level / `**`: 2-or-more level
-vim.opt.path:append("**")
+vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#ff9e64", bold = true })
 vim.opt.wildignore:append({
 	-- git
 	"*/.git/*",

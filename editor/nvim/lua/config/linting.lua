@@ -27,30 +27,11 @@ vim.api.nvim_set_hl(0, "DiagnosticHint", { fg = colors.Hint })
 
 --main
 vim.diagnostic.config({
-	--virtual_text = {
-	--	prefix = function(d)
-	--		local severity = d.severity
-	--		if severity == vim.diagnostic.severity.ERROR then
-	--			return signs.Error
-	--		elseif severity == vim.diagnostic.severity.WARN then
-	--			return signs.Warn
-	--		elseif severity == vim.diagnostic.severity.INFO then
-	--			return signs.Info
-	--		elseif severity == vim.diagnostic.severity.HINT then
-	--			return signs.Hint
-	--		else
-	--			return ""
-	--		end
-	--	end,
-	--	format = function(_)
-	--		return ""
-	--	end,
-	--},
 	virtual_lines = {
 		current_line = true,
 		format = function(d)
 			--return string.format("[%s]: %s (%s)", vim.diagnostic.severity[d.severity], d.message, d.source or "unknown")
-			return string.format("%s", d.message)
+			return string.format("%s (%s)", d.message, d.source)
 		end,
 	},
 	underline = false,
