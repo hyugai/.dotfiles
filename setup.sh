@@ -6,9 +6,9 @@ ln -s ~/.dotfiles/terminal/.bashrc ~/.bashrc
 ln -s ~/.dotfiles/terminal/.tmux.conf ~/.tmux.conf
 
 #editor
-ln -s ~/.dotfiles/editor/nvim ~/.config/nvim
-ln -s ~/.dotfiles/editor/.clang-format ~/.clang-format
-ln -s ~/.dotfiles/editor/clangd ~/.config/clangd
+ln -s ~/.dotfiles/text-editor/nvim ~/.config/nvim
+ln -s ~/.dotfiles/text-editor/.clang-format ~/.clang-format
+ln -s ~/.dotfiles/text-editor/clangd ~/.config/clangd
 
 # git config --global user.email <email> && git config --global user.name <name>
 # ssh-keygen -t ed25519 -C <email>
