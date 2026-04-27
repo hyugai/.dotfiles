@@ -11,7 +11,7 @@ vim.o.mouse = "n" --see :help 'mouse'
 vim.o.termguicolors = true --see :help 'termguicolors'
 vim.o.laststatus = 0 --see :help 'laststatus'
 
---relative line's number
+-- ===== Relative line's number =====
 vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#ff9e64", bold = true })
 
 -- ===== File search =====
