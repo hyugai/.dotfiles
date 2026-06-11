@@ -24,6 +24,11 @@ vim.lsp.config("lua_ls", {
 --	capabilities = capabilities,
 --})
 
+-- javascritp
+vim.lsp.config("vtsls", {
+	capabilities = capabilities,
+})
+
 --c/cpp
 vim.lsp.config("clangd", {
 	capabilities = capabilities,

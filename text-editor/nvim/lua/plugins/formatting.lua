@@ -1,19 +1,29 @@
 return {
 	[1] = "stevearc/conform.nvim",
+
 	dependencies = { "mason-org/mason.nvim" },
+
 	event = { "BufReadPre", "BufNewFile" },
+
 	opts = {
 		formatters_by_ft = {
 			lua = { "stylua" },
+
 			c = { "clang_format" },
+
 			cpp = { "clang_format" },
+
 			sh = { "shfmt" },
+
 			python = {
 				"ruff_fix",
 				"ruff_format",
 				"ruff_organize_imports",
 			},
-			--tex = { "tex-fmt" }, --`texlab` supports and already installed along with TeX distribution
+
+			tex = { "latexindent" },
+			plaintex = { "latexindent" },
+			bib = { "bibtex-tidy" },
 		},
 
 		format_on_save = {
@@ -21,13 +31,14 @@ return {
 			lsp_format = "fallback",
 		},
 	},
+
 	keys = {
 		{
 			"<leader>fm",
 			function()
-				require("conform").format()
+				require("conform").format({ async = false, lsp_format = true })
 			end,
-			{ desc = "Trigger formatter for current file" },
+			desc = "Trigger formatter for current file",
 		},
 	},
 }

@@ -29,6 +29,7 @@ return {
 			"ruff",
 			"pyright",
 			"texlab",
+			"vtsls",
 		},
 	},
 }
