@@ -20,9 +20,9 @@ vim.lsp.config("lua_ls", {
 })
 
 --latex
---vim.lsp.config("texlab", {
---	capabilities = capabilities,
---})
+vim.lsp.config("texlab", {
+	capabilities = capabilities,
+})
 
 -- javascritp
 vim.lsp.config("vtsls", {
@@ -64,7 +64,7 @@ vim.lsp.config("pyright", {
 	},
 })
 
---vim.lsp.enable({ "lua_ls", "clangd", "bashls", "ruff", "pyright", "texlab" }, true)
+vim.lsp.enable({ "lua_ls", "clangd", "bashls", "ruff", "pyright", "texlab" }, true)
 
 --keymap
 vim.keymap.set("n", "K", vim.lsp.buf.hover, {})

@@ -9,6 +9,7 @@ zypper in \
     fcitx5-unikey \
     xsel \
     foot \
-    git lazygit
+    git lazygit \
+    texlive-scheme-full
 
 cp ~/.dotfiles/system/battery-threshold.service /etc/systemd/system/

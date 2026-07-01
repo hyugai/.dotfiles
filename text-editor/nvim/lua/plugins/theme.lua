@@ -23,6 +23,7 @@ local github_nvim = {
 				},
 			},
 		})
+
 		vim.cmd("colorscheme github_dark_colorblind")
 	end,
 }
