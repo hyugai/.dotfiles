@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ===== Terminal ===== 
-rm ~/.config/alacritty.toml
+#rm ~/.config/alacritty.toml
 rm ~/.bashrc
 rm ~/.tmux.conf
 rm ~/.config/foot
