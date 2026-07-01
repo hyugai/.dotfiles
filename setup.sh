@@ -2,6 +2,7 @@
 
 # ===== Terminal ===== 
 #ln -s ~/.dotfiles/terminal/alacritty.toml ~/.config/alacritty.toml
+mv ~/.bashrc ~/.bashrc.default
 ln -s ~/.dotfiles/terminal/.bashrc ~/.bashrc
 ln -s ~/.dotfiles/terminal/.tmux.conf ~/.tmux.conf
 ln -s ~/.dotfiles/terminal/foot ~/.config/foot
@@ -14,7 +15,7 @@ ln -s ~/.dotfiles/text-editor/clangd ~/.config/clangd
 # ===== GitHub ===== 
 # git config --global user.email <email> && git config --global user.name <name>
 # ssh-keygen -t ed25519 -C <email>
-# cat .ssh/id_ed25519.pub && xsel -ib
+# cat .ssh/id_ed25519.pub | xsel -ib
 
 # ===== Books ===== 
 ln -s ~/bkup/books ~/Documents/books
