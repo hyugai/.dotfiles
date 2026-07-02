@@ -51,11 +51,10 @@ function TabLine.init()
 		if buf.name ~= "" then
 			local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
 			local buf_dir = vim.fn.fnamemodify(buf.name, ":h:t")
-			--buf_name = cwd == buf_dir and vim.fn.fnamemodify(buf.name, ":t")
-			--	or vim.fn.pathshorten(vim.fn.fnamemodify(buf.name, ":~"))
 			buf_name = cwd == buf_dir and vim.fn.fnamemodify(buf.name, ":t")
 				or vim.fn.pathshorten(vim.fn.fnamemodify(buf.name, ":."))
 		end
+
 		local click_to_open = "%"
 			.. buf.bufnr
 			.. "@v:lua.myTabLineClickToOpen@"
@@ -97,6 +96,7 @@ function TabLine.init()
 
 	return table.concat(s)
 end
+
 function TabLine.clickToOpen(id, _, button, _)
 	if button == "l" then
 		local current_buf = vim.api.nvim_get_current_buf()
@@ -106,6 +106,7 @@ function TabLine.clickToOpen(id, _, button, _)
 		end
 	end
 end
+
 function TabLine.clickToClose(id, _, button, _)
 	if button == "l" then
 		if vim.api.nvim_get_option_value("modified", { buf = id }) then
@@ -115,6 +116,7 @@ function TabLine.clickToClose(id, _, button, _)
 		end
 	end
 end
+
 function TabLine.getDiagnosticStats(buf)
 	local res = {}
 	res[error] = vim.diagnostic.count(buf, { severity = error })[error] or 0
