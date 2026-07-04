@@ -13,4 +13,5 @@ zypper in \
     texlive-scheme-full
 
 cp ~/.dotfiles/system/battery-threshold.service /etc/systemd/system/
-sudo systemctl enable battery-threshold.service
+
+systemctl enable battery-threshold.service
