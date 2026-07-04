@@ -127,6 +127,9 @@ function TabLine.getDiagnosticStats(buf)
 	return res
 end
 
+vim.keymap.set("n", "<M-f>", "<CMD>bnext<CR>")
+vim.keymap.set("n", "<M-b>", "<CMD>bprevious<CR>")
+
 _G.myTabLine = TabLine.init
 _G.myTabLineClickToOpen = TabLine.clickToOpen
 _G.myTabLineClickToClose = TabLine.clickToClose
