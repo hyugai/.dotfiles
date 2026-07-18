@@ -1,0 +1,20 @@
+\definecolor{TitleBlue}{HTML}{00ADEF}
+\definecolor{LeftRuleBlue}{HTML}{B3E6FA}
+
+\newtcolorbox{TaskBox}[2]{
+enhanced,
+breakable,
+%
+skin=enhancedlast jigsaw,
+toprule=0pt, bottomrule=0pt, rightrule=0pt, leftrule=3pt,
+colframe=LeftRuleBlue,
+sharp corners, arc=0pt,
+%
+title=#1 | {\large$\blacksquare$}#2, fonttitle=\bfseries,
+attach boxed title to top left={xshift=-0mm},
+boxed title style={
+		sharp corners,
+		boxrule=0pt,
+		colback=TitleBlue,
+	},
+}

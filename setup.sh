@@ -1,18 +1,85 @@
 #!/bin/bash
 
-# ===== Terminal =====
-#ln -s ~/.dotfiles/terminal/alacritty.toml ~/.config/alacritty.toml
-mv ~/.bashrc ~/.bashrc.default
-ln -s ~/.dotfiles/terminal/.bashrc ~/.bashrc
-ln -s ~/.dotfiles/terminal/.tmux.conf ~/.tmux.conf
-ln -s ~/.dotfiles/terminal/foot ~/.config/foot
+DOTFILES_DIR="${HOME}/.dotfiles"
 
-# ===== Text Editor =====
-ln -s ~/.dotfiles/text-editor/nvim ~/.config/nvim
-ln -s ~/.dotfiles/text-editor/.clang-format ~/.clang-format
-ln -s ~/.dotfiles/text-editor/clangd ~/.config/clangd
+prompt-yes-no-question() {
+    while true; do
+        read -rp "Enter [Y/n] > " respose
 
-# ===== GitHub =====
-# git config --global user.email <email> && git config --global user.name <name>
-# ssh-keygen -t ed25519 -C <email>
-# cat .ssh/id_ed25519.pub | xsel -ib
+        response="${respose,,}"
+        response="${respose:-y}"
+
+        if [ "$response" == "y" ]; then
+            return 0
+        elif [ "$response" == "n" ]; then
+            return 1
+        fi
+    done
+}
+
+create-symlink() {
+    if [ -L "$2" ]; then # exists and is a symbolic link
+        echo "Link exists. Do you want to re-create it?"
+
+        if prompt-yes-no-question; then
+            echo "Deleting..."
+            rm "$2"
+
+            echo "Re-creating symlink..."
+            ln -s "$1" "$2"
+
+        else
+            echo "Exiting..."
+        fi
+
+    else
+        echo "Creating..."
+        ln -s "$src_path" "$destination_path"
+    fi
+}
+
+set-neovim-config() {
+    local src_path, destination_path
+
+    src_path="${DOTFILES_DIR}/text-editor-config/nvim"
+    destination_path="${HOME}/.config/nvim"
+
+    create-symlink "$src_path" "$destination_path"
+}
+
+set-tmux-config() {
+    local src_path, destination_path
+
+    src_path="${DOTFILES_DIR}/terminal-config/nvim"
+    destination_path="${HOME}/.config/foot"
+
+    create-symlink "$src_path" "$destination_path"
+}
+
+set-bash-config() {
+    local src_path, destination_path
+
+    src_path="${DOTFILES_DIR}/terminal-config/.bashrc"
+    destination_path="${HOME}/.bashrc"
+
+    create-symlink "$src_path" "$destination_path"
+}
+
+copy-latex-template() {
+    command ...
+}
+
+run() {
+    while true; do
+        cat <<EOF
+    What do you want to do?
+    0. Workspace
+    1. Configuration
+    2. Template
+EOF
+        read -rp "> " response
+    done
+
+}
+
+run

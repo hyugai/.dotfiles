@@ -1,6 +1,0 @@
-[editor]
-    1. let NeoVim be simple as a text editor, the real power is laid in Bash (commands)
-    2. `clangd` requires strong internet connection due to large file (~100MB)
- 
-[programming]
-    1. Think in recursion instead of loops
