@@ -1,5 +1,4 @@
 #!/bin/bash
-
 DOTFILES_DIR="${HOME}/.dotfiles"
 
 prompt-yes-no-question() {
@@ -39,7 +38,7 @@ create-symlink() {
 }
 
 set-neovim-config() {
-    local src_path, destination_path
+    local src_path destination_path
 
     src_path="${DOTFILES_DIR}/text-editor-config/nvim"
     destination_path="${HOME}/.config/nvim"
@@ -48,16 +47,16 @@ set-neovim-config() {
 }
 
 set-tmux-config() {
-    local src_path, destination_path
+    local src_path destination_path
 
-    src_path="${DOTFILES_DIR}/terminal-config/nvim"
-    destination_path="${HOME}/.config/foot"
+    src_path="${DOTFILES_DIR}/terminal-config/.tmux.conf"
+    destination_path="${HOME}/.tmux.conf"
 
     create-symlink "$src_path" "$destination_path"
 }
 
 set-bash-config() {
-    local src_path, destination_path
+    local src_path destination_path
 
     src_path="${DOTFILES_DIR}/terminal-config/.bashrc"
     destination_path="${HOME}/.bashrc"
@@ -66,20 +65,47 @@ set-bash-config() {
 }
 
 copy-latex-template() {
-    command ...
-}
+    local src_path
 
-run() {
-    while true; do
-        cat <<EOF
-    What do you want to do?
-    0. Workspace
-    1. Configuration
-    2. Template
-EOF
-        read -rp "> " response
+    src_path="${DOTFILES_DIR}/latex-template"
+
+    readarray -t templates < <(ls "$src_path")
+
+    # list enumerated templates
+    # 0. template-name
+    for ((i = 0; i < "${#templates[@]}"; ++i)); do
+        echo "${i}. ${templates[i]}"
     done
 
-}
+    # choose template by number
+    while true; do
+        read -rp "Enter choice > " choice
+        if [[ "$choice" =~ ^[0-9]+$ && "$choice" -ge 0 && "$choice" -lt "${#templates[@]}" ]]; then
+            break
+        fi
+    done
 
-run
+    # where to copy template
+    while true; do
+        read -rp "Enter destination > " destination_path
+
+        destination_path="${destination_path/#\~/${HOME}}"
+        if [ -d "$destination_path" ]; then
+            break
+        fi
+    done
+
+    # get unique name for copied template
+    while true; do
+        read -rp "Enter name > " name
+
+        name="${respose:-${templates[choice]}}" # default
+
+        if [ -d "${destination_path}/${name}" ]; then
+            echo "Name already exists!!!"
+            continue
+        fi
+
+        break
+    done
+}
