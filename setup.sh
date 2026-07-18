@@ -99,7 +99,7 @@ copy-latex-template() {
     while true; do
         read -rp "Enter name > " name
 
-        name="${respose:-${templates[choice]}}" # default
+        name="${name:-${templates[choice]}}" # default
 
         if [ -d "${destination_path}/${name}" ]; then
             echo "Name already exists!!!"
@@ -108,4 +108,37 @@ copy-latex-template() {
 
         break
     done
+
+    cp -r "${src_path}/${templates[choice]}" "${destination_path}/${name}"
 }
+
+set-battery-config() {
+    if ((EUID != 0)); then
+        echo "Run with sudo privileges!!!"
+
+        return 1
+    fi
+
+    local src_path destination_path count
+
+    src_path="${DOTFILES_DIR}/system-config/battery-threshold.service"
+    destination_path="/etc/systemd/system/battery-threshold.service"
+
+    count=$(systemctl list-unit-files --type=service | grep -c battery-threshold.service)
+    if ((count == 1)); then
+        printf "Service's already running!!!\nExiting..."
+
+        return 0
+    fi
+
+    echo "Enabling service..."
+    cp "$src_path" "$destination_path"
+    systemctl enable battery-threshold.service
+
+    echo "Reboot is required."
+    if prompt-yes-no-question; then
+        reboot
+    fi
+}
+
+copy-latex-template
