@@ -140,5 +140,3 @@ set-battery-config() {
         reboot
     fi
 }
-
-copy-latex-template
