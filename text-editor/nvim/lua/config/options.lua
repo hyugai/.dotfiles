@@ -1,4 +1,4 @@
--- ===== General options =====
+-- General options
 vim.o.autoindent = true
 vim.o.number = true
 vim.o.relativenumber = true
@@ -11,10 +11,10 @@ vim.o.mouse = "n" --see :help 'mouse'
 vim.o.termguicolors = true --see :help 'termguicolors'
 vim.o.laststatus = 0 --see :help 'laststatus'
 
--- ===== Relative line's number =====
+-- Relative line's number
 vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#ff9e64", bold = true })
 
--- ===== File search =====
+-- File search
 vim.opt.path = {
 	".", -- current dir
 	"**", -- recursive

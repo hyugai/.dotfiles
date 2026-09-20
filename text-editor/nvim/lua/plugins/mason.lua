@@ -26,10 +26,12 @@ return {
 			"lua_ls",
 			"clangd",
 			"bashls",
-			"ruff",
 			"pyright",
 			"texlab",
 			"vtsls",
+			"lemminx",
+			"roslyn_ls",
+			--"ruff",
 		},
 	},
 }

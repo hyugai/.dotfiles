@@ -9,3 +9,10 @@ export TERM="xterm-256color"
 
 #aliases
 alias e='~/nvim-linux-x86_64.appimage'
+
+# opencode
+export PATH=/home/cookies/.opencode/bin:$PATH
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/cookies/.local/bin:$PATH"

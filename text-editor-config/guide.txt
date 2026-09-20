@@ -1,1 +1,0 @@
-sudo <package manager> install npm
