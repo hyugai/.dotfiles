@@ -1,0 +1,6 @@
+<ins>
+    <objective> terminal-based application to manage tmux workspaces follwing CRUD design </objective>
+
+    <ui> terminal based with vim motion</ui>
+    <storage> use CSV format to store workspaces' info including name,is_available </storage>
+</ins>
