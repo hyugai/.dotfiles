@@ -1,9 +1,10 @@
-#prompt_string
-COLOR_END='\e[0m'
-BOLD_GREEN="\e[1;032m"
-YELLOW="\e[093m"
-PS1="${BOLD_GREEN}\u@\h${COLOR_END}: ${YELLOW}[\w]${COLOR_END}\n$ "
-#end_prompt_string
+# disable visual bell (bug: screen flicker in Git Bash)
+set bell-style none
 
-export TERM="xterm-256color" # make sure that 4-level colors is supportted for diagnostics
-alias e=nvim                 # neovim alias
+# use packages installed by scoop
+export PATH="$PATH:$USERPROFILE/scoop/shims"
+
+# bug: "ln -s" creates a copy instead of actual symbolic link
+export MSYS=winsymlinks:nativestrict 
+
+alias e="/c/tools/neovim/nvim-win64/bin/nvim"
