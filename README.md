@@ -11,3 +11,6 @@ enable scoop
 install lazygit via scoop
     -> scoop bucket add extras
     -> scoop install lazygit
+
+install npm
+    winget install OpenJS.NodeJS.LTS
